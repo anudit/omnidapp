@@ -1,30 +1,26 @@
 {
   "expo": {
-    "name": "omnidapp",
-    "slug": "omnidapp",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
     },
-    "assetBundlePatterns": [
-      "**/*"
+    "name": "omnid-app",
+    "slug": "omnid-app",
+    "plugins": [
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+        }
+      ]
     ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+    "extra": {
+      "eas": {
+        "projectId": "36f03bb5-6dde-49e8-8655-444bf2d7eed7"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "android": {
+      "package": "com.cupoc.omnid"
     }
   }
 }
