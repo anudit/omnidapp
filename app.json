@@ -5,7 +5,7 @@
       "bundler": "metro"
     },
     "name": "Omnid",
-    "slug": "omnid",
+    "slug": "omnid-app",
     "icon": "./assets/icons/omnid.png",
     "plugins": [
       [
