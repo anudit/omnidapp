@@ -7,6 +7,8 @@
     "build": "eas build --platform android --local"
   },
   "dependencies": {
+    "@expo-google-fonts/dm-sans": "^0.2.3",
+    "@expo-google-fonts/inter": "^0.2.3",
     "@expo/vector-icons": "^13.0.0",
     "@types/react": "~18.0.27",
     "expo": "^48.0.7",

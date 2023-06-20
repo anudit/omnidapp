@@ -5,6 +5,12 @@ overrides:
   metro-resolver: ^0.73.7
 
 dependencies:
+  '@expo-google-fonts/dm-sans':
+    specifier: ^0.2.3
+    version: 0.2.3
+  '@expo-google-fonts/inter':
+    specifier: ^0.2.3
+    version: 0.2.3
   '@expo/vector-icons':
     specifier: ^13.0.0
     version: 13.0.0
@@ -1585,6 +1591,14 @@ packages:
     engines: {node: '>=0.8.0'}
     dependencies:
       '@types/hammerjs': 2.0.41
+    dev: false
+
+  /@expo-google-fonts/dm-sans@0.2.3:
+    resolution: {integrity: sha512-sMrW6bc3ZWg5tyasDe6GB56N1/q/wY5zjMFp1vnA61MUX19mVd62ZiiubDaroSsQIhKEJvRW662NjDGUkqmEmg==}
+    dev: false
+
+  /@expo-google-fonts/inter@0.2.3:
+    resolution: {integrity: sha512-iHK9FI+dnE45X5c2Z5hSFwNH4zUWethizpbv3XUn0FIGw5jwvzriENz0a6wCdkI4/d+1QkurnHo5XHti7TbNJA==}
     dev: false
 
   /@expo/bunyan@4.0.0:

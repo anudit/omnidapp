@@ -20,7 +20,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache: pnpm
 
       - name: Cache pnpm modules
         uses: actions/cache@v3
@@ -35,7 +34,7 @@ jobs:
 
       - name: Install Workspace Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: pnpm install --filter "ot1"
+        run: pnpm install
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
@@ -44,4 +43,4 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Publish update
-        run: cd ot1 && eas update --auto
+        run: eas build --non-interactive --platform android

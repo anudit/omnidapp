@@ -1,11 +1,12 @@
 {
   "expo": {
-    "scheme": "acme",
+    "scheme": "omnid",
     "web": {
       "bundler": "metro"
     },
-    "name": "omnid-app",
-    "slug": "omnid-app",
+    "name": "Omnid",
+    "slug": "omnid",
+    "icon": "./assets/icons/omnid.png",
     "plugins": [
       [
         "expo-barcode-scanner",
@@ -20,7 +21,33 @@
       }
     },
     "android": {
-      "package": "com.cupoc.omnid"
+      "package": "com.cupoc.omnid",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "omnid",
+              "host": "*"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["omnid"],
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": ["omnid"]
+          }
+        ]
+      }
     }
   }
 }

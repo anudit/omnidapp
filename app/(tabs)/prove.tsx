@@ -5,6 +5,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 export default function Prove() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const [scannedValue, setScannedValue] = useState("");
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -17,7 +18,8 @@ export default function Prove() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    setScannedValue(data);
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
   if (hasPermission === null) {
@@ -28,9 +30,14 @@ export default function Prove() {
   }
 
   return (
-    <View>
+    <View style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
+      <Text>
+        {scannedValue}
+      </Text>
+      
       <BarCodeScanner
         onBarCodeScanned={handleBarCodeScanned}
+        barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
         style={{
             height: '100%'
         }}
