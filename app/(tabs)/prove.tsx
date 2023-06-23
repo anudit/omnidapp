@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Prove() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -30,19 +31,19 @@ export default function Prove() {
   }
 
   return (
-    <View style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
+    <SafeAreaView style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
       <Text>
         {scannedValue}
       </Text>
-      
       <BarCodeScanner
         onBarCodeScanned={handleBarCodeScanned}
         barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
         style={{
+            width: '100%',
             height: '100%'
         }}
       />
       {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-    </View>
+    </SafeAreaView>
   );
 }

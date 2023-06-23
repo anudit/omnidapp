@@ -15,6 +15,12 @@
         }
       ]
     ],
+    "splash": {
+      "image": "./assets/icons/omnid.png",
+      "backgroundColor": "#000000",
+      "resizeMode": "contain"
+    },
+    "userInterfaceStyle": "dark",
     "extra": {
       "eas": {
         "projectId": "36f03bb5-6dde-49e8-8655-444bf2d7eed7"

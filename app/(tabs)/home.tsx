@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'expo-router';
-import {View, Text, StyleSheet, ScrollView, Pressable, TextInput, FlatList} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Pressable, TextInput, FlatList, Image} from 'react-native';
 import * as Linking from 'expo-linking';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import designTokens from '../../assets/designTokens';
+import designTokens from '../../assets/designTokens.json';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { OmnidIcon } from '../../components/icons';
 
 const mockData = [{
   title: '> 18',
@@ -83,44 +85,40 @@ const cardColors = [
 
 const Home = () => {
 
-    const [dlData, setDlData] = useState(false);
-
-    useEffect(() => {
-        const handleDeepLink = async (event) => {
-            if (event.url) {
-              // Parse the deep link URL
-              const { path, queryParams } = Linking.parse(event.url);
-        
-              // Check if the deep link is valid
-              if (path === 'home') {
-                setDlData(event.url);
-              }
-            }
-        };
-    
-        Linking.addEventListener('url', handleDeepLink);
-    }, [])
+    const [filterValue, setFilterValue] = useState<null | string>(null);
 
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={mockData}
+          data={filterValue && filterValue.trim().length>0 ? mockData.filter(e=>e.description.includes(filterValue) || e.issuer.includes(filterValue) || e.title.includes(filterValue)) : mockData}
           style={styles.grid} 
           key={'connectedProofs'}
           numColumns={2}
+          keyboardShouldPersistTaps={'always'}
           ItemSeparatorComponent={() => <View style={{height: 5}} />}
-          ListHeaderComponent={()=>(
+          ListHeaderComponent={
             <>
               <View style={styles.hero}>
-                <Text style={styles.heading}>My</Text>
-                <Text style={styles.heading}>Omnid</Text>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <OmnidIcon fill={designTokens.colors.text.primary} style={{marginRight: 8}}/>
+                  <Text style={styles.heading}>My Omnid</Text>
+                </View>
+                <Link href="/settings" asChild>
+                  <Pressable>
+                    {({pressed})=><Ionicons name={pressed ? "settings" : "settings-outline"} size={24} color={designTokens.colors.text.primary}/>}
+                  </Pressable>
+                </Link>
               </View>
               <TextInput
+                key="proofsearch"
                 style={styles.input}
                 placeholder="Find Proofs"
+                placeholderTextColor={designTokens.colors.text.secondary} 
+                value={filterValue}
+                onChangeText={text => setFilterValue(text)}
               />
             </>
-          )}
+          }
           renderItem={({item}) => (
             <Pressable style={{
               ...styles.card, 
@@ -129,9 +127,6 @@ const Home = () => {
               <Text style={styles.cardHeading}>{item.title}</Text>
               <Text style={styles.cardSubHeading}>{item.issuer}</Text>
             </Pressable>
-          )}
-          ListFooterComponent={()=>(
-            <Text>{dlData || 'No Deeplink Data'}</Text>
           )}
           keyExtractor={item => String(item.id)}
         />
@@ -144,29 +139,35 @@ const styles = StyleSheet.create({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'flex-start',
-      backgroundColor: designTokens.colors.background,
+      backgroundColor: designTokens.colors.background.level1,
       color: designTokens.colors.text.primary,
       minHeight: 100,
       width: '100%',
       paddingTop: 10,
-      paddingHorizontal: 10
+      paddingHorizontal: 20
     },
     hero: {
-      paddingVertical: 2,
+      paddingVertical: 6,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
     },
     input: {
       height: 40,
       marginVertical: 8,
       borderWidth: 1,
+      borderColor: designTokens.colors.text.secondary,
+      color: designTokens.colors.text.primary,
       borderRadius: 20,
       padding: 12,
     },
     heading: {
-      fontFamily: designTokens.typography.bold, 
-      fontSize: 50
+      fontFamily: designTokens.typography.bold,
+      color: designTokens.colors.text.primary,
+      fontSize: 20
     },
     grid: {
       width: '100%',
+      minHeight: '100%'
     },
     card: {
       width: '49%',

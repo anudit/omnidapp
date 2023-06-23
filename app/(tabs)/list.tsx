@@ -2,7 +2,7 @@ import { Link } from 'expo-router';
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import designTokens from '../../assets/designTokens';
+import designTokens from '../../assets/designTokens.json';
 
 const List = () => {
     return (
@@ -11,6 +11,7 @@ const List = () => {
             <Link href="/profile/1">Profile 1</Link>
             <Link href="/profile/2">Profile 2</Link>
             <Link href="/profile/3">Profile 3</Link>
+            <Link href="/approve?scope=value1&state=9090900">Manual open</Link>
         </SafeAreaView>
     )
 }
