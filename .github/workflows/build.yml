@@ -42,5 +42,5 @@ jobs:
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Publish Update
+      - name: Publish Build
         run: eas build --non-interactive --platform android --profile production

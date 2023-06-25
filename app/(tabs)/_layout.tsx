@@ -27,9 +27,6 @@ const TabBar = () => {
             }}/>
             <Tabs.Screen name="prove" options={{
                 tabBarLabel: 'Prove',
-                // tabBarLabelStyle: {
-                //     display: 'none'
-                // },
                 tabBarIconStyle: {
                     width: 50,
                     height: 50,
