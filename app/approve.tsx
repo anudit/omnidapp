@@ -1,39 +1,45 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import * as Linking from 'expo-linking';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
+import { useSettingsStore } from '../stores/settings'
+import designTokens from '../assets/designTokens.json';
 
 type omnidAuthParams = {
-    scope?: string,
-    state?: string,
-    issuerSig?: string,
-    issuer?: string
+    scope: string,
+    response_type: 'code',
+    redirect_uri: string,
+    state: string,
+    issuerSig: string,
+    issuer: string
 }
 
-const Prove = () => {
-
-    const [proofData, setProofData] = useState<null | string>();
-
-    useEffect(() => {
-        const handleDeepLink = async (event) => {
-            if (event.url) {
-                const { path, queryParams } = Linking.parse(event.url);
-                if (path === 'approve') {
-                    setProofData(event.url);
-                }
-            }
-        };
-    
-        Linking.addEventListener('url', handleDeepLink);
-    }, [])
+const Prove = ({}) => {
+    const {count, increment} = useSettingsStore();
+    const routeParams = useLocalSearchParams();
 
     return (
-        <SafeAreaView>
-            <Text>Prove</Text>
-            <Text>{proofData || 'No Deeplink Data'}</Text>
-            <Link href="/home">Back</Link>
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.text}>{JSON.stringify(routeParams) || 'No Route Data'}</Text>
+            <Link href="/home" style={styles.text}>Back</Link>
         </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      backgroundColor: designTokens.colors.background.level2,
+      minHeight: '100%',
+      width: '100%',
+      paddingHorizontal: 20
+    },
+    text: {
+        color: designTokens.colors.text.primary,
+        fontSize: 20
+    }
+});
+
 export default Prove;

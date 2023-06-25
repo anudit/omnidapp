@@ -11,7 +11,7 @@ const TabBar = () => {
             tabBarHideOnKeyboard: true,
             tabBarActiveTintColor: designTokens.colors.text.primary,
             tabBarStyle: styles.tabBarStyle,
-            tabBarShowLabel: true,
+            tabBarShowLabel: false,
             tabBarIcon: ({ size, color, focused }) => {
                 let iconName;
 
@@ -27,9 +27,9 @@ const TabBar = () => {
             }}/>
             <Tabs.Screen name="prove" options={{
                 tabBarLabel: 'Prove',
-                tabBarLabelStyle: {
-                    display: 'none'
-                },
+                // tabBarLabelStyle: {
+                //     display: 'none'
+                // },
                 tabBarIconStyle: {
                     width: 50,
                     height: 50,
@@ -45,16 +45,18 @@ const TabBar = () => {
 }
 const styles = StyleSheet.create({
     tabBarStyle: {
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20,
+        borderRadius: 100,
         height: 55,
         paddingBottom: 5,
-        backgroundColor: designTokens.colors.background.level2,
+        borderWidth: 2,
+        borderColor: designTokens.colors.background.level3,
+        backgroundColor: designTokens.colors.background.level2 + 'EF',
         border: 'none',
         position: 'absolute',
-        width:'100%',
+        width:'60%',
         maxHeight: 100,
-        bottom: 0,
+        bottom: 20,
+        left: 80,
         elevation: 0
     }
 })

@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import designTokens from '../../assets/designTokens.json';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { OmnidIcon } from '../../components/icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const mockData = [{
   title: '> 18',
@@ -85,10 +86,11 @@ const cardColors = [
 
 const Home = () => {
 
-    const [filterValue, setFilterValue] = useState<null | string>(null);
+    const [filterValue, setFilterValue] = useState<undefined | string>(undefined);
+    const insets = useSafeAreaInsets();
 
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={{...styles.container, paddingTop: Math.max(insets.top, 40) }} >
         <FlatList
           data={filterValue && filterValue.trim().length>0 ? mockData.filter(e=>e.description.includes(filterValue) || e.issuer.includes(filterValue) || e.title.includes(filterValue)) : mockData}
           style={styles.grid} 
@@ -130,7 +132,7 @@ const Home = () => {
           )}
           keyExtractor={item => String(item.id)}
         />
-      </SafeAreaView>
+      </View>
     )
 }
 
