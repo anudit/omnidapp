@@ -3,7 +3,8 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface StoreType {
-  count: number
+  count: number,
+  hasHydrated: boolean,
   increment: () => void
   decrement: () => void
   setHasHydrated: (state: boolean) => void
@@ -17,7 +18,7 @@ export const store: (set, get) => StoreType = (set) => ({
   decrement: () => set((state) => ({ count: state.count - 1 })),
   setHasHydrated: (state) => {
     set({
-      _hasHydrated: state
+      hasHydrated: state
     });
   }
 })

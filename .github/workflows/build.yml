@@ -2,9 +2,14 @@ name: build
 on: push
 
 jobs:
-  update:
+  build:
     name: Build Test
     runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        platform: [android, ios]
+
     steps:
       - name: Check for EXPO_TOKEN
         run: |
@@ -20,17 +25,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
+          cache: npm
 
-      - name: Cache npm modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+      # - name: Cache npm modules
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.npm
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-node-
 
-      - name: Install Workspace Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+      - name: Install Dependencies
         run: npm install
 
       - name: Setup EAS
@@ -42,5 +47,5 @@ jobs:
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Publish Build
-        run: eas build --non-interactive --platform android --profile production
+      - name: Build
+        run: eas build --non-interactive --platform ${{ matrix.platform }} --profile production

@@ -4,11 +4,11 @@ import { useFonts, DMSans_400Regular, DMSans_500Medium, DMSans_700Bold } from '@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import designTokens from '../assets/designTokens.json';
 
-
-// import "react-native-get-random-values"
-// import "@ethersproject/shims"
+import "react-native-get-random-values"
+import "@ethersproject/shims"
 
 import { useEffect, useState } from 'react';
+import { useSettingsStore } from '../stores/settings';
 
 const StackLayout = () => {
 
@@ -17,33 +17,37 @@ const StackLayout = () => {
     });
 
     let [loading, setLoading] = useState(true);
+    const {hasHydrated} = useSettingsStore();
 
-    useEffect(()=>{
-        setTimeout(()=>{
-            setLoading(false)
-        }, 2000)
-    }, [])
+    // useEffect(()=>{
+    //     setTimeout(()=>{
+    //         setLoading(false)
+    //     }, 2000)
+    // }, [])
 
-    if (loading === true) {
+    if (fontsLoaded && hasHydrated) {
+        return (
+            <SafeAreaProvider>
+                <Stack>
+                    <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+                    <Stack.Screen name="approve" options={{
+                        headerShown: true, 
+                        presentation: 'modal',
+                        headerTintColor: designTokens.colors.text.primary,
+                        headerTitle: 'Approve Request',
+                        headerBlurEffect: 'light',
+                        headerStyle: {
+                            backgroundColor: designTokens.colors.background.level3
+                        },
+                    }}/>
+                </Stack>
+            </SafeAreaProvider>
+        )
+    }
+    else {
         return  <SplashScreen/>;
     }
 
-    return (
-        <SafeAreaProvider>
-            <Stack>
-                <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
-                <Stack.Screen name="approve" options={{
-                    headerShown: true, 
-                    presentation: 'modal',
-                    headerTintColor: designTokens.colors.text.primary,
-                    headerTitle: 'Approve Request',
-                    headerBlurEffect: 'light',
-                    headerStyle: {
-                        backgroundColor: designTokens.colors.background.level3
-                    },
-                }}/>
-            </Stack>
-        </SafeAreaProvider>
-    )
+    
 }
 export default StackLayout;
