@@ -21,20 +21,17 @@ jobs:
         with:
           node-version: 18.x
 
-      - name: Cache pnpm modules
+      - name: Cache npm modules
         uses: actions/cache@v3
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: latest
+            ${{ runner.os }}-node-
 
       - name: Install Workspace Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: pnpm install
+        run: npm install
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
