@@ -7,8 +7,8 @@ import designTokens from '../assets/designTokens.json';
 import "react-native-get-random-values"
 import "@ethersproject/shims"
 
-import { useEffect, useState } from 'react';
 import { useSettingsStore } from '../stores/settings';
+import { useAccountStore } from '../stores/accountStore';
 
 const StackLayout = () => {
 
@@ -16,16 +16,10 @@ const StackLayout = () => {
         DMSans_400Regular, DMSans_500Medium, DMSans_700Bold
     });
 
-    let [loading, setLoading] = useState(true);
     const {hasHydrated} = useSettingsStore();
+    const {hasHydrated: hasHydratedAccounts, basePubKey, setupBase} = useAccountStore();
 
-    // useEffect(()=>{
-    //     setTimeout(()=>{
-    //         setLoading(false)
-    //     }, 2000)
-    // }, [])
-
-    if (fontsLoaded && hasHydrated) {
+    if (fontsLoaded && hasHydrated && hasHydratedAccounts) {
         return (
             <SafeAreaProvider>
                 <Stack>

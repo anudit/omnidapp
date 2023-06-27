@@ -13,13 +13,12 @@ const TabBar = () => {
             tabBarStyle: styles.tabBarStyle,
             tabBarShowLabel: false,
             tabBarIcon: ({ size, color, focused }) => {
-                let iconName;
 
                 if (route.name === 'home') return focused ? <Ionicons name="home" size={size} color={color} /> : <Ionicons name="home-outline" size={size} color={color} />;
-                else if (route.name === 'list') iconName = 'list-ul';
+                else if (route.name === 'list') return focused ? <Ionicons name="add-circle" size={size+4} color={color} /> : <Ionicons name="add-circle-outline" size={size+4} color={color} />;
                 else if (route.name === 'prove') return focused? <Ionicons name="qr-code" size={size} color={color} /> : <Ionicons name="qr-code-outline" size={size} color={color} />  ;
 
-                return <FontAwesome name={iconName} size={size} color={color} />;
+                return <FontAwesome name='home' size={size} color={color} />;
             }
         })}>
             <Tabs.Screen name="home" options={{
@@ -50,6 +49,8 @@ const styles = StyleSheet.create({
         backgroundColor: designTokens.colors.background.level2 + 'EF',
         border: 'none',
         position: 'absolute',
+        display: 'flex',
+        alignItems:'center',
         width:'60%',
         maxHeight: 100,
         bottom: 20,

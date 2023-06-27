@@ -8,7 +8,7 @@ jobs:
     
     strategy:
       matrix:
-        platform: [android, ios]
+        platform: [android]
 
     steps:
       - name: Check for EXPO_TOKEN

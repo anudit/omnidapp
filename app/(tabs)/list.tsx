@@ -15,7 +15,7 @@ const List = () => {
             <Link href="/profile/2">Profile 2</Link>
             <Link href="/profile/3">Profile 3</Link>
             <Pressable onPress={()=>{
-                router.push("/approve?scope=age%2Cnew&redirect_uri=https%3A%2F%2Fomnid.io%2F&state=publicAnnouceId&issuer=0x03502eEad21B0186AF524ac18E5c866B02Ac3c2F&issuerSig=0xbe0e259e412c465bda1c7daae5f96abe1af85a5cd8502bb9581c327f998dde0700853ed29ca5d3610762cda51f3f3e41aa35d0c79c95d4d54832023a4ae709bc1b")
+                router.push("/approve?scope=age%2Cnew&redirect_uri=https%3A%2F%2Fomnid.io%2F&state=publicAnnouceId&issuer=0xA73F022a256372837724b28EFbc7bc1876e833C8&issuerSig=0xe509d4480ae90e9df6044e9536b5384fe778e69cdd99d6ffeba421c5d3dbca96447ae13aaf233d546009deeb7b26945a3af2dbfeae21f1c52f3fabc86295974f1c")
             }}>
                 <Text>Sign In with Omnid</Text>
             </Pressable>

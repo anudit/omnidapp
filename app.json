@@ -45,6 +45,7 @@
       ]
     },
     "ios": {
+      "bundleIdentifier": "com.cupoc.omnid",
       "supportsTablet": true,
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["omnid"],
