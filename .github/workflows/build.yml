@@ -40,4 +40,10 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Build
-        run: eas build --non-interactive --platform ${{ matrix.platform }} --profile production
+        run: eas build --non-interactive --platform ${{ matrix.platform }} --profile production --local --output=./app-android.apk
+      
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-android
+          path: app-android.apk
