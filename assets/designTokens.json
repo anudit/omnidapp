@@ -54,7 +54,7 @@
     "warning": "#FFAC32",
     "text": {
       "primary": "#FFFFFF",
-      "secondary": "#333333",
+      "secondary": "#AAAAAA",
       "disabled": "#666666",
       "inverse": "#333333"
     }

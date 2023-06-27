@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Text, View, StyleSheet, Pressable, ActivityIndicator, Image } from 'react-native';
+import { Text, View, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, useLocalSearchParams } from 'expo-router';
 import designTokens from '../assets/designTokens.json';
 import SwipeButton from 'rn-swipe-button';
 import { AntDesign, EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import { ethers } from 'ethers';
-import { SvgUri } from 'react-native-svg';
+import { Image } from 'expo-image';
 
 type omnidAuthParams = {
     scope: string,
@@ -53,16 +53,16 @@ const Prove = ({}) => {
             {
                 routeParams ? verifiedParams === true ? (
                     <>
-                        <View style={styles.row}>
+                        <View style={{...styles.row, alignItems:'center'}}>
                             <Text style={styles.text}>Share</Text>
-                            <View style={{...styles.row, paddingVertical: 10}}>
+                            <View style={{...styles.row, paddingVertical: 10, alignItems:'center'}}>
                                 {
                                     Array.from(String(routeParams['scope']).split(',')).map((e, id)=><Text style={styles.textScope} key={id}>{e}</Text>)
                                 }
                             </View>
                             <Text style={styles.text}>With</Text>
                             <View style={styles.card}>
-                                <SvgUri uri={orgData['microsoft'].logo} height={40} width={40} style={{marginRight: 8}}/>
+                                <Image source={orgData['microsoft'].logo} style={{marginRight: 8, height: 40, width: 40}} contentFit="cover"/>
                                 <View style={{display:'flex', flexDirection: 'column', justifyContent: 'space-between', width: '75%'}}>
                                     <Text style={styles.text}>{orgData['microsoft'].name}</Text>
                                     <Text style={styles.textSmall}>{routeParams['redirect_uri']}</Text>
@@ -98,7 +98,6 @@ const Prove = ({}) => {
                     <Text style={styles.textSmall}>Getting Data</Text>
                 ) 
             }
-            
         </SafeAreaView>
     )
 }
@@ -120,6 +119,7 @@ const styles = StyleSheet.create({
         backgroundColor: designTokens.colors.background.level3,
         display: 'flex',
         flexDirection: 'row',
+        width: '90%',
         padding: 10,
         borderRadius: 10,
         marginVertical: 10

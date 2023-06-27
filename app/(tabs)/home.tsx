@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     },
     cardSubHeading: {
       fontSize: 10,
-      color: designTokens.colors.text.secondary,
+      color: designTokens.colors.text.inverse,
     }
 });
 

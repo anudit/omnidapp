@@ -5,15 +5,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export interface StoreType {
   count: number,
   hasHydrated: boolean,
-  increment: () => void
-  decrement: () => void
+  shakeToCancel: boolean,
+  toggleShakeToCancel: () => void,
+  increment: () => void,
+  decrement: () => void,
   setHasHydrated: (state: boolean) => void
 }
 
 export const store: (set, get) => StoreType = (set) => ({
 
   count: 0,
+  shakeToCancel: true,
   hasHydrated: false,
+  toggleShakeToCancel: () => set((state) => ({ shakeToCancel: !state.shakeToCancel })),
   increment: () => set((state) => ({ count: state.count + 1 })),
   decrement: () => set((state) => ({ count: state.count - 1 })),
   setHasHydrated: (state) => {

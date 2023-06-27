@@ -15,7 +15,7 @@ const TabBar = () => {
             tabBarIcon: ({ size, color, focused }) => {
 
                 if (route.name === 'home') return focused ? <Ionicons name="home" size={size} color={color} /> : <Ionicons name="home-outline" size={size} color={color} />;
-                else if (route.name === 'list') return focused ? <Ionicons name="add-circle" size={size+4} color={color} /> : <Ionicons name="add-circle-outline" size={size+4} color={color} />;
+                else if (route.name === 'list') return focused ? <Ionicons name="add-circle" size={size+8} color={color} /> : <Ionicons name="add-circle-outline" size={size+8} color={color} />;
                 else if (route.name === 'prove') return focused? <Ionicons name="qr-code" size={size} color={color} /> : <Ionicons name="qr-code-outline" size={size} color={color} />  ;
 
                 return <FontAwesome name='home' size={size} color={color} />;
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         border: 'none',
         position: 'absolute',
         display: 'flex',
-        alignItems:'center',
+        alignItems: 'center',
         width:'60%',
         maxHeight: 100,
         bottom: 20,
