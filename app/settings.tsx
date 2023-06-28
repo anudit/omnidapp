@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Pressable, Switch } from 'react-native';
-import * as Linking from 'expo-linking';
 import { useAccountStore } from '../stores/accountStore';
 import designTokens from '../assets/designTokens.json';
 import { useSettingsStore } from '../stores/settings';
@@ -38,8 +37,6 @@ const Settings = () => {
                     </View>
                     
                     <Switch
-                        // trackColor={{false: '#767577', true: '#81b0ff'}}
-                        ios_backgroundColor="#3e3e3e"
                         onValueChange={toggleShakeToCancel}
                         value={shakeToCancel}
                     />
@@ -96,6 +93,7 @@ const styles = StyleSheet.create({
     },
     settingsHeading: {
         color: designTokens.colors.text.secondary,
+        textTransform: 'uppercase',
         marginTop: 12,
         paddingLeft: 12
     },

@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Text, View, StyleSheet, Pressable, useWindowDimensions } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { QrFrameIcon } from '../../components/icons';
 import designTokens from '../../assets/designTokens.json';
 import { Ionicons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
+import { Camera, FlashMode } from 'expo-camera';
+
 
 export default function Prove() {
 
-  const [hasPermission, setHasPermission] = useState(null);
-  const [scannedValue, setScannedValue] = useState("");
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off)
+  const {width} = useWindowDimensions();
+  const height = Math.round((width * 16) / 9);
 
   useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    };
-
-    getBarCodeScannerPermissions();
+    requestPermission();
   }, []);
-
-  const handleBarCodeScanned = async ({ type, data }) => {
+  
+  const handleQrScan = async ({ type, data }) => {
 
     try {
       let url = Linking.parse(data);
@@ -33,31 +32,41 @@ export default function Prove() {
       console.error(error)
     }
 
-    setScannedValue(data);
   };
 
-  if (hasPermission === null) {
+  if (!permission) {
     return <Text>Requesting for camera permission</Text>;
   }
-  if (hasPermission === false) {
+  if (!permission.granted) {
     return <Text>No access to camera</Text>;
   }
 
   return (
     <View style={StyleSheet.absoluteFillObject}>
-      <BarCodeScanner
-        onBarCodeScanned={handleBarCodeScanned}
-        barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
-        style={StyleSheet.absoluteFillObject}
+      <Camera
+        ratio="16:9"
+        barCodeScannerSettings={{
+          barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+          interval: 100,
+        }}
+        onBarCodeScanned={handleQrScan}
+        style={{...StyleSheet.absoluteFillObject, 
+          height: height,
+          width: "100%"
+        }}
+        flashMode={flashMode}
       />
       <View style={styles.overlay} >
         <Text style={styles.text}>
           Scan to Prove
         </Text>
-        <QrFrameIcon fill='white' width={256} height={256} />
-        <Pressable style={{...styles.roundButton, marginTop: 30}}>
+        <QrFrameIcon width={256} height={256} />
+        <Pressable style={{...styles.roundButton, marginTop: 30}} onPress={()=>{
+          if (flashMode == FlashMode.torch) setFlashMode(FlashMode.off)
+          else setFlashMode(FlashMode.torch)
+        }}>
           {({pressed})=><Ionicons 
-            name={pressed ? 'flashlight' : "flashlight-outline"} 
+            name={pressed || flashMode == FlashMode.torch ? 'flashlight' : "flashlight-outline"} 
             size={24} 
             color="white"
           /> }

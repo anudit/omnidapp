@@ -1,12 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text, View, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import designTokens from '../assets/designTokens.json';
 import SwipeButton from 'rn-swipe-button';
 import { AntDesign, EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import { ethers } from 'ethers';
 import { Image } from 'expo-image';
+import { Accelerometer } from 'expo-sensors';
+import { Gyroscope } from 'expo-sensors';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
+import Toast from 'react-native-root-toast';
+import { useSettingsStore } from '../stores/settings';
 
 type omnidAuthParams = {
     scope: string,
@@ -27,6 +32,8 @@ const orgData = {
 const Prove = ({}) => {
     const routeParams = useLocalSearchParams();
     const [verifiedParams, setVerifiedParams] = useState<null | boolean>(null);
+    const { shakeToCancel } = useSettingsStore();
+    const router = useRouter();
 
     const icon = useMemo(
         () => () => <AntDesign name="right" size={24} color="black" />,
@@ -43,6 +50,61 @@ const Prove = ({}) => {
             setVerifiedParams(res == objWithoutSig.issuer);
         }
     }, [routeParams])
+
+
+    useEffect(() => {
+        let accelerometerSubscription;
+        
+        const handleShake = () => {
+            router.push("/home")
+            Toast.show('Cancelled Request', {
+                duration: Toast.durations.SHORT,
+            });
+            
+        };
+        
+        const subscribeToShakeDetection = async () => {
+            // Subscribe to accelerometer sensor updates
+            accelerometerSubscription = Accelerometer.addListener(({ x, y, z }) => {
+              // Calculate the total acceleration vector
+              const acceleration = Math.sqrt(x * x + y * y + z * z);
+        
+              // Define a threshold to detect shake events
+              const shakeThreshold = 1.8;
+        
+              if (acceleration > shakeThreshold) {
+                // Shake event detected
+                handleShake();
+              }
+            });
+        
+          };
+        
+        const startShakeDetection = async () => {
+            
+            // Activate the keep awake feature to prevent the device from sleeping
+            activateKeepAwakeAsync();
+            
+            // Subscribe to the shake detection
+            await subscribeToShakeDetection();
+        };
+        
+        const stopShakeDetection = () => {
+            // Unsubscribe from shake detection
+            accelerometerSubscription && accelerometerSubscription.remove();
+            
+            // Deactivate the keep awake feature
+            deactivateKeepAwake();
+        };
+        
+        if(shakeToCancel) startShakeDetection();
+        
+        // Stop shake detection and clean up when the component unmounts
+        return () => {
+            stopShakeDetection();
+        };
+    }, []);
+    
 
     const checkProof = () => {
         alert('Donezo')
@@ -106,7 +168,7 @@ const styles = StyleSheet.create({
     container: {
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'flex-start',
+      alignItems: 'center',
       justifyContent: 'space-around',
       backgroundColor: designTokens.colors.background.level2,
       minHeight: '100%',
