@@ -24,6 +24,7 @@ export default function Prove() {
     try {
       let url = Linking.parse(data);
       // && url.queryParams && (url.scheme === 'exp://' || url.scheme === 'omnid://')
+      console.log('qr: got', url);
       if (url.path === 'approve' ){
         console.log('opening', data)
         await Linking.openURL(data);
@@ -42,7 +43,7 @@ export default function Prove() {
   }
 
   return (
-    <View style={StyleSheet.absoluteFillObject}>
+    <View style={[StyleSheet.absoluteFillObject, styles.container]}>
       <Camera
         ratio="16:9"
         barCodeScannerSettings={{
@@ -55,23 +56,24 @@ export default function Prove() {
           width: "100%"
         }}
         flashMode={flashMode}
-      />
-      <View style={styles.overlay} >
-        <Text style={styles.text}>
-          Scan to Prove
-        </Text>
-        <QrFrameIcon width={256} height={256} />
-        <Pressable style={{...styles.roundButton, marginTop: 30}} onPress={()=>{
-          if (flashMode == FlashMode.torch) setFlashMode(FlashMode.off)
-          else setFlashMode(FlashMode.torch)
-        }}>
-          {({pressed})=><Ionicons 
-            name={pressed || flashMode == FlashMode.torch ? 'flashlight' : "flashlight-outline"} 
-            size={24} 
-            color="white"
-          /> }
-        </Pressable>
-      </View>
+      >
+        <View style={styles.overlay} >
+          <Text style={styles.text}>
+            Scan to Prove
+          </Text>
+          <QrFrameIcon width={256} height={256} />
+          <Pressable style={{...styles.roundButton, marginTop: 30}} onPress={()=>{
+            if (flashMode == FlashMode.torch) setFlashMode(FlashMode.off)
+            else setFlashMode(FlashMode.torch)
+          }}>
+            {({pressed})=><Ionicons 
+              name={pressed || flashMode == FlashMode.torch ? 'flashlight' : "flashlight-outline"} 
+              size={24} 
+              color="white"
+            /> }
+          </Pressable>
+        </View>
+      </Camera>
     </View>
   );
 

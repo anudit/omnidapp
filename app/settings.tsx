@@ -7,6 +7,7 @@ import { AntDesign, Feather, FontAwesome5 } from '@expo/vector-icons';
 import * as Application from 'expo-application';
 import * as Clipboard from 'expo-clipboard';
 import Toast from 'react-native-root-toast';
+import * as Device from 'expo-device';
 
 const Settings = () => {
 
@@ -27,7 +28,7 @@ const Settings = () => {
 
             <Text style={styles.settingsHeading}>General</Text>
             <View style={styles?.settingsSection}>
-                <View style={{...styles.settingsRow, borderBottomWidth: 0}}>
+                <View style={styles.settingsRow}>
 
                     <View style={{display: 'flex', flexDirection: 'row', alignItems:'center'}}>
                         <AntDesign name="shake" size={16} color={designTokens.colors.text.primary} style={{marginRight: 8}}/>
@@ -47,7 +48,7 @@ const Settings = () => {
 
             <Text style={styles.settingsHeading}>Account Info</Text>
             <View style={styles?.settingsSection}>
-                <View style={{...styles.settingsRow, borderBottomWidth: 0}}>
+                <View style={styles.settingsRow}>
                     <View style={{display: 'flex', flexDirection: 'row', alignItems:'center'}}>
                         <FontAwesome5 name="ethereum" size={16} color={designTokens.colors.text.primary} style={{marginRight: 8}} />
                         <Text style={styles.settingTitle}>
@@ -65,8 +66,7 @@ const Settings = () => {
 
             <Text style={styles.settingsHeading}>App Info</Text>
             <View style={styles?.settingsSection}>
-                <View style={{...styles.settingsRow, borderBottomWidth: 0}}>
-                
+                <View style={[styles.settingsRow, styles.borderBottom]}>
                     <Text style={styles.settingTitle}>
                         Version
                     </Text>
@@ -74,6 +74,15 @@ const Settings = () => {
                     <Text style={styles.settingValue} onPress={async ()=>{
                         await copy(Application.nativeBuildVersion);
                     }}>v{Application.nativeBuildVersion}</Text>
+                </View>
+                <View style={styles.settingsRow}>
+                    <Text style={styles.settingTitle}>
+                        Device
+                    </Text>
+
+                    <Text style={styles.settingValue} onPress={async ()=>{
+                        await copy(`${Device.manufacturer}: ${Device.modelName}`);
+                    }}>{Device.manufacturer}: {Device.modelName}</Text>
                 </View>
             </View>
         </View>
@@ -94,30 +103,27 @@ const styles = StyleSheet.create({
     settingsHeading: {
         color: designTokens.colors.text.secondary,
         textTransform: 'uppercase',
+        fontSize: 12,
         marginTop: 12,
-        paddingLeft: 12
+        paddingLeft: 25
     },
     settingsSection: {
         backgroundColor: designTokens.colors.background.level3,
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        marginVertical: 10,
+        marginVertical: 8,
         borderRadius: 10,
-        borderWidth: 1,
-        borderColor: designTokens.colors.text.secondary+'44',
     },
     settingsRow: {
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'space-between',
-        height: 55,
+        height: 45,
         alignItems:'center',
         borderBottomRadius: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: designTokens.colors.text.secondary+'44',
-        paddingHorizontal: 16,
+        paddingHorizontal: 25,
     },
     settingTitle: {
         fontSize: 18,
@@ -126,8 +132,11 @@ const styles = StyleSheet.create({
     settingValue: {
         fontSize: 18,
         color: designTokens.colors.text.secondary,
+    },
+    borderBottom: {
+        borderBottomWidth: 1,
+        borderBottomColor: designTokens.colors.text.secondary+'44',
     }
-
 });
 
 export default Settings;

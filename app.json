@@ -29,6 +29,9 @@
       "backgroundColor": "#000000",
       "resizeMode": "contain"
     },
+    "experiments": {
+      "typedRoutes": true
+    },
     "userInterfaceStyle": "dark",
     "extra": {
       "eas": {
@@ -57,10 +60,14 @@
       "bundleIdentifier": "com.cupoc.omnid",
       "supportsTablet": true,
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["omnid"],
+        "LSApplicationQueriesSchemes": [
+          "omnid"
+        ],
         "CFBundleURLTypes": [
           {
-            "CFBundleURLSchemes": ["omnid"]
+            "CFBundleURLSchemes": [
+              "omnid"
+            ]
           }
         ]
       }

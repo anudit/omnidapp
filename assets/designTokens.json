@@ -45,9 +45,9 @@
       "900": "#144546"
     },
     "background": {
-      "level1": "#1C1C1E",
-      "level2": "#2C2C2E",
-      "level3": "#3C3C3E"
+      "level1": "#0C0C0E",
+      "level2": "#1C1C1E",
+      "level3": "#242425"
     },
     "success": "#43C689",
     "error": "#FF585D",

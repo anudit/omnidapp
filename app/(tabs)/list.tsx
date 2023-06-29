@@ -6,7 +6,7 @@ import designTokens from '../../assets/designTokens.json';
 
 const List = () => {
 
-    const router = useRouter();
+    const router = useRouter()
 
     return (
         <SafeAreaView style={styles.container}>
@@ -18,6 +18,11 @@ const List = () => {
                 router.push("/approve?scope=age%2Cnew&redirect_uri=https%3A%2F%2Fomnid.io%2F&state=publicAnnouceId&issuer=0xA73F022a256372837724b28EFbc7bc1876e833C8&issuerSig=0xe509d4480ae90e9df6044e9536b5384fe778e69cdd99d6ffeba421c5d3dbca96447ae13aaf233d546009deeb7b26945a3af2dbfeae21f1c52f3fabc86295974f1c")
             }}>
                 <Text>Sign In with Omnid</Text>
+            </Pressable>
+            <Pressable onPress={()=>{
+                router.replace("/insecureDevice")
+            }}>
+                <Text>Insec</Text>
             </Pressable>
         </SafeAreaView>
     )

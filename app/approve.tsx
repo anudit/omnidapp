@@ -8,7 +8,6 @@ import { AntDesign, EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import { ethers } from 'ethers';
 import { Image } from 'expo-image';
 import { Accelerometer } from 'expo-sensors';
-import { Gyroscope } from 'expo-sensors';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import Toast from 'react-native-root-toast';
 import { useSettingsStore } from '../stores/settings';
@@ -145,6 +144,7 @@ const Prove = ({}) => {
                                 railBorderColor={designTokens.colors.background.level3} 
                                 thumbIconBorderColor={designTokens.colors.background.level2}
                                 railFillBackgroundColor={designTokens.colors.background.level3+'BB'}
+                                // @ts-expect-error shut up ts.
                                 thumbIconComponent={icon}
                                 titleColor={designTokens.colors.text.primary}
                             />
