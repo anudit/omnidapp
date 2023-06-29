@@ -6,14 +6,16 @@ import designTokens from '../../assets/designTokens.json';
 import { Ionicons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 import { Camera, FlashMode } from 'expo-camera';
+import { useRouter } from 'expo-router';
 
 
 export default function Prove() {
 
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off)
-  const {width} = useWindowDimensions();
-  const height = Math.round((width * 16) / 9);
+  const {height} = useWindowDimensions();
+  const width = Math.round((height * 9) / 16);
+  const router = useRouter();
 
   useEffect(() => {
     requestPermission();
@@ -23,11 +25,9 @@ export default function Prove() {
 
     try {
       let url = Linking.parse(data);
-      // && url.queryParams && (url.scheme === 'exp://' || url.scheme === 'omnid://')
-      console.log('qr: got', url);
-      if (url.path === 'approve' ){
-        console.log('opening', data)
-        await Linking.openURL(data);
+      if ((url.scheme == 'omnid' && url.hostname == 'approve') || (url.scheme == 'exp' && url.path === 'approve') ){
+        let formattedParams = new URLSearchParams(JSON.parse(JSON.stringify(url.queryParams)))
+        await router.push(`/approve?${formattedParams.toString()}`);
       }
     } catch (error) {
       console.error(error)
@@ -51,9 +51,9 @@ export default function Prove() {
           interval: 100,
         }}
         onBarCodeScanned={handleQrScan}
-        style={{...StyleSheet.absoluteFillObject, 
-          height: height,
-          width: "100%"
+        style={{ 
+          height: "100%",
+          width,
         }}
         flashMode={flashMode}
       >
@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     width: '100%', 
     height: '100%',
     margin: 0,
+    backgroundColor: designTokens.colors.background.level1,
   },
   overlay: {
     position: 'absolute', 

@@ -31,7 +31,9 @@ const Settings = () => {
                 <View style={styles.settingsRow}>
 
                     <View style={{display: 'flex', flexDirection: 'row', alignItems:'center'}}>
-                        <AntDesign name="shake" size={16} color={designTokens.colors.text.primary} style={{marginRight: 8}}/>
+                        <View style={styles.icon}>
+                            <AntDesign name="shake" size={18} color={designTokens.colors.text.primary} />
+                        </View>
                         <Text style={styles.settingTitle}>
                             Shake to Cancel
                         </Text>
@@ -50,9 +52,11 @@ const Settings = () => {
             <View style={styles?.settingsSection}>
                 <View style={styles.settingsRow}>
                     <View style={{display: 'flex', flexDirection: 'row', alignItems:'center'}}>
-                        <FontAwesome5 name="ethereum" size={16} color={designTokens.colors.text.primary} style={{marginRight: 8}} />
+                        <View style={styles.icon}>
+                            <FontAwesome5 name="ethereum" size={18} color={designTokens.colors.text.primary}/>
+                        </View>
                         <Text style={styles.settingTitle}>
-                            Ethereum Address
+                            Address
                         </Text>
                     </View>
 
@@ -97,8 +101,8 @@ const styles = StyleSheet.create({
       backgroundColor: designTokens.colors.background.level1,
       minHeight: '100%',
       width: '100%',
-      paddingTop: 10,
-      paddingHorizontal: 10
+      paddingVertical: 10,
+      paddingHorizontal: 15
     },
     settingsHeading: {
         color: designTokens.colors.text.secondary,
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        marginVertical: 8,
+        marginVertical: 4,
         borderRadius: 10,
     },
     settingsRow: {
@@ -136,6 +140,17 @@ const styles = StyleSheet.create({
     borderBottom: {
         borderBottomWidth: 1,
         borderBottomColor: designTokens.colors.text.secondary+'44',
+    },
+    icon: {
+        color: designTokens.colors.text.primary,
+        backgroundColor: designTokens.colors.teal[700],
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'flex',
+        borderRadius: 6,
+        marginRight: 16,
+        height: 30,
+        width: 30
     }
 });
 

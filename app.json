@@ -13,6 +13,7 @@
         {
           "android": {
             "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true,
             "extraProguardRules": "-keep class com.facebook.hermes.unicode.** { *; }\n-keep class com.facebook.jni.** { *; }\n-keep public class com.horcrux.svg.** {*;}"
           }
         }
@@ -28,9 +29,6 @@
       "image": "./assets/icons/omnid.png",
       "backgroundColor": "#000000",
       "resizeMode": "contain"
-    },
-    "experiments": {
-      "typedRoutes": true
     },
     "userInterfaceStyle": "dark",
     "extra": {

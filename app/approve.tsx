@@ -41,12 +41,18 @@ const Prove = ({}) => {
 
     useEffect(()=>{
         if(routeParams && Boolean(verifiedParams) === false){
-            let {issuerSig, ...objWithoutSig} = routeParams as omnidAuthParams;
-            let res = ethers.verifyMessage(
-                JSON.stringify(objWithoutSig),
-                issuerSig
-            );
-            setVerifiedParams(res == objWithoutSig.issuer);
+            try {
+                let {issuerSig, ...objWithoutSig} = routeParams as omnidAuthParams;
+                let res = ethers.verifyMessage(
+                    JSON.stringify(objWithoutSig),
+                    issuerSig
+                );
+                setVerifiedParams(res == objWithoutSig.issuer);
+                
+            } catch (error) {
+                console.error('verif error', error, routeParams)
+                setVerifiedParams(false)
+            }
         }
     }, [routeParams])
 
