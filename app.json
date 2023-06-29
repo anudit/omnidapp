@@ -26,7 +26,7 @@
       ]
     ],
     "splash": {
-      "image": "./assets/icons/omnid.png",
+      "image": "./assets/icons/omnid-frame.png",
       "backgroundColor": "#000000",
       "resizeMode": "contain"
     },

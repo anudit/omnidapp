@@ -1,32 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Pressable, useWindowDimensions } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
-import { QrFrameIcon } from '../../components/icons';
-import designTokens from '../../assets/designTokens.json';
 import { Ionicons } from '@expo/vector-icons';
-import * as Linking from 'expo-linking';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Camera, FlashMode } from 'expo-camera';
+import * as Linking from 'expo-linking';
 import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+
+import designTokens from '../../assets/designTokens.json';
+import { QrFrameIcon } from '../../components/icons';
+
 
 
 export default function Prove() {
 
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off)
-  const {height} = useWindowDimensions();
+  const { height } = useWindowDimensions();
   const width = Math.round((height * 9) / 16);
   const router = useRouter();
 
   useEffect(() => {
     requestPermission();
   }, []);
-  
+
   const handleQrScan = async ({ type, data }) => {
 
     try {
-      let url = Linking.parse(data);
-      if ((url.scheme == 'omnid' && url.hostname == 'approve') || (url.scheme == 'exp' && url.path === 'approve') ){
-        let formattedParams = new URLSearchParams(JSON.parse(JSON.stringify(url.queryParams)))
+      const url = Linking.parse(data);
+      if ((url.scheme === 'omnid' && url.hostname === 'approve') || (url.scheme === 'exp' && url.path === 'approve')) {
+        const formattedParams = new URLSearchParams(JSON.parse(JSON.stringify(url.queryParams)))
         await router.push(`/approve?${formattedParams.toString()}`);
       }
     } catch (error) {
@@ -51,7 +53,7 @@ export default function Prove() {
           interval: 100,
         }}
         onBarCodeScanned={handleQrScan}
-        style={{ 
+        style={{
           height: "100%",
           width,
         }}
@@ -62,15 +64,15 @@ export default function Prove() {
             Scan to Prove
           </Text>
           <QrFrameIcon width={256} height={256} />
-          <Pressable style={{...styles.roundButton, marginTop: 30}} onPress={()=>{
-            if (flashMode == FlashMode.torch) setFlashMode(FlashMode.off)
+          <Pressable style={{ ...styles.roundButton, marginTop: 30 }} onPress={() => {
+            if (flashMode === FlashMode.torch) setFlashMode(FlashMode.off)
             else setFlashMode(FlashMode.torch)
           }}>
-            {({pressed})=><Ionicons 
-              name={pressed || flashMode == FlashMode.torch ? 'flashlight' : "flashlight-outline"} 
-              size={24} 
+            {({ pressed }) => <Ionicons
+              name={pressed || flashMode === FlashMode.torch ? 'flashlight' : "flashlight-outline"}
+              size={24}
               color="white"
-            /> }
+            />}
           </Pressable>
         </View>
       </Camera>
@@ -81,26 +83,26 @@ export default function Prove() {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex', 
-    flexDirection: 'column', 
-    alignItems:'center', 
-    width: '100%', 
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
     height: '100%',
     margin: 0,
     backgroundColor: designTokens.colors.background.level1,
   },
   overlay: {
-    position: 'absolute', 
-    elevation: 2, 
-    zIndex: 2, 
+    position: 'absolute',
+    elevation: 2,
+    zIndex: 2,
     display: 'flex',
-    alignItems:'center',
+    alignItems: 'center',
     justifyContent: 'space-evenly',
-    width: '100%', 
+    width: '100%',
     height: '100%'
   },
   text: {
-    color:  designTokens.colors.text.primary,
+    color: designTokens.colors.text.primary,
   },
   roundButton: {
     backgroundColor: designTokens.colors.background.level1,

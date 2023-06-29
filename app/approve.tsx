@@ -1,15 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Text, View, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link, useLocalSearchParams, useRouter } from 'expo-router';
-import designTokens from '../assets/designTokens.json';
-import SwipeButton from 'rn-swipe-button';
-import { AntDesign, EvilIcons, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { ethers } from 'ethers';
 import { Image } from 'expo-image';
-import { Accelerometer } from 'expo-sensors';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
+import { Accelerometer } from 'expo-sensors';
+import { useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import Toast from 'react-native-root-toast';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import SwipeButton from 'rn-swipe-button';
+
+import designTokens from '../assets/designTokens.json';
 import { useSettingsStore } from '../stores/settings';
 
 type omnidAuthParams = {
@@ -28,7 +29,7 @@ const orgData = {
     }
 }
 
-const Prove = ({}) => {
+const Prove = () => {
     const routeParams = useLocalSearchParams();
     const [verifiedParams, setVerifiedParams] = useState<null | boolean>(null);
     const { shakeToCancel } = useSettingsStore();
@@ -39,16 +40,16 @@ const Prove = ({}) => {
         [],
     )
 
-    useEffect(()=>{
-        if(routeParams && Boolean(verifiedParams) === false){
+    useEffect(() => {
+        if (routeParams && Boolean(verifiedParams) === false) {
             try {
-                let {issuerSig, ...objWithoutSig} = routeParams as omnidAuthParams;
-                let res = ethers.verifyMessage(
+                const { issuerSig, ...objWithoutSig } = routeParams as omnidAuthParams;
+                const res = ethers.verifyMessage(
                     JSON.stringify(objWithoutSig),
                     issuerSig
                 );
-                setVerifiedParams(res == objWithoutSig.issuer);
-                
+                setVerifiedParams(res === objWithoutSig.issuer);
+
             } catch (error) {
                 console.error('verif error', error, routeParams)
                 setVerifiedParams(false)
@@ -59,57 +60,57 @@ const Prove = ({}) => {
 
     useEffect(() => {
         let accelerometerSubscription;
-        
+
         const handleShake = () => {
             router.push("/home")
             Toast.show('Cancelled Request', {
                 duration: Toast.durations.SHORT,
             });
-            
+
         };
-        
+
         const subscribeToShakeDetection = async () => {
             // Subscribe to accelerometer sensor updates
             accelerometerSubscription = Accelerometer.addListener(({ x, y, z }) => {
-              // Calculate the total acceleration vector
-              const acceleration = Math.sqrt(x * x + y * y + z * z);
-        
-              // Define a threshold to detect shake events
-              const shakeThreshold = 1.8;
-        
-              if (acceleration > shakeThreshold) {
-                // Shake event detected
-                handleShake();
-              }
+                // Calculate the total acceleration vector
+                const acceleration = Math.sqrt(x * x + y * y + z * z);
+
+                // Define a threshold to detect shake events
+                const shakeThreshold = 1.8;
+
+                if (acceleration > shakeThreshold) {
+                    // Shake event detected
+                    handleShake();
+                }
             });
-        
-          };
-        
+
+        };
+
         const startShakeDetection = async () => {
-            
+
             // Activate the keep awake feature to prevent the device from sleeping
             activateKeepAwakeAsync();
-            
+
             // Subscribe to the shake detection
             await subscribeToShakeDetection();
         };
-        
+
         const stopShakeDetection = () => {
             // Unsubscribe from shake detection
-            accelerometerSubscription && accelerometerSubscription.remove();
-            
+            accelerometerSubscription?.remove();
+
             // Deactivate the keep awake feature
             deactivateKeepAwake();
         };
-        
-        if(shakeToCancel) startShakeDetection();
-        
+
+        if (shakeToCancel) startShakeDetection();
+
         // Stop shake detection and clean up when the component unmounts
         return () => {
             stopShakeDetection();
         };
     }, []);
-    
+
 
     const checkProof = () => {
         alert('Donezo')
@@ -120,36 +121,36 @@ const Prove = ({}) => {
             {
                 routeParams ? verifiedParams === true ? (
                     <>
-                        <View style={{...styles.row, alignItems:'center'}}>
+                        <View style={{ ...styles.row, alignItems: 'center' }}>
                             <Text style={styles.text}>Share</Text>
-                            <View style={{...styles.row, paddingVertical: 10, alignItems:'center'}}>
+                            <View style={{ ...styles.row, paddingVertical: 10, alignItems: 'center' }}>
                                 {
-                                    Array.from(String(routeParams['scope']).split(',')).map((e, id)=><Text style={styles.textScope} key={id}>{e}</Text>)
+                                    Array.from(String(routeParams['scope']).split(',')).map((e, id) => <Text style={styles.textScope} key={id}>{e}</Text>)
                                 }
                             </View>
                             <Text style={styles.text}>With</Text>
                             <View style={styles.card}>
-                                <Image source={orgData['microsoft'].logo} style={{marginRight: 8, height: 40, width: 40}} contentFit="cover"/>
-                                <View style={{display:'flex', flexDirection: 'column', justifyContent: 'space-between', width: '75%'}}>
+                                <Image source={orgData['microsoft'].logo} style={{ marginRight: 8, height: 40, width: 40 }} contentFit="cover" />
+                                <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '75%' }}>
                                     <Text style={styles.text}>{orgData['microsoft'].name}</Text>
                                     <Text style={styles.textSmall}>{routeParams['redirect_uri']}</Text>
                                 </View>
-                                <View style={{display:'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: 40}}>
+                                <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: 40 }}>
                                     <MaterialIcons name="verified" size={24} color={designTokens.colors.text.disabled} />
                                 </View>
                             </View>
                         </View>
 
-                        <View style={{...styles.row, flexDirection: 'column', alignItems: 'center'}}>
-                            <SwipeButton 
+                        <View style={{ ...styles.row, flexDirection: 'column', alignItems: 'center' }}>
+                            <SwipeButton
                                 shouldResetAfterSuccess
-                                title="Swipe to Approve" 
-                                containerStyles={{width: '100%'}} 
-                                onSwipeSuccess={checkProof} 
-                                railBackgroundColor={designTokens.colors.background.level1} 
-                                railBorderColor={designTokens.colors.background.level3} 
+                                title="Swipe to Approve"
+                                containerStyles={{ width: '100%' }}
+                                onSwipeSuccess={checkProof}
+                                railBackgroundColor={designTokens.colors.background.level1}
+                                railBorderColor={designTokens.colors.background.level3}
                                 thumbIconBorderColor={designTokens.colors.background.level2}
-                                railFillBackgroundColor={designTokens.colors.background.level3+'BB'}
+                                railFillBackgroundColor={designTokens.colors.background.level3 + 'BB'}
                                 // @ts-expect-error shut up ts.
                                 thumbIconComponent={icon}
                                 titleColor={designTokens.colors.text.primary}
@@ -158,13 +159,13 @@ const Prove = ({}) => {
                         </View>
                     </>
                 ) : (
-                    <View style={{...styles.row, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                        <ActivityIndicator size="small" style={{marginRight: 10}} />
+                    <View style={{ ...styles.row, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                        <ActivityIndicator size="small" style={{ marginRight: 10 }} />
                         <Text style={styles.textSmall}>Checking Request</Text>
                     </View>
                 ) : (
                     <Text style={styles.textSmall}>Getting Data</Text>
-                ) 
+                )
             }
         </SafeAreaView>
     )
@@ -172,14 +173,14 @@ const Prove = ({}) => {
 
 const styles = StyleSheet.create({
     container: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'space-around',
-      backgroundColor: designTokens.colors.background.level2,
-      minHeight: '100%',
-      width: '100%',
-      paddingHorizontal: 20
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        backgroundColor: designTokens.colors.background.level2,
+        minHeight: '100%',
+        width: '100%',
+        paddingHorizontal: 20
     },
     card: {
         borderColor: designTokens.colors.background.level1,

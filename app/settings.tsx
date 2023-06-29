@@ -1,26 +1,27 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Pressable, Switch } from 'react-native';
-import { useAccountStore } from '../stores/accountStore';
-import designTokens from '../assets/designTokens.json';
-import { useSettingsStore } from '../stores/settings';
-import { AntDesign, Feather, FontAwesome5 } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import * as Application from 'expo-application';
 import * as Clipboard from 'expo-clipboard';
-import Toast from 'react-native-root-toast';
 import * as Device from 'expo-device';
+import { StyleSheet, Switch, Text, View } from 'react-native';
+import Toast from 'react-native-root-toast';
+
+import designTokens from '../assets/designTokens.json';
+import { useAccountStore } from '../stores/accountStore';
+import { useSettingsStore } from '../stores/settings';
+
 
 const Settings = () => {
 
     const { basePubKey } = useAccountStore();
     const { shakeToCancel, toggleShakeToCancel } = useSettingsStore();
 
-    async function copy(data: string){
+    async function copy(data: string) {
         await Clipboard.setStringAsync(data);
 
         Toast.show('Copied', {
             duration: Toast.durations.LONG,
         });
-          
+
     }
 
     return (
@@ -30,7 +31,7 @@ const Settings = () => {
             <View style={styles?.settingsSection}>
                 <View style={styles.settingsRow}>
 
-                    <View style={{display: 'flex', flexDirection: 'row', alignItems:'center'}}>
+                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.icon}>
                             <AntDesign name="shake" size={18} color={designTokens.colors.text.primary} />
                         </View>
@@ -38,32 +39,32 @@ const Settings = () => {
                             Shake to Cancel
                         </Text>
                     </View>
-                    
+
                     <Switch
                         onValueChange={toggleShakeToCancel}
                         value={shakeToCancel}
                     />
-                    
+
                 </View>
-                
+
             </View>
 
             <Text style={styles.settingsHeading}>Account Info</Text>
             <View style={styles?.settingsSection}>
                 <View style={styles.settingsRow}>
-                    <View style={{display: 'flex', flexDirection: 'row', alignItems:'center'}}>
+                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.icon}>
-                            <FontAwesome5 name="ethereum" size={18} color={designTokens.colors.text.primary}/>
+                            <FontAwesome5 name="ethereum" size={18} color={designTokens.colors.text.primary} />
                         </View>
                         <Text style={styles.settingTitle}>
                             Address
                         </Text>
                     </View>
 
-                    <Text style={styles.settingValue} onPress={async ()=>{
+                    <Text style={styles.settingValue} onPress={async () => {
                         await copy(basePubKey);
                     }}>
-                        {basePubKey.slice(0, 6)}...{basePubKey.slice(basePubKey.length-4, basePubKey.length)}
+                        {basePubKey.slice(0, 6)}...{basePubKey.slice(basePubKey.length - 4, basePubKey.length)}
                     </Text>
                 </View>
             </View>
@@ -75,7 +76,7 @@ const Settings = () => {
                         Version
                     </Text>
 
-                    <Text style={styles.settingValue} onPress={async ()=>{
+                    <Text style={styles.settingValue} onPress={async () => {
                         await copy(Application.nativeBuildVersion);
                     }}>v{Application.nativeBuildVersion}</Text>
                 </View>
@@ -84,7 +85,7 @@ const Settings = () => {
                         Device
                     </Text>
 
-                    <Text style={styles.settingValue} onPress={async ()=>{
+                    <Text style={styles.settingValue} onPress={async () => {
                         await copy(`${Device.manufacturer}: ${Device.modelName}`);
                     }}>{Device.manufacturer}: {Device.modelName}</Text>
                 </View>
@@ -95,14 +96,14 @@ const Settings = () => {
 
 const styles = StyleSheet.create({
     container: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      backgroundColor: designTokens.colors.background.level1,
-      minHeight: '100%',
-      width: '100%',
-      paddingVertical: 10,
-      paddingHorizontal: 15
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        backgroundColor: designTokens.colors.background.level1,
+        minHeight: '100%',
+        width: '100%',
+        paddingVertical: 10,
+        paddingHorizontal: 15
     },
     settingsHeading: {
         color: designTokens.colors.text.secondary,
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between',
         height: 45,
-        alignItems:'center',
+        alignItems: 'center',
         borderBottomRadius: 10,
         paddingHorizontal: 25,
     },
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
     },
     borderBottom: {
         borderBottomWidth: 1,
-        borderBottomColor: designTokens.colors.text.secondary+'44',
+        borderBottomColor: designTokens.colors.text.secondary + '44',
     },
     icon: {
         color: designTokens.colors.text.primary,

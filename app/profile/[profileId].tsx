@@ -1,14 +1,13 @@
 import { Stack, useSearchParams } from 'expo-router';
-import React from 'react';
-import {View, Text} from 'react-native';
+import { Text, View } from 'react-native';
 
 const Profile = () => {
 
-    const {profileId} = useSearchParams();
+    const { profileId } = useSearchParams();
 
     return (
         <View>
-            <Stack.Screen options={{headerTitle:`Details of ${profileId}`}} />
+            <Stack.Screen options={{ headerTitle: `Details of ${profileId}` }} />
             <Text>Profile #{profileId}</Text>
         </View>
     )

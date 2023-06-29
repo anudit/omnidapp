@@ -1,34 +1,34 @@
-import { useEffect, useState } from 'react';
-import { Stack, SplashScreen } from 'expo-router';
-import { useFonts, DMSans_400Regular, DMSans_500Medium, DMSans_700Bold } from '@expo-google-fonts/dm-sans';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { RootSiblingParent } from 'react-native-root-siblings';
+import { DMSans_400Regular, DMSans_500Medium, DMSans_700Bold, useFonts } from '@expo-google-fonts/dm-sans';
 import * as Device from 'expo-device';
+import { SplashScreen, Stack } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { RootSiblingParent } from 'react-native-root-siblings';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // ethers
-import "react-native-get-random-values"
-import "@ethersproject/shims"
+import "@ethersproject/shims";
+import "react-native-get-random-values";
 
-import designTokens from '../assets/designTokens.json';
-import { useSettingsStore } from '../stores/settings';
-import { useAccountStore } from '../stores/accountStore';
 import InsecureDevice from './insecureDevice';
+import designTokens from '../assets/designTokens.json';
+import { useAccountStore } from '../stores/accountStore';
+import { useSettingsStore } from '../stores/settings';
 
 const StackLayout = () => {
 
-    let [fontsLoaded] = useFonts({
+    const [fontsLoaded] = useFonts({
         DMSans_400Regular, DMSans_500Medium, DMSans_700Bold
     });
 
     const [integrityCheck, setIntergrityCheck] = useState<null | boolean>(null);
 
-    const {hasHydrated} = useSettingsStore();
-    const {hasHydrated: hasHydratedAccounts} = useAccountStore();
+    const { hasHydrated } = useSettingsStore();
+    const { hasHydrated: hasHydratedAccounts } = useAccountStore();
 
-    useEffect(()=>{
-        async function runIntegrityChecks(){
-            if (integrityCheck === null){
-                let isRooted = await Device.isRootedExperimentalAsync();
+    useEffect(() => {
+        async function runIntegrityChecks() {
+            if (integrityCheck === null) {
+                const isRooted = await Device.isRootedExperimentalAsync();
                 let isDevice = Device.isDevice;
                 if (__DEV__) isDevice = true
                 setIntergrityCheck(!isRooted && isDevice)
@@ -38,14 +38,14 @@ const StackLayout = () => {
     }, [])
 
     if (fontsLoaded && hasHydrated && hasHydratedAccounts && integrityCheck != null) {
-        if (integrityCheck === true){
+        if (integrityCheck === true) {
             return (
                 <RootSiblingParent>
                     <SafeAreaProvider>
                         <Stack>
-                            <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                             <Stack.Screen name="approve" options={{
-                                headerShown: true, 
+                                headerShown: true,
                                 presentation: 'modal',
                                 headerTintColor: designTokens.colors.text.primary,
                                 headerTitle: 'Approve Request',
@@ -53,7 +53,7 @@ const StackLayout = () => {
                                 headerStyle: {
                                     backgroundColor: designTokens.colors.background.level3
                                 },
-                            }}/>
+                            }} />
                             <Stack.Screen name="settings" options={{
                                 headerShown: true,
                                 headerTintColor: designTokens.colors.text.primary,
@@ -62,10 +62,10 @@ const StackLayout = () => {
                                 headerStyle: {
                                     backgroundColor: designTokens.colors.background.level3
                                 },
-                            }}/>
+                            }} />
                             <Stack.Screen name="insecureDevice" options={{
                                 headerShown: false
-                            }}/>
+                            }} />
                         </Stack>
                     </SafeAreaProvider>
                 </RootSiblingParent>
@@ -78,9 +78,9 @@ const StackLayout = () => {
         }
     }
     else {
-        return  <SplashScreen/>;
+        return <SplashScreen />;
     }
 
-    
+
 }
 export default StackLayout;
