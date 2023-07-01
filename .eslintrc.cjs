@@ -4,6 +4,7 @@ module.exports = {
     "universe/shared/typescript-analysis",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react/jsx-runtime"
   ],
   rules: {
     "prettier/prettier": "off",

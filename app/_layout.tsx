@@ -9,10 +9,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import "@ethersproject/shims";
 import "react-native-get-random-values";
 
-import InsecureDevice from './insecureDevice';
 import designTokens from '../assets/designTokens.json';
 import { useAccountStore } from '../stores/accountStore';
 import { useSettingsStore } from '../stores/settings';
+import InsecureDevice from './insecureDevice';
 
 const StackLayout = () => {
 
@@ -54,15 +54,7 @@ const StackLayout = () => {
                                     backgroundColor: designTokens.colors.background.level3
                                 },
                             }} />
-                            <Stack.Screen name="settings" options={{
-                                headerShown: true,
-                                headerTintColor: designTokens.colors.text.primary,
-                                headerTitle: 'Settings',
-                                headerBlurEffect: 'light',
-                                headerStyle: {
-                                    backgroundColor: designTokens.colors.background.level3
-                                },
-                            }} />
+                            <Stack.Screen name="settings" options={{ headerShown: false }} />
                             <Stack.Screen name="insecureDevice" options={{
                                 headerShown: false
                             }} />

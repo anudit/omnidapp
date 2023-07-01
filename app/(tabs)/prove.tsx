@@ -2,14 +2,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Camera, FlashMode } from 'expo-camera';
 import * as Linking from 'expo-linking';
-import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 import designTokens from '../../assets/designTokens.json';
 import { QrFrameIcon } from '../../components/icons';
-
-
 
 export default function Prove() {
 
@@ -18,10 +16,21 @@ export default function Prove() {
   const { height } = useWindowDimensions();
   const width = Math.round((height * 9) / 16);
   const router = useRouter();
+  const [mountCamera, setMountCamera] = useState(false);
 
   useEffect(() => {
     requestPermission();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setMountCamera(true);
+
+      return () => {
+        setMountCamera(false);
+      };
+    }, [])
+  );
 
   const handleQrScan = async ({ type, data }) => {
 
@@ -46,7 +55,7 @@ export default function Prove() {
 
   return (
     <View style={[StyleSheet.absoluteFillObject, styles.container]}>
-      <Camera
+      {mountCamera && (<Camera
         ratio="16:9"
         barCodeScannerSettings={{
           barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
@@ -75,7 +84,7 @@ export default function Prove() {
             />}
           </Pressable>
         </View>
-      </Camera>
+      </Camera>)}
     </View>
   );
 

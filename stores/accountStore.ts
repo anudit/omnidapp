@@ -1,3 +1,4 @@
+import { Identity } from '@semaphore-protocol/identity';
 import { ethers } from 'ethers';
 import { deleteItemAsync, getItemAsync, setItemAsync } from 'expo-secure-store';
 import { create } from 'zustand';
@@ -19,33 +20,50 @@ export interface AccountStoreType {
   basePrivKey: null | string,
   basePubKey: null | string,
   hasHydrated: boolean,
+  zkIdData: null | string[],
   setHasHydrated: (state: boolean) => void
   setupBase: () => void
+  getZkId: () => Identity
 }
 
-const store: (set, get) => AccountStoreType = (set) => ({
+const store: (set, get) => AccountStoreType = (set, get) => ({
 
   basePrivKey: null,
   basePubKey: null,
+  zkIdData: null,
   hasHydrated: false,
+
   setHasHydrated: (state) => {
-    set((curState) => {
+    set(async (curState) => {
       if (curState.basePrivKey === null) {
-        curState.setupBase();
+        await curState.setupBase();
       }
       return {
         hasHydrated: state
       }
     });
   },
-  setupBase: () => {
-    console.log('setupbase')
+
+  setupBase: async () => {
+    console.log('setupbase');
+
     const wallet = ethers.Wallet.createRandom();
+    const message = `Setting up my Omnid with ${wallet.address}`;
+    const sig = await wallet.signMessage(message);
+    const identity = new Identity(sig);
+
     set({
       basePrivKey: wallet.privateKey,
       basePubKey: wallet.address,
+      zkIdData: [`0x${identity.trapdoor.toString(16)}`, `0x${identity.nullifier.toString(16)}`]
     });
+
+  },
+
+  getZkId: () => {
+    return new Identity(JSON.stringify(get().zkIdData))
   }
+
 })
 
 export const useAccountStore = create(

@@ -2,27 +2,30 @@ import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import * as Application from 'expo-application';
 import * as Clipboard from 'expo-clipboard';
 import * as Device from 'expo-device';
-import { StyleSheet, Switch, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 import Toast from 'react-native-root-toast';
 
-import designTokens from '../assets/designTokens.json';
-import { useAccountStore } from '../stores/accountStore';
-import { useSettingsStore } from '../stores/settings';
+import designTokens from '../../assets/designTokens.json';
+import { HiddenIcon } from '../../components/icons';
+import { useAccountStore } from '../../stores/accountStore';
+import { useSettingsStore } from '../../stores/settings';
 
+export const copy = async (data: string) => {
+    await Clipboard.setStringAsync(data);
+
+    Toast.show('Copied', {
+        duration: Toast.durations.LONG,
+    });
+
+}
 
 const Settings = () => {
 
-    const { basePubKey } = useAccountStore();
+    const { basePubKey, getZkId, zkIdData } = useAccountStore();
     const { shakeToCancel, toggleShakeToCancel } = useSettingsStore();
+    const router = useRouter();
 
-    async function copy(data: string) {
-        await Clipboard.setStringAsync(data);
-
-        Toast.show('Copied', {
-            duration: Toast.durations.LONG,
-        });
-
-    }
 
     return (
         <View style={styles.container}>
@@ -51,7 +54,7 @@ const Settings = () => {
 
             <Text style={styles.settingsHeading}>Account Info</Text>
             <View style={styles?.settingsSection}>
-                <View style={styles.settingsRow}>
+                <View style={[styles.settingsRow, styles.borderBottom]}>
                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.icon}>
                             <FontAwesome5 name="ethereum" size={18} color={designTokens.colors.text.primary} />
@@ -67,11 +70,31 @@ const Settings = () => {
                         {basePubKey.slice(0, 6)}...{basePubKey.slice(basePubKey.length - 4, basePubKey.length)}
                     </Text>
                 </View>
+
+                <View style={styles.settingsRow}>
+                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={[styles.icon, styles.iconBrown]}>
+                            <HiddenIcon height={18} fill={designTokens.colors.text.primary} />
+                        </View>
+                        <Text style={styles.settingTitle}>
+                            ZK Id
+                        </Text>
+                    </View>
+
+                    <Pressable onPress={() => {
+                        router.push('/settings/zk');
+                    }}>
+                        <View style={styles.settingValue} >
+                            <Text style={{ fontSize: 18, color: designTokens.colors.text.secondary, marginRight: 6 }}  >Do not Share</Text>
+                            <AntDesign name="right" size={15} style={styles.settingValueIcon} />
+                        </View>
+                    </Pressable>
+                </View>
             </View>
 
             <Text style={styles.settingsHeading}>App Info</Text>
             <View style={styles?.settingsSection}>
-                <View style={[styles.settingsRow, styles.borderBottom]}>
+                <View style={styles.settingsRow}>
                     <Text style={styles.settingTitle}>
                         Version
                     </Text>
@@ -80,6 +103,9 @@ const Settings = () => {
                         await copy(Application.nativeBuildVersion);
                     }}>v{Application.nativeBuildVersion}</Text>
                 </View>
+
+                <View style={styles.seperator} />
+
                 <View style={styles.settingsRow}>
                     <Text style={styles.settingTitle}>
                         Device
@@ -94,7 +120,7 @@ const Settings = () => {
     )
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -110,6 +136,12 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
         fontSize: 12,
         marginTop: 12,
+        paddingLeft: 25
+    },
+    settingsBottomDetails: {
+        color: designTokens.colors.text.secondary,
+        fontSize: 12,
+        marginTop: 4,
         paddingLeft: 25
     },
     settingsSection: {
@@ -135,12 +167,23 @@ const styles = StyleSheet.create({
         color: designTokens.colors.text.primary,
     },
     settingValue: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
         fontSize: 18,
+        color: designTokens.colors.text.secondary,
+    },
+    settingValueIcon: {
         color: designTokens.colors.text.secondary,
     },
     borderBottom: {
         borderBottomWidth: 1,
         borderBottomColor: designTokens.colors.text.secondary + '44',
+    },
+    seperator: {
+        borderBottomWidth: 1,
+        borderBottomColor: designTokens.colors.text.secondary + '22',
+        marginStart: 20
     },
     icon: {
         color: designTokens.colors.text.primary,
@@ -152,6 +195,9 @@ const styles = StyleSheet.create({
         marginRight: 16,
         height: 30,
         width: 30
+    },
+    iconBrown: {
+        backgroundColor: designTokens.colors.brown[700],
     }
 });
 
