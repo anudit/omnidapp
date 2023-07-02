@@ -1,5 +1,5 @@
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { Tabs } from "expo-router/tabs";
 import { StyleSheet } from "react-native";
 
 import designTokens from "../../assets/designTokens.json";
@@ -14,7 +14,7 @@ const TabBar = () => {
                 tabBarStyle: styles.tabBarStyle,
                 tabBarShowLabel: false,
                 tabBarIcon: ({ size, color, focused }) => {
-                    if (route.name === "home")
+                    if (route.name === "index")
                         return focused ? (
                             <Ionicons name="home" size={size} color={color} />
                         ) : (
@@ -42,7 +42,7 @@ const TabBar = () => {
             })}
         >
             <Tabs.Screen
-                name="home"
+                name="index"
                 options={{
                     tabBarLabel: "My Omnid",
                 }}

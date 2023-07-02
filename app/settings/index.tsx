@@ -2,7 +2,7 @@ import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import * as Application from 'expo-application';
 import * as Clipboard from 'expo-clipboard';
 import * as Device from 'expo-device';
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 import Toast from 'react-native-root-toast';
 
@@ -24,7 +24,6 @@ const Settings = () => {
 
     const { basePubKey, getZkId, zkIdData } = useAccountStore();
     const { shakeToCancel, toggleShakeToCancel } = useSettingsStore();
-    const router = useRouter();
 
 
     return (
