@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -6,6 +6,8 @@ import designTokens from '../../assets/designTokens.json';
 import { OmnidIcon } from '../../components/icons';
 
 const List = () => {
+
+    const router = useRouter()
 
     return (
         <SafeAreaView style={styles.container}>

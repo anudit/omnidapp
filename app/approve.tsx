@@ -2,7 +2,7 @@ import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { ethers } from 'ethers';
 import { Image } from 'expo-image';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { Link, router, useLocalSearchParams } from 'expo-router';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { Accelerometer } from 'expo-sensors';
 import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
@@ -33,6 +33,7 @@ const Prove = () => {
     const routeParams = useLocalSearchParams();
     const [verifiedParams, setVerifiedParams] = useState<null | boolean>(null);
     const { shakeToCancel } = useSettingsStore();
+    const router = useRouter();
 
     const icon = useMemo(
         () => () => <AntDesign name="right" size={24} color="black" />,

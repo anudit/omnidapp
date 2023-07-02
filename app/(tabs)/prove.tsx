@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Camera, FlashMode } from 'expo-camera';
 import * as Linking from 'expo-linking';
-import { router, useFocusEffect } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
@@ -15,6 +15,7 @@ export default function Prove() {
   const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off)
   const { height } = useWindowDimensions();
   const width = Math.round((height * 9) / 16);
+  const router = useRouter();
   const [mountCamera, setMountCamera] = useState(false);
 
   useEffect(() => {
