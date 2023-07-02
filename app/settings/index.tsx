@@ -1,4 +1,4 @@
-import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import { AntDesign, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import * as Application from 'expo-application';
 import * as Clipboard from 'expo-clipboard';
 import * as Device from 'expo-device';
@@ -22,8 +22,8 @@ export const copy = async (data: string) => {
 
 const Settings = () => {
 
-    const { basePubKey, getZkId, zkIdData } = useAccountStore();
-    const { shakeToCancel, toggleShakeToCancel } = useSettingsStore();
+    const { basePubKey } = useAccountStore();
+    const { shakeToCancel, toggleShakeToCancel, toggleDeveloperMode, developerMode } = useSettingsStore();
     const router = useRouter();
 
 
@@ -50,11 +50,31 @@ const Settings = () => {
 
                 </View>
 
+                <View style={styles.seperator2} />
+
+                <View style={styles.settingsRow}>
+
+                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={[styles.icon, styles.iconBlue]}>
+                            <Entypo name="tools" size={18} color={designTokens.colors.text.primary} />
+                        </View>
+                        <Text style={styles.settingTitle}>
+                            Developer Mode
+                        </Text>
+                    </View>
+
+                    <Switch
+                        onValueChange={toggleDeveloperMode}
+                        value={developerMode}
+                    />
+
+                </View>
+
             </View>
 
             <Text style={styles.settingsHeading}>Account Info</Text>
             <View style={styles?.settingsSection}>
-                <View style={[styles.settingsRow, styles.borderBottom]}>
+                <View style={styles.settingsRow}>
                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                         <View style={styles.icon}>
                             <FontAwesome5 name="ethereum" size={18} color={designTokens.colors.text.primary} />
@@ -70,6 +90,8 @@ const Settings = () => {
                         {basePubKey.slice(0, 6)}...{basePubKey.slice(basePubKey.length - 4, basePubKey.length)}
                     </Text>
                 </View>
+
+                <View style={styles.seperator2} />
 
                 <View style={styles.settingsRow}>
                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -185,6 +207,11 @@ export const styles = StyleSheet.create({
         borderBottomColor: designTokens.colors.text.secondary + '22',
         marginStart: 20
     },
+    seperator2: {
+        borderBottomWidth: 1,
+        borderBottomColor: designTokens.colors.text.secondary + '22',
+        marginStart: 70
+    },
     icon: {
         color: designTokens.colors.text.primary,
         backgroundColor: designTokens.colors.teal[700],
@@ -198,6 +225,9 @@ export const styles = StyleSheet.create({
     },
     iconBrown: {
         backgroundColor: designTokens.colors.brown[700],
+    },
+    iconBlue: {
+        backgroundColor: '#0096FF',
     }
 });
 

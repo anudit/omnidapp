@@ -33,7 +33,7 @@ const List = () => {
                 <View style={styles.seperator} />
 
                 <View style={styles.settingsRow}>
-                    <Text style={{ ...styles.settingValue, color: '#0055ff' }}>Check the Chain</Text>
+                    <Text style={{ ...styles.settingValue, color: '#0096FF' }}>Check the Chain</Text>
                 </View>
 
                 <View style={styles.seperator} />
