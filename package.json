@@ -13,7 +13,7 @@
     "@ethersproject/shims": "^5.7.0",
     "@expo-google-fonts/dm-sans": "^0.2.3",
     "@expo/vector-icons": "^13.0.0",
-    "@react-native-async-storage/async-storage": "1.17.11",
+    "@react-native-async-storage/async-storage": "1.18.2",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@semaphore-protocol/data": "^3.10.1",
     "@semaphore-protocol/group": "^3.10.1",
