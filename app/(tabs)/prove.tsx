@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Camera, FlashMode } from 'expo-camera';
 import * as Linking from 'expo-linking';
 import { useFocusEffect, useRouter } from 'expo-router';
@@ -32,7 +31,7 @@ export default function Prove() {
     }, [])
   );
 
-  const handleQrScan = async ({ type, data }) => {
+  const handleQrScan = async ({ type, data }: { type: string, data: string }) => {
 
     try {
       const url = Linking.parse(data);
@@ -58,7 +57,7 @@ export default function Prove() {
       {mountCamera && (<Camera
         ratio="16:9"
         barCodeScannerSettings={{
-          barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+          barCodeTypes: ['qr'],
           interval: 100,
         }}
         onBarCodeScanned={handleQrScan}

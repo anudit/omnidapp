@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { create } from 'zustand';
+import { StoreApi, create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 export interface StoreType {
@@ -11,7 +11,7 @@ export interface StoreType {
   setHasHydrated: (state: boolean) => void
 }
 
-export const store: (set, get) => StoreType = (set) => ({
+export const store: (set: StoreApi<StoreType>['setState'], get: StoreApi<StoreType>['getState']) => StoreType = (set) => ({
 
   shakeToCancel: true,
   hasHydrated: false,
@@ -31,7 +31,7 @@ export const useSettingsStore = create(
     name: "omnid-store",
     version: 1,
     onRehydrateStorage: () => (state) => {
-      state.setHasHydrated(true)
+      state?.setHasHydrated(true)
     }
   })
 );

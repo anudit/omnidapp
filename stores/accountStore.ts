@@ -3,7 +3,7 @@ import { deleteItemAsync, getItemAsync, setItemAsync } from 'expo-secure-store';
 import { WalletClient, createWalletClient, fallback, http } from 'viem';
 import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
 import { arbitrum, arbitrumGoerli } from 'viem/chains';
-import { create } from 'zustand';
+import { StoreApi, create } from 'zustand';
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
 const customStorage: StateStorage = {
@@ -29,7 +29,7 @@ export interface AccountStoreType {
   getSigner: (isDev: boolean) => WalletClient
 }
 
-const store: (set, get) => AccountStoreType = (set, get) => ({
+const store: (set: StoreApi<AccountStoreType>['setState'], get) => AccountStoreType = (set, get) => ({
 
   basePrivKey: null,
   basePubKey: null,
