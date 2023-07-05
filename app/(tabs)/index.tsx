@@ -1,11 +1,15 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { publicActions } from 'viem';
 import designTokens from '../../assets/designTokens.json';
 import { OmnidIcon } from '../../components/icons';
+import { useAccountStore } from '../../stores/accountStore';
+import { useSettingsStore } from '../../stores/settings';
+
 
 const mockData = [{
   title: '> 18',
@@ -88,6 +92,7 @@ const Home = () => {
   const [filterValue, setFilterValue] = useState<undefined | string>(undefined);
   const insets = useSafeAreaInsets();
 
+
   return (
     <View style={{ ...styles.container, paddingTop: Math.max(insets.top, 40) }} >
       <FlatList
@@ -118,6 +123,8 @@ const Home = () => {
               value={filterValue}
               onChangeText={text => setFilterValue(text)}
             />
+            <BlockNumber />
+
           </>
         }
         renderItem={({ item }) => (
@@ -131,6 +138,34 @@ const Home = () => {
         )}
         keyExtractor={item => String(item.id)}
       />
+    </View>
+  )
+}
+
+const BlockNumber = () => {
+  const [blockNumber, setBlockNumber] = useState<BigInt>();
+
+  const { getSigner } = useAccountStore();
+  const { developerMode } = useSettingsStore();
+
+  useEffect(() => {
+
+    setInterval(() => {
+      getSigner(developerMode).extend(publicActions).getBlockNumber().then(setBlockNumber)
+    }, 1000);
+
+    // return clearInterval(blockUpdater);
+  }, [developerMode])
+
+  return (
+    <View style={{
+      ...styles.card,
+      backgroundColor: cardColors[0],
+      width: '99%',
+      marginBottom: 8
+    }} >
+      <Text style={styles.cardHeading}>{blockNumber?.toLocaleString() || 0}</Text>
+      <Text style={styles.cardSubHeading}>{getSigner(developerMode).chain?.name}</Text>
     </View>
   )
 }

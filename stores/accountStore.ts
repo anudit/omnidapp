@@ -1,6 +1,8 @@
 import { Identity } from '@semaphore-protocol/identity';
-import { ethers } from 'ethers';
 import { deleteItemAsync, getItemAsync, setItemAsync } from 'expo-secure-store';
+import { WalletClient, createWalletClient, fallback, http } from 'viem';
+import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
+import { arbitrum, arbitrumGoerli } from 'viem/chains';
 import { create } from 'zustand';
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
@@ -24,6 +26,7 @@ export interface AccountStoreType {
   setHasHydrated: (state: boolean) => void
   setupBase: () => void
   getZkId: () => Identity
+  getSigner: (isDev: boolean) => WalletClient
 }
 
 const store: (set, get) => AccountStoreType = (set, get) => ({
@@ -34,26 +37,31 @@ const store: (set, get) => AccountStoreType = (set, get) => ({
   hasHydrated: false,
 
   setHasHydrated: (state) => {
-    set(async (curState) => {
-      if (curState.basePrivKey === null) {
-        await curState.setupBase();
-      }
-      return {
+    if (get().basePrivKey === null) {
+      get().setupBase().then(() => {
+        return set({
+          hasHydrated: state
+        });
+      });
+    }
+    else {
+      return set({
         hasHydrated: state
-      }
-    });
+      });
+    }
   },
 
   setupBase: async () => {
     console.log('setupbase');
 
-    const wallet = ethers.Wallet.createRandom();
+    const newPk = generatePrivateKey();
+    const wallet = privateKeyToAccount(newPk)
     const message = `Setting up my Omnid with ${wallet.address}`;
-    const sig = await wallet.signMessage(message);
+    const sig = await wallet.signMessage({ message });
     const identity = new Identity(sig);
 
     set({
-      basePrivKey: wallet.privateKey,
+      basePrivKey: newPk,
       basePubKey: wallet.address,
       zkIdData: [`0x${identity.trapdoor.toString(16)}`, `0x${identity.nullifier.toString(16)}`]
     });
@@ -62,6 +70,30 @@ const store: (set, get) => AccountStoreType = (set, get) => ({
 
   getZkId: () => {
     return new Identity(JSON.stringify(get().zkIdData))
+  },
+
+  getSigner: (isDev = false) => {
+    const arbitrumClient = createWalletClient({
+      account: privateKeyToAccount(get().basePrivKey),
+      chain: arbitrum,
+      transport: fallback([
+        http('https://arb1.arbitrum.io/rpc'),
+        http('https://arbitrum-one.public.blastapi.io'),
+        http('https://rpc.ankr.com/arbitrum'),
+      ])
+    })
+
+    const arbitrumGoerliClient = createWalletClient({
+      account: privateKeyToAccount(get().basePrivKey),
+      chain: arbitrumGoerli,
+      transport: fallback([
+        http('https://goerli-rollup.arbitrum.io/rpc'),
+        http('https://arb-goerli.g.alchemy.com/v2/demo'),
+        http('https://arbitrum-goerli.public.blastapi.io'),
+      ])
+    })
+
+    return isDev ? arbitrumGoerliClient : arbitrumClient;
   }
 
 })
@@ -72,7 +104,7 @@ export const useAccountStore = create(
     name: "omnid-account-store",
     version: 1,
     onRehydrateStorage: () => (state) => {
-      state.setHasHydrated(true)
+      state?.setHasHydrated(true)
     }
   })
 );

@@ -5,10 +5,6 @@ import { useEffect, useState } from 'react';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-// ethers
-import "@ethersproject/shims";
-import "react-native-get-random-values";
-
 import designTokens from '../assets/designTokens.json';
 import { useAccountStore } from '../stores/accountStore';
 import { useSettingsStore } from '../stores/settings';

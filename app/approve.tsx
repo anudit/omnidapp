@@ -1,5 +1,4 @@
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-import { ethers } from 'ethers';
 import { Image } from 'expo-image';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
@@ -10,6 +9,7 @@ import Toast from 'react-native-root-toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SwipeButton from 'rn-swipe-button';
 
+import { verifyMessage } from 'viem';
 import designTokens from '../assets/designTokens.json';
 import { useSettingsStore } from '../stores/settings';
 
@@ -18,8 +18,8 @@ type omnidAuthParams = {
     response_type: 'code',
     redirect_uri: string,
     state: string,
-    issuerSig: string,
-    issuer: string
+    issuerSig: `0x${string}`,
+    issuer: `0x${string}`
 }
 
 const orgData = {
@@ -44,11 +44,11 @@ const Prove = () => {
         if (routeParams && Boolean(verifiedParams) === false) {
             try {
                 const { issuerSig, ...objWithoutSig } = routeParams as omnidAuthParams;
-                const res = ethers.verifyMessage(
-                    JSON.stringify(objWithoutSig),
-                    issuerSig
-                );
-                setVerifiedParams(res === objWithoutSig.issuer);
+                verifyMessage({
+                    address: objWithoutSig.issuer,
+                    message: JSON.stringify(objWithoutSig),
+                    signature: issuerSig
+                }).then(setVerifiedParams);
 
             } catch (error) {
                 console.error('verif error', error, routeParams)
@@ -155,7 +155,7 @@ const Prove = () => {
                                 thumbIconComponent={icon}
                                 titleColor={designTokens.colors.text.primary}
                             />
-                            <Link href="/home" style={styles.textCancel}>Cancel</Link>
+                            <Link href="/" style={styles.textCancel}>Cancel</Link>
                         </View>
                     </>
                 ) : (
