@@ -20,7 +20,7 @@
     "@semaphore-protocol/proof": "^3.10.1",
     "@types/react": "^18.2.14",
     "base-64": "^1.0.0",
-    "expo": "^48.0.19",
+    "expo": "^49.0.0",
     "expo-application": "~5.1.1",
     "expo-build-properties": "~0.6.0",
     "expo-camera": "~13.2.1",
