@@ -1,9 +1,9 @@
-import { Stack, useSearchParams } from 'expo-router';
+import { Stack, useGlobalSearchParams } from 'expo-router';
 import { Text, View } from 'react-native';
 
 const Profile = () => {
 
-    const { profileId } = useSearchParams();
+    const { profileId } = useGlobalSearchParams();
 
     return (
         <View>

@@ -1,6 +1,9 @@
+import { SemaphoreSubgraph } from "@semaphore-protocol/data";
+import { Group } from '@semaphore-protocol/group';
 import { Identity } from '@semaphore-protocol/identity';
+import { MerkleProof } from "@zk-kit/incremental-merkle-tree";
 import { deleteItemAsync, getItemAsync, setItemAsync } from 'expo-secure-store';
-import { WalletClient, createWalletClient, fallback, http } from 'viem';
+import { WalletClient, createWalletClient, fallback, http, keccak256, toHex } from 'viem';
 import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
 import { arbitrum, arbitrumGoerli } from 'viem/chains';
 import { StoreApi, create } from 'zustand';
@@ -18,18 +21,27 @@ const customStorage: StateStorage = {
   },
 };
 
+type ProofParams = {
+  commitment: string,
+  signalHash: string,
+  extNullifier: string,
+  merkleProof: MerkleProof,
+}
+
 export interface AccountStoreType {
   basePrivKey: null | string,
   basePubKey: null | string,
   hasHydrated: boolean,
   zkIdData: null | string[],
   setHasHydrated: (state: boolean) => void
-  setupBase: () => void
+  setupBase: () => Promise<void>
   getZkId: () => Identity
-  getSigner: (isDev: boolean) => WalletClient
+  getSigner: (isDev: boolean) => WalletClient,
+  getSignInParams: () => Promise<ProofParams>
+  getProofParams: (groupId: number, signInSignal: string) => Promise<ProofParams>
 }
 
-const store: (set: StoreApi<AccountStoreType>['setState'], get) => AccountStoreType = (set, get) => ({
+const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<AccountStoreType>['getState']) => AccountStoreType = (set, get) => ({
 
   basePrivKey: null,
   basePubKey: null,
@@ -73,8 +85,9 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get) => AccountStoreT
   },
 
   getSigner: (isDev = false) => {
+    const pk = get()?.basePrivKey as `0x${string}`;
     const arbitrumClient = createWalletClient({
-      account: privateKeyToAccount(get().basePrivKey),
+      account: privateKeyToAccount(pk),
       chain: arbitrum,
       transport: fallback([
         http('https://arb1.arbitrum.io/rpc'),
@@ -84,7 +97,7 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get) => AccountStoreT
     })
 
     const arbitrumGoerliClient = createWalletClient({
-      account: privateKeyToAccount(get().basePrivKey),
+      account: privateKeyToAccount(pk),
       chain: arbitrumGoerli,
       transport: fallback([
         http('https://goerli-rollup.arbitrum.io/rpc'),
@@ -94,6 +107,45 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get) => AccountStoreT
     })
 
     return isDev ? arbitrumGoerliClient : arbitrumClient;
+  },
+
+  getSignInParams: async () => {
+    const zkid: Identity = get().getZkId();
+    const wallet = privateKeyToAccount(get()?.basePrivKey as `0x${string}`)
+
+    const signedMessage = await wallet.signMessage({ message: zkid.commitment.toString() });
+    const signedMessageHash = keccak256(signedMessage);
+
+    return await get().getProofParams(0, signedMessageHash);
+  },
+
+  getProofParams: async (groupId: number, signInSignal: string) => {
+
+    const zkid: Identity = get().getZkId();
+
+    const subgraph = new SemaphoreSubgraph(
+      "https://api.studio.thegraph.com/query/1649/groupmanager/version/latest"
+    )
+
+    const { members } = await subgraph.getGroup(groupId.toString(), { members: true });
+    const group = new Group(groupId, 20, members);
+
+    const index = group.indexOf(zkid.commitment)
+    if (index === -1) {
+      throw new Error("The identity is not part of the group")
+    }
+    const merkleProof = group.generateMerkleProof(index)
+
+    const signalHash = keccak256(toHex(signInSignal));
+    const extNullifier = BigInt(Math.floor(Math.random() * 1000))
+
+    return {
+      extNullifier: extNullifier.toString(),
+      signalHash: signalHash as string,
+      commitment: zkid.commitment.toString(),
+      merkleProof,
+    }
+
   }
 
 })

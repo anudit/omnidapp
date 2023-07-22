@@ -1,6 +1,6 @@
 import { DMSans_400Regular, DMSans_500Medium, DMSans_700Bold, useFonts } from '@expo-google-fonts/dm-sans';
 import * as Device from 'expo-device';
-import { SplashScreen, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -66,7 +66,7 @@ const StackLayout = () => {
         }
     }
     else {
-        return <SplashScreen />;
+        return null;
     }
 
 

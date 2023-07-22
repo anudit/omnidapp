@@ -57,12 +57,12 @@ const Prove = () => {
         }
     }, [routeParams])
 
-
     useEffect(() => {
+
         let accelerometerSubscription;
 
         const handleShake = () => {
-            router.push("/home")
+            router.push("/")
             Toast.show('Cancelled Request', {
                 duration: Toast.durations.SHORT,
             });

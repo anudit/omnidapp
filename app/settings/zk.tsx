@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Text, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 
 import { Link } from 'expo-router';
 import { useAccountStore } from '../../stores/accountStore';
@@ -34,12 +34,15 @@ const List = () => {
                 <View style={styles.seperator} />
 
                 <View style={styles.settingsRow}>
-                    <Text style={{ ...styles.settingValue, color: '#0096FF' }}>Check the Chain</Text>
+                    <Button
+                        title="Check the Chain"
+                    />
+                    {/* <Text style={{ ...styles.settingValue, color: '#0096FF' }}>Check the Chain</Text> */}
                 </View>
 
                 <View style={styles.seperator} />
 
-                <Link href="/">
+                <Link href={'/(tabs)'}>
                     <View style={{ ...styles.settingsRow, justifyContent: 'center' }}>
                         <MaterialCommunityIcons name="export" size={24} color={'#ff6961'} style={{ marginRight: 5 }} />
                         <Text style={{ ...styles.settingValue, color: '#ff6961' }}>Export</Text>

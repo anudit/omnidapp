@@ -23,8 +23,12 @@
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
         }
-      ]
+      ],
+      "expo-router"
     ],
+    "experiments": {
+      "typedRoutes": true
+    },
     "splash": {
       "image": "./assets/icons/omnid-frame.png",
       "backgroundColor": "#000000",

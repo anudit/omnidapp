@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import 'text-encoding-polyfill';
 const base64 = require('base-64');
+require("node-libs-react-native/globals.js");
 
 global.btoa = global.btoa || base64.encode
 global.atob = global.atob || base64.decode
@@ -30,7 +31,3 @@ const webCrypto = typeof crypto !== 'undefined' ? crypto : new Crypto()
 
 
 console.log('Shims injected');
-
-// eslint-disable-next-line no-undef
-const isDev = typeof __DEV__ === 'boolean' && __DEV__
-process.env.NODE_ENV = isDev ? 'development' : 'production'
