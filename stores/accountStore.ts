@@ -127,14 +127,24 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<Account
       "https://api.studio.thegraph.com/query/1649/groupmanager/version/latest"
     )
 
-    const { members } = await subgraph.getGroup(groupId.toString(), { members: true });
-    const group = new Group(groupId, 20, members);
+    let group: Group;
+    let merkleProof: MerkleProof;
 
-    const index = group.indexOf(zkid.commitment)
-    if (index === -1) {
-      throw new Error("The identity is not part of the group")
+    if (groupId === 0) {
+      group = new Group(groupId, 20);
+      group.addMember(zkid.commitment);
+      merkleProof = group.generateMerkleProof(0)
     }
-    const merkleProof = group.generateMerkleProof(index)
+    else {
+      const { members } = await subgraph.getGroup(groupId.toString(), { members: true });
+      group = new Group(groupId, 20, members);
+
+      const index = group.indexOf(zkid.commitment)
+      if (index === -1) {
+        throw new Error("The identity is not part of the group")
+      }
+      merkleProof = group.generateMerkleProof(index)
+    }
 
     const signalHash = keccak256(toHex(signInSignal));
     const extNullifier = BigInt(Math.floor(Math.random() * 1000))

@@ -36,8 +36,8 @@ export default function Prove() {
     try {
       const url = Linking.parse(data);
       if ((url.scheme === 'omnid' && url.hostname === 'approve') || (url.scheme === 'exp' && url.path === 'approve')) {
-        const formattedParams = new URLSearchParams(JSON.parse(JSON.stringify(url.queryParams)))
-        await router.push(`/approve?${formattedParams.toString()}`);
+        const formattedParams = JSON.parse(JSON.stringify(url.queryParams))
+        router.push({ pathname: `/approve`, params: formattedParams });
       }
     } catch (error) {
       console.error(error)

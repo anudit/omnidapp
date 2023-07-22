@@ -1,6 +1,6 @@
 import { AuthRequestConfig, exchangeCodeAsync, useAuthRequest } from 'expo-auth-session';
 import * as Clipboard from 'expo-clipboard';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -71,6 +71,7 @@ const List = () => {
 
     const [user, setUser] = useState<userInfoType['data'] | null>(null);
     const { getSignInParams, getZkId } = useAccountStore();
+    const router = useRouter();
 
     const [request, response, promptAsync] = useAuthRequest({
         ...twitterConfig,
