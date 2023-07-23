@@ -1,4 +1,4 @@
-import { Pressable, PressableProps, StyleSheet, Text } from "react-native";
+import { ActivityIndicator, Pressable, PressableProps, StyleSheet, Text } from "react-native";
 
 import designTokens from '../assets/designTokens.json';
 
@@ -6,12 +6,17 @@ interface ButtonProps {
     title: string,
     iconRight?: React.ReactNode,
     iconLeft?: React.ReactNode
+    isLoading?: boolean,
 }
 
-const Button = ({ title, iconRight, iconLeft, ...props }: PressableProps & ButtonProps) => {
+const Button = ({ title, iconRight, iconLeft, isLoading = false, ...props }: PressableProps & ButtonProps) => {
     return (
-        <Pressable style={styles.button} {...props}>
-            {iconLeft}
+        <Pressable style={({ pressed }) => [styles.button, {
+            backgroundColor: pressed ? designTokens.colors.background.level2 : designTokens.colors.background.level3,
+        }]} {...props}>
+            {isLoading === false ? iconLeft : (
+                <ActivityIndicator size="small" color={designTokens.colors.text.primary} style={{ marginRight: 10 }} />
+            )}
             <Text style={styles.buttonText}>
                 {title}
             </Text>

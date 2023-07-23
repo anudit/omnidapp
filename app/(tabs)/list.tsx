@@ -70,6 +70,7 @@ type Proof = [
 const List = () => {
 
     const [user, setUser] = useState<userInfoType['data'] | null>(null);
+    const [forgingProof, setForgingProof] = useState<boolean>(false);
     const { getSignInParams, getZkId } = useAccountStore();
     const router = useRouter();
 
@@ -112,6 +113,8 @@ const List = () => {
 
     function sendDataToWebView() {
 
+        setForgingProof(true)
+
         getSignInParams().then(({ signalHash, extNullifier, commitment, merkleProof }) => {
 
             const trapdoor = getZkId().trapdoor.toString()
@@ -144,6 +147,7 @@ const List = () => {
             const resp = JSON.parse(data.nativeEvent.data) as FullProof;
             alert(resp['signal'])
         }
+        setForgingProof(false)
     }
 
 
@@ -290,7 +294,7 @@ const List = () => {
             <View style={{ marginVertical: 5 }} />
 
             <CustomButton
-                title="Sign In with Omnid"
+                title="Open Approve"
                 iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
                 onPress={() => {
                     router.push("/approve?scope=age%2Cnew&redirect_uri=https%3A%2F%2Fomnid.io%2F&state=publicAnnouceId&issuer=0xA73F022a256372837724b28EFbc7bc1876e833C8&issuerSig=0xe509d4480ae90e9df6044e9536b5384fe778e69cdd99d6ffeba421c5d3dbca96447ae13aaf233d546009deeb7b26945a3af2dbfeae21f1c52f3fabc86295974f1c")
@@ -312,11 +316,12 @@ const List = () => {
             </View>
 
             <CustomButton
-                title="Run it"
+                title="Forge a Proof"
                 iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={20} />}
                 onPress={() => {
                     sendDataToWebView()
                 }}
+                isLoading={forgingProof}
             />
         </SafeAreaView>
     )
