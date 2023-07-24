@@ -25,9 +25,6 @@
         }
       ]
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
     "splash": {
       "image": "./assets/icons/omnid-frame.png",
       "backgroundColor": "#000000",

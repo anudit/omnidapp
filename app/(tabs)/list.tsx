@@ -111,6 +111,16 @@ const List = () => {
 
     const webviewRef = useRef<null | WebView>(null);
 
+    function getInjectableJSMessage(message) {
+        return `
+          (function() {
+            document.dispatchEvent(new MessageEvent('message', {
+              data: ${JSON.stringify(message)}
+            }));
+          })();
+        `;
+    }
+
     function sendDataToWebView() {
 
         setForgingProof(true)
@@ -130,13 +140,13 @@ const List = () => {
 
             Clipboard.setStringAsync(JSON.stringify(payload))
 
-            // @ts-expect-error shut up ts.
-            if (webviewRef?.current) webviewRef.current.postMessage(payload);
+            if (webviewRef?.current) webviewRef.current.injectJavaScript(
+                getInjectableJSMessage(payload)
+            );
 
         });
 
     }
-
 
     function onMessage(data: WebViewMessageEvent) {
         const eventData = data.nativeEvent.data;
@@ -144,8 +154,12 @@ const List = () => {
             alert('Error ' + eventData)
         }
         else {
-            const resp = JSON.parse(data.nativeEvent.data) as FullProof;
-            alert(resp['signal'])
+            try {
+                const resp = JSON.parse(data.nativeEvent.data) as FullProof;
+                alert(resp['signal'])
+            } catch {
+                alert(data.nativeEvent.data)
+            }
         }
         setForgingProof(false)
     }
@@ -159,120 +173,104 @@ const List = () => {
         </head>
 
       <body>
-        <button onclick="yolo()">yolo</button>
-        <p id="info">info</p>
-        <script src="https://cdn.jsdelivr.net/npm/snarkjs@0.7.0/build/snarkjs.min.js" type="text/javascript"></script>
-        <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" type="application/javascript"></script>
 
+        <button onclick="yolo()">yolo</button>
+        <p>Registered Handle: <span id="reghand"></span></p><br/>
+
+        <script src="https://cdn.jsdelivr.net/npm/snarkjs@0.7.0/build/snarkjs.min.js" integrity="sha384-Ule6nmUQ9CEAQfHl+cyHBOxIsBk9eN2llZp7ywwmvdBL8TZNdBio0EUpV4P0iNhh" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" integrity="sha384-Htz1SE4Sl5aitpvFgr2j0sfsGUIuSXI6t8hEyrlQ93zflEF3a29bH2AvkUROUw7J" crossorigin="anonymous"></script>
         <script>
 
-        function reviver(key, value) {
-            if (value && value.type == 'bigint') {
-              return BigInt(value.value);  
+            function reviver(key, value) {
+                if (value && value.type == 'bigint') return BigInt(value.value);
+                return value;
             }
-            return value;
-        }
 
-        function sendToApp(obj) {
-            window.ReactNativeWebView.postMessage(obj);
-        };
+            function sendToApp(obj) {
+                window.ReactNativeWebView.postMessage(obj);
+            };
 
-        function onMessage(message) {
-            
-            const parsed = message.data;
-
-            try {
+            function onMessage(message) {
+                // alert(Object.keys(message.data))
+                const parsed = message.data;
 
                 generateProof(
                     {trapdoor: parsed.trapdoor, nullifier: parsed.nullifier, commitment: parsed.commitment},
                     parsed.merkleProofPathIndices,
                     JSON.parse(parsed.merkleProofSiblings, reviver),
                     parsed.extNullifier,
-                    parsed.signal,
-                    false
+                    parsed.signal
                 ).then(resp=>{
                     sendToApp(
                         JSON.stringify(resp)
                     );
+                }).catch(e=>{
+                    sendToApp('error '+e.message) 
                 })
-                
-            } catch (error) {
-                sendToApp('error', error.message) 
+
             }
 
-        }
+            function yolo(){
+                sendToApp('yo');
+            }
 
-        function yolo(){
-            sendToApp(
-                'yo'
-            );
-        }
-
-        function hash(message) {
-            message = ethers.BigNumber.from(message).toTwos(256).toHexString()
-            message = ethers.utils.zeroPad(message, 32)
-        
-            return BigInt(ethers.utils.keccak256(message)) >> BigInt(8)
-        }
-        
-        
-        function packProof(originalProof) {
-            return [
-                originalProof.pi_a[0],
-                originalProof.pi_a[1],
-                originalProof.pi_b[0][1],
-                originalProof.pi_b[0][0],
-                originalProof.pi_b[1][1],
-                originalProof.pi_b[1][0],
-                originalProof.pi_c[0],
-                originalProof.pi_c[1]
-            ]
-        }
-        
-        
-        async function generateProof(
-            {trapdoor, nullifier, commitment},
-            merkleProofPathIndices,
-            merkleProofSiblings,
-            externalNullifier,
-            signal,
-            snarkArtifacts = false
-        ) {
-
-            if (!snarkArtifacts) {
-                snarkArtifacts = {
-                    wasmFilePath: 'https://www.trusted-setup-pse.org/semaphore/20/semaphore.wasm',
-                    zkeyFilePath: 'https://www.trusted-setup-pse.org/semaphore/20/semaphore.zkey'
-                }
+            function hash(message) {
+                message = ethers.BigNumber.from(message).toTwos(256).toHexString()
+                message = ethers.utils.zeroPad(message, 32)
+            
+                return BigInt(ethers.utils.keccak256(message)) >> BigInt(8)
             }
             
-            const {proof, publicSignals} = await snarkjs.groth16.fullProve(
-                {
-                    identityTrapdoor: trapdoor,
-                    identityNullifier: nullifier,
-                    treePathIndices: merkleProofPathIndices,
-                    treeSiblings: merkleProofSiblings,
-                    externalNullifier: hash(externalNullifier),
-                    signalHash: hash(signal)
-                },
-                snarkArtifacts.wasmFilePath,
-                snarkArtifacts.zkeyFilePath
-            )
-        
-            return {
-                merkleTreeRoot: publicSignals[0],
-                nullifierHash: publicSignals[1],
-                signal: ethers.BigNumber.from(signal).toString(),
-                externalNullifier: ethers.BigNumber.from(externalNullifier).toString(),
-                proof: packProof(proof)
+            async function generateProof(
+                {trapdoor, nullifier, commitment},
+                merkleProofPathIndices,
+                merkleProofSiblings,
+                externalNullifier,
+                signal
+            ) {
+
+                const { proof, publicSignals } = await snarkjs.groth16.fullProve(
+                    {
+                        identityTrapdoor: trapdoor,
+                        identityNullifier: nullifier,
+                        treePathIndices: merkleProofPathIndices,
+                        treeSiblings: merkleProofSiblings,
+                        externalNullifier: hash(externalNullifier),
+                        signalHash: hash(signal)
+                    },
+                    'https://www.trusted-setup-pse.org/semaphore/20/semaphore.wasm',
+                    'https://www.trusted-setup-pse.org/semaphore/20/semaphore.zkey'
+                )
+
+                alert('ran')
+            
+                return {
+                    merkleTreeRoot: publicSignals[0],
+                    nullifierHash: publicSignals[1],
+                    signal: ethers.BigNumber.from(signal).toString(),
+                    externalNullifier: ethers.BigNumber.from(externalNullifier).toString(),
+                    proof: [
+                        proof.pi_a[0],
+                        proof.pi_a[1],
+                        proof.pi_b[0][1],
+                        proof.pi_b[0][0],
+                        proof.pi_b[1][1],
+                        proof.pi_b[1][0],
+                        proof.pi_c[0],
+                        proof.pi_c[1]
+                    ]
+                }
             }
-        }
 
-        this.window.addEventListener("message", onMessage, true);
-
-        </script>
-      </body>
-      </html>
+            document.addEventListener("DOMContentLoaded", () => {
+                window.addEventListener("message", (message)=>{
+                    document.getElementById('reghand').innerText = 'wind reg'
+                    onMessage(message)
+                }, true);
+            });
+            </script>
+        </body>
+        </html>
     `;
 
     return (
@@ -301,20 +299,6 @@ const List = () => {
                 }}
             />
 
-
-            <View style={{ flex: 1, borderWidth: 1, borderColor: 'red', width: '100%', height: 1, display: 'none' }}>
-                <WebView
-                    ref={webviewRef}
-                    mixedContentMode="compatibility"
-                    javaScriptEnabled={true}
-                    scalesPageToFit={true}
-                    onMessage={onMessage}
-                    domStorageEnabled={true}
-                    source={{ html }}
-                />
-
-            </View>
-
             <CustomButton
                 title="Forge a Proof"
                 iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={20} />}
@@ -323,6 +307,22 @@ const List = () => {
                 }}
                 isLoading={forgingProof}
             />
+
+            <View style={{ flex: 1, borderWidth: 1, borderColor: 'red', width: '100%', height: 1, display: 'flex' }}>
+                <WebView
+                    ref={webviewRef}
+                    mixedContentMode="compatibility"
+                    javaScriptEnabled={true}
+                    scalesPageToFit={true}
+                    onMessage={onMessage}
+                    domStorageEnabled={true}
+                    source={{ html }}
+                    cacheEnabled={true}
+                    cacheMode='LOAD_CACHE_ELSE_NETWORK'
+                />
+            </View>
+
+
         </SafeAreaView>
     )
 }
