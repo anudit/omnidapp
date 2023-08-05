@@ -1,4 +1,4 @@
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { StyleSheet } from "react-native";
 
@@ -14,19 +14,19 @@ const TabBar = () => {
                 tabBarStyle: styles.tabBarStyle,
                 tabBarShowLabel: false,
                 tabBarIcon: ({ size, color, focused }) => {
-                    if (route.name === "index")
+                    if (route.name === "index/index")
                         return focused ? (
                             <Ionicons name="home" size={size} color={color} />
                         ) : (
                             <Ionicons name="home-outline" size={size} color={color} />
                         );
-                    else if (route.name === "list")
+                    else if (route.name === "page")
                         return focused ? (
-                            <Ionicons name="add-circle" size={size + 8} color={color} />
+                            <Ionicons name="color-wand" size={size} color={color} />
                         ) : (
                             <Ionicons
-                                name="add-circle-outline"
-                                size={size + 8}
+                                name="color-wand-outline"
+                                size={size}
                                 color={color}
                             />
                         );
@@ -36,33 +36,39 @@ const TabBar = () => {
                         ) : (
                             <Ionicons name="qr-code-outline" size={size} color={color} />
                         );
+                    else if (route.name === "connections/index")
+                        return focused ? (
+                            <MaterialCommunityIcons name="handshake" size={size} color={color} />
+                        ) : (
+                            <MaterialCommunityIcons name="handshake-outline" size={size} color={color} />
+                        );
 
                     return <FontAwesome name="home" size={size} color={color} />;
                 },
             })}
         >
             <Tabs.Screen
-                name="index"
+                name="index/index"
                 options={{
                     tabBarLabel: "My Omnid",
                 }}
             />
             <Tabs.Screen
-                name="prove"
+                name="connections/index"
                 options={{
-                    tabBarLabel: "Prove",
-                    tabBarIconStyle: {
-                        width: 55,
-                        height: 55,
-                        borderRadius: 100,
-                        backgroundColor: designTokens.colors.background.level3,
-                    },
+                    tabBarLabel: "Connections",
                 }}
             />
             <Tabs.Screen
-                name="list"
+                name="page"
                 options={{
-                    tabBarLabel: "List",
+                    tabBarLabel: "My Page",
+                }}
+            />
+            <Tabs.Screen
+                name="prove"
+                options={{
+                    tabBarLabel: "Prove"
                 }}
             />
         </Tabs>
@@ -80,10 +86,10 @@ const styles = StyleSheet.create({
         position: "absolute",
         display: "flex",
         alignItems: "center",
-        width: "60%",
+        width: "70%",
         maxHeight: 100,
         bottom: 20,
-        left: 80,
+        left: 60,
         elevation: 0,
     },
 });

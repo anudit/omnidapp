@@ -1,5 +1,4 @@
 import { AuthRequestConfig, exchangeCodeAsync, useAuthRequest } from 'expo-auth-session';
-import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useRef, useState } from 'react';
@@ -138,7 +137,7 @@ const List = () => {
                 signal: signalHash,
             }
 
-            Clipboard.setStringAsync(JSON.stringify(payload))
+            // Clipboard.setStringAsync(JSON.stringify(payload))
 
             if (webviewRef?.current) webviewRef.current.injectJavaScript(
                 getInjectableJSMessage(payload)
@@ -241,8 +240,6 @@ const List = () => {
                     'https://www.trusted-setup-pse.org/semaphore/20/semaphore.wasm',
                     'https://www.trusted-setup-pse.org/semaphore/20/semaphore.zkey'
                 )
-
-                alert('ran')
             
                 return {
                     merkleTreeRoot: publicSignals[0],
@@ -289,29 +286,36 @@ const List = () => {
                     promptAsync();
                 }}
             />
-            <View style={{ marginVertical: 5 }} />
+            <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
+                <CustomButton
+                    title="Open Approve"
+                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        router.push("/approve?scope=age%2Cnew&redirect_uri=https%3A%2F%2Fomnid.io%2F&state=publicAnnouceId&issuer=0xA73F022a256372837724b28EFbc7bc1876e833C8&issuerSig=0xe509d4480ae90e9df6044e9536b5384fe778e69cdd99d6ffeba421c5d3dbca96447ae13aaf233d546009deeb7b26945a3af2dbfeae21f1c52f3fabc86295974f1c")
+                    }}
+                />
 
-            <CustomButton
-                title="Open Approve"
-                iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
-                onPress={() => {
-                    router.push("/approve?scope=age%2Cnew&redirect_uri=https%3A%2F%2Fomnid.io%2F&state=publicAnnouceId&issuer=0xA73F022a256372837724b28EFbc7bc1876e833C8&issuerSig=0xe509d4480ae90e9df6044e9536b5384fe778e69cdd99d6ffeba421c5d3dbca96447ae13aaf233d546009deeb7b26945a3af2dbfeae21f1c52f3fabc86295974f1c")
-                }}
-            />
+                <CustomButton
+                    title="Make a Proof"
+                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={20} />}
+                    onPress={() => {
+                        sendDataToWebView()
+                    }}
+                    isLoading={forgingProof}
+                />
+            </View>
 
-            <CustomButton
-                title="Forge a Proof"
-                iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={20} />}
-                onPress={() => {
-                    sendDataToWebView()
-                }}
-                isLoading={forgingProof}
-            />
 
-            <View style={{ flex: 1, borderWidth: 1, borderColor: 'red', width: '100%', height: 1, display: 'flex' }}>
+            <View style={{ flex: 1, borderWidth: 1, borderColor: 'red', width: '100%', height: 1, display: 'none' }}>
                 <WebView
                     ref={webviewRef}
                     mixedContentMode="compatibility"
+                    originWhitelist={['*']}
+
+                    allowFileAccessFromFileURLs={true}
+                    allowUniversalAccessFromFileURLs={true}
+                    allowFileAccess={true}
+
                     javaScriptEnabled={true}
                     scalesPageToFit={true}
                     onMessage={onMessage}
