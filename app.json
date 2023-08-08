@@ -1,12 +1,25 @@
 {
   "expo": {
-    "scheme": "omnid",
-    "web": {
-      "bundler": "metro"
-    },
-    "name": "Omnid",
+    "name": "omnid-app",
     "slug": "omnid-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
     "icon": "./assets/icons/omnid.png",
+    "scheme": "omnid",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/icons/omnid-frame.png",
+      "backgroundColor": "#000000",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/icons/omnid.png"
+    },
     "plugins": [
       [
         "expo-build-properties",
@@ -23,19 +36,9 @@
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
         }
-      ]
+      ],
+      "expo-router"
     ],
-    "splash": {
-      "image": "./assets/icons/omnid-frame.png",
-      "backgroundColor": "#000000",
-      "resizeMode": "contain"
-    },
-    "userInterfaceStyle": "dark",
-    "extra": {
-      "eas": {
-        "projectId": "36f03bb5-6dde-49e8-8655-444bf2d7eed7"
-      }
-    },
     "android": {
       "package": "com.cupoc.omnid",
       "intentFilters": [
@@ -52,6 +55,10 @@
             "DEFAULT"
           ]
         }
+      ],
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "ios": {
@@ -68,6 +75,18 @@
             ]
           }
         ]
+      }
+    },
+    "experiments": {
+      "tsconfigPaths": true,
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "36f03bb5-6dde-49e8-8655-444bf2d7eed7"
       }
     }
   }

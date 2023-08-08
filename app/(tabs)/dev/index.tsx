@@ -4,14 +4,14 @@ import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import designTokens from '../../assets/designTokens.json';
-import { OmnidIcon } from '../../components/icons';
+import designTokens from '../../../assets/designTokens.json';
+import { OmnidIcon } from '../../../components/icons';
 
 import { Entypo } from '@expo/vector-icons';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import type { types as TwitterTypes } from "twitter-api-sdk";
-import CustomButton from '../../components/Button';
-import { useAccountStore } from '../../stores/accountStore';
+import CustomButton from '../../../components/Button';
+import { useAccountStore } from '../../../stores/accountStore';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -66,7 +66,7 @@ type Proof = [
 ];
 
 
-const List = () => {
+export default function List() {
 
     const [user, setUser] = useState<userInfoType['data'] | null>(null);
     const [forgingProof, setForgingProof] = useState<boolean>(false);
@@ -305,6 +305,18 @@ const List = () => {
                 />
             </View>
 
+            <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
+                <CustomButton
+                    title="TOTP"
+                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        router.push({
+                            pathname: '/dev/totp'
+                        })
+                    }}
+                />
+            </View>
+
 
             <View style={{ flex: 1, borderWidth: 1, borderColor: 'red', width: '100%', height: 1, display: 'none' }}>
                 <WebView
@@ -361,6 +373,3 @@ const styles = StyleSheet.create({
         color: designTokens.colors.text.primary,
     }
 });
-
-
-export default List;

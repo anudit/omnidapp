@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { publicActions } from 'viem';
-import designTokens from '../../../assets/designTokens.json';
-import AllAttributes from '../../../components/AllAttributes';
-import { useAccountStore } from '../../../stores/accountStore';
-import { useSettingsStore } from '../../../stores/settings';
+import designTokens from '../../assets/designTokens.json';
+import AllAttributes from '../../components/AllAttributes';
+import { useAccountStore } from '../../stores/accountStore';
+import { useSettingsStore } from '../../stores/settings';
 
 const Home = () => {
   const insets = useSafeAreaInsets();

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Feather } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 import designTokens from '../assets/designTokens.json';
 import { OmnidIcon } from './icons';
 
@@ -89,7 +91,7 @@ const AllAttributes = () => {
     return (
         <FlatList
             data={filterValue && filterValue.trim().length > 0 ? mockData.filter(e => e.description.includes(filterValue) || e.issuer.includes(filterValue) || e.title.includes(filterValue)) : mockData}
-            horizontal={true}
+            horizontal={false}
             style={styles.grid}
             key={'allAttributes'}
             keyboardShouldPersistTaps={'always'}
@@ -101,6 +103,9 @@ const AllAttributes = () => {
                             <OmnidIcon fill={designTokens.colors.text.primary} style={{ marginRight: 8 }} />
                             <Text style={styles.heading}>All Attributes</Text>
                         </View>
+                        <Link href="/settings">
+                            <Feather name="settings" size={24} color="white" />
+                        </Link>
                     </View>
                     <TextInput
                         key="allAttributesSearch"

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+// /* eslint-disable @typescript-eslint/no-var-requires */
 import 'text-encoding-polyfill';
 const base64 = require('base-64');
 require("node-libs-react-native/globals.js");
