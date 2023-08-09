@@ -1,24 +1,14 @@
 import { AntDesign, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import * as Application from 'expo-application';
-import * as Clipboard from 'expo-clipboard';
-import * as Device from 'expo-device';
 import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
-import Toast from 'react-native-root-toast';
 
+import { copy } from '@/utils/stringUtils';
 import designTokens from '../../assets/designTokens.json';
 import { HiddenIcon } from '../../components/icons';
 import { useAccountStore } from '../../stores/accountStore';
 import { useSettingsStore } from '../../stores/settings';
 
-export const copy = async (data: string) => {
-    await Clipboard.setStringAsync(data);
-
-    Toast.show('Copied', {
-        duration: Toast.durations.LONG,
-    });
-
-}
 
 const Settings = () => {
 

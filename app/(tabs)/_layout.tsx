@@ -73,6 +73,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="dev/totp"
         options={{
+          headerShown: true,
+          headerTitle: 'TOTP',
           href: null
         }}
       />
