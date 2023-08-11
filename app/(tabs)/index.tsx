@@ -37,7 +37,7 @@ const BlockNumber = () => {
   return (
     <View style={{
       ...styles.card,
-      backgroundColor: designTokens.colors.teal['400'],
+      backgroundColor: designTokens.colors.brown,
       width: '99%',
       marginBottom: 8
     }} >

@@ -12,7 +12,7 @@ export default function Home() {
                 headerTitle: 'Settings',
                 headerBlurEffect: 'light',
                 headerStyle: {
-                    backgroundColor: designTokens.colors.background.level3
+                    backgroundColor: designTokens.colors.background.level2
                 },
                 headerBackButtonMenuEnabled: true
             }}

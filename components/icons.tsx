@@ -24,3 +24,10 @@ export const HiddenIcon = (props: SvgProps) => {
     </Svg>
   );
 }
+export const XIcon = (props: SvgProps) => {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 1669 1221" {...props}>
+      <Path d="m336 142 387 517-389 420h87l341-368 275 368h298L927 533l361-391h-87L887 481 634 142H336zm129 65h137l604 807h-137L465 207z" />
+    </Svg>
+  );
+}

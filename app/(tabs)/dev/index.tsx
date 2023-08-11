@@ -5,9 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import designTokens from '../../../assets/designTokens.json';
-import { OmnidIcon } from '../../../components/icons';
+import { OmnidIcon, XIcon } from '../../../components/icons';
 
-import { Entypo } from '@expo/vector-icons';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import type { types as TwitterTypes } from "twitter-api-sdk";
 import CustomButton from '../../../components/Button';
@@ -278,14 +277,7 @@ export default function List() {
             <Text style={styles.buttonText}>user: {JSON.stringify(user)}</Text>
 
 
-            <CustomButton
-                disabled={!request}
-                title="Connect Twitter"
-                iconLeft={<Entypo name="twitter" style={styles.buttonIcon} size={18} />}
-                onPress={() => {
-                    promptAsync();
-                }}
-            />
+
             <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
                 <CustomButton
                     title="Open Approve"
@@ -306,6 +298,15 @@ export default function List() {
             </View>
 
             <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
+                <CustomButton
+                    disabled={!request}
+                    title="Connect Twitter"
+                    iconLeft={<XIcon fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        promptAsync();
+                    }}
+                />
+
                 <CustomButton
                     title="TOTP"
                     iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}

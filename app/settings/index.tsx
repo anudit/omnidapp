@@ -1,5 +1,6 @@
 import { AntDesign, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import * as Application from 'expo-application';
+import * as Device from 'expo-device';
 import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 
@@ -157,7 +158,7 @@ export const styles = StyleSheet.create({
         paddingLeft: 25
     },
     settingsSection: {
-        backgroundColor: designTokens.colors.background.level3,
+        backgroundColor: designTokens.colors.background.level2,
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
@@ -204,7 +205,7 @@ export const styles = StyleSheet.create({
     },
     icon: {
         color: designTokens.colors.text.primary,
-        backgroundColor: designTokens.colors.teal[700],
+        backgroundColor: designTokens.colors.teal,
         justifyContent: 'center',
         alignItems: 'center',
         display: 'flex',
@@ -214,7 +215,7 @@ export const styles = StyleSheet.create({
         width: 30
     },
     iconBrown: {
-        backgroundColor: designTokens.colors.brown[700],
+        backgroundColor: designTokens.colors.brown,
     },
     iconBlue: {
         backgroundColor: '#0096FF',

@@ -72,16 +72,16 @@ const OtpCard = ({ config, ...props }: { config: OtpConfig }) => {
     }, [totp])
 
     return (
-        <View style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingVertical: 8 }} >
+        <View style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', marginVertical: 12, marginHorizontal: 8 }} >
 
             <View style={{ width: '94%', display: 'flex', flexDirection: 'row' }}>
-                <Text style={{ color: 'white', fontSize: 16 }}>{config.issuer} — {config.label}</Text>
+                <Text style={{ color: designTokens.colors.text.secondary, fontSize: 16 }}>{config.issuer} — {config.label}</Text>
             </View>
 
-            <View style={{ width: '94%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ width: '94%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }} >
                 {totp != null ? (
                     <>
-                        <Text style={{ color: 'white', fontSize: 30 }} onPress={() => {
+                        <Text style={{ color: designTokens.colors.text.primary, fontSize: 30 }} onPress={() => {
                             copy(totp || "")
                         }}>
                             {totp.slice(0, 2) + " " + totp.slice(2, 4) + " " + totp.slice(4)}
@@ -94,7 +94,7 @@ const OtpCard = ({ config, ...props }: { config: OtpConfig }) => {
                             strokeWidth={15}
                             strokeLinecap='butt'
                             trailColor='#00000000'
-                            colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+                            colors={[designTokens.colors.accent.secondary as `#${string}`, '#F7B801', '#A30000', '#A30000']}
                             colorsTime={[7, 5, 2, 0]}
                         />
                     </>
@@ -119,25 +119,7 @@ const styles = StyleSheet.create({
         margin: 0,
         backgroundColor: designTokens.colors.background.level1,
     },
-    overlay: {
-        position: 'absolute',
-        elevation: 2,
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        width: '100%',
-        height: '100%'
-    },
     text: {
         color: designTokens.colors.text.primary,
-    },
-    roundButton: {
-        backgroundColor: designTokens.colors.background.level1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 100,
-        height: 50,
-        width: 50,
     }
 });

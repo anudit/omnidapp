@@ -32,9 +32,9 @@ const mockData = [{
 }].map((data, id) => { return { ...data, id } })
 
 const cardColors = [
-    designTokens.colors.teal['400'],
-    designTokens.colors.green['400'],
-    designTokens.colors.brown['400'],
+    designTokens.colors.teal,
+    designTokens.colors.green,
+    designTokens.colors.brown,
 ]
 
 const MyAttributes = () => {

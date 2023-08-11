@@ -20,7 +20,8 @@ export default function TabLayout() {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarHideOnKeyboard: true,
-        tabBarActiveTintColor: designTokens.colors.text.primary,
+        tabBarActiveTintColor: designTokens.colors.background.level1,
+        tabBarInactiveTintColor: designTokens.colors.background.level2 + "88",
         tabBarStyle: styles.tabBarStyle,
         tabBarShowLabel: false,
         tabBarIcon: ({ size, color, focused }) => {
@@ -75,6 +76,9 @@ export default function TabLayout() {
         options={{
           headerShown: true,
           headerTitle: 'TOTP',
+          headerStyle: {
+            backgroundColor: designTokens.colors.background.level2
+          },
           href: null
         }}
       />
@@ -99,9 +103,9 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     height: 55,
     paddingBottom: 0,
-    borderWidth: 2,
+    borderWidth: 0,
     borderColor: designTokens.colors.background.level3,
-    backgroundColor: designTokens.colors.background.level2 + "EF",
+    backgroundColor: designTokens.colors.accent.primary + "EF",
     border: "none",
     position: "absolute",
     display: "flex",
