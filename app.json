@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "omnid-app",
+    "name": "Omnid",
     "slug": "omnid-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -27,7 +27,11 @@
           "android": {
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
-            "extraProguardRules": "-keep class com.facebook.hermes.unicode.** { *; }\n-keep class com.facebook.jni.** { *; }\n-keep public class com.horcrux.svg.** {*;}"
+            "extraProguardRules": "-keep class com.facebook.hermes.unicode.** { *; }\n-keep class com.facebook.jni.** { *; }\n-keep public class com.horcrux.svg.** {*;}",
+            "newArchEnabled": true
+          },
+          "ios": {
+            "newArchEnabled": true
           }
         }
       ],

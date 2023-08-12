@@ -1,19 +1,10 @@
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Tabs } from 'expo-router';
-import { StyleSheet, useColorScheme } from 'react-native';
+import { BottomTabBar } from "@react-navigation/bottom-tabs";
+import { BlurView } from "expo-blur";
+import { Link, Tabs } from 'expo-router';
+import { Platform, StyleSheet } from 'react-native';
 import designTokens from "../../assets/designTokens.json";
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
-
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
   return (
     <Tabs
@@ -26,37 +17,29 @@ export default function TabLayout() {
         tabBarShowLabel: false,
         tabBarIcon: ({ size, color, focused }) => {
           if (route.name === "index")
-            return focused ? (
-              <Ionicons name="home" size={size} color={color} />
-            ) : (
-              <Ionicons name="home-outline" size={size} color={color} />
-            );
+            return (<Ionicons name={focused ? "home" : "home-outline"} size={size} color={color} />);
           else if (route.name === 'dev/index')
-            return focused ? (
-              <Ionicons name="color-wand" size={size} color={color} />
-            ) : (
-              <Ionicons
-                name="color-wand-outline"
-                size={size}
-                color={color}
-              />
-            );
+            return (<Ionicons name={focused ? "color-wand" : "color-wand-outline"} size={size} color={color} />);
           else if (route.name === "scan/index")
-            return focused ? (
-              <Ionicons name="qr-code" size={size} color={color} />
-            ) : (
-              <Ionicons name="qr-code-outline" size={size} color={color} />
-            );
+            return (<Ionicons name={focused ? "qr-code" : "qr-code-outline"} size={size} color={color} />);
           else if (route.name === "connections/index")
-            return focused ? (
-              <MaterialCommunityIcons name="handshake" size={size} color={color} />
-            ) : (
-              <MaterialCommunityIcons name="handshake-outline" size={size} color={color} />
-            );
-
-          return <FontAwesome name="question" size={size} color={color} />;
+            return (<MaterialCommunityIcons name={focused ? "handshake" : "handshake-outline"} size={size} color={color} />);
+          else return <FontAwesome name="question" size={size} color={color} />;
         },
+
       })}
+      tabBar={(props) =>
+        Platform.OS === "ios" ? (
+          <BlurView
+            style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+            intensity={100}
+          >
+            <BottomTabBar {...props} />
+          </BlurView>
+        ) : (
+          <BottomTabBar {...props} />
+        )
+      }
     >
       <Tabs.Screen
         name="index"
@@ -79,8 +62,16 @@ export default function TabLayout() {
           headerStyle: {
             backgroundColor: designTokens.colors.background.level2
           },
-          href: null
+          href: null,
+          headerRight(props) {
+            return (
+              <Link href="/scan" asChild>
+                <Ionicons name="md-add-outline" size={24} color="black" style={{ paddingHorizontal: 5 }} />
+              </Link>
+            )
+          },
         }}
+
       />
       <Tabs.Screen
         name="connections/index"

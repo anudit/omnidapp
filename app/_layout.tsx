@@ -7,6 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useAccountStore } from '@/stores/accountStore';
 import { useSettingsStore } from '@/stores/settings';
+import { Platform } from 'react-native';
 import designTokens from '../assets/designTokens.json';
 import InsecureDevice from '../components/insecureDevice';
 
@@ -42,7 +43,7 @@ const StackLayout = () => {
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="approve" options={{
                 headerShown: true,
-                presentation: 'modal',
+                presentation: Platform.OS == 'ios' ? 'modal' : undefined,
                 headerTintColor: designTokens.colors.text.primary,
                 headerTitle: 'Approve Request',
                 headerBlurEffect: 'light',

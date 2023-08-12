@@ -42,7 +42,7 @@ const List = () => {
 
                 <View style={styles.seperator} />
 
-                <Link href={'/(tabs)'}>
+                <Link href={'/(tabs)/dev'}>
                     <View style={{ ...styles.settingsRow, justifyContent: 'center' }}>
                         <MaterialCommunityIcons name="export" size={24} color={'#ff6961'} style={{ marginRight: 5 }} />
                         <Text style={{ ...styles.settingValue, color: '#ff6961' }}>Export</Text>

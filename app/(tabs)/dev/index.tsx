@@ -271,7 +271,7 @@ export default function List() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.buttonText}>List</Text>
+            <Text style={styles.buttonText}>Dev</Text>
 
             <Text style={styles.buttonText}>req: {request?.url?.toString()}</Text>
             <Text style={styles.buttonText}>user: {JSON.stringify(user)}</Text>
@@ -311,9 +311,7 @@ export default function List() {
                     title="TOTP"
                     iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
                     onPress={() => {
-                        router.push({
-                            pathname: '/dev/totp'
-                        })
+                        router.push('/dev/totp')
                     }}
                 />
             </View>

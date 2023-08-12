@@ -1,3 +1,4 @@
+import { OtpConfig } from "@/app/(tabs)/dev/totp";
 import { SemaphoreSubgraph } from "@semaphore-protocol/data";
 import { Group } from '@semaphore-protocol/group';
 import { Identity } from '@semaphore-protocol/identity';
@@ -33,12 +34,17 @@ export interface AccountStoreType {
   basePubKey: null | string,
   hasHydrated: boolean,
   zkIdData: null | string[],
+  totpAccounts: OtpConfig[],
+
   setHasHydrated: (state: boolean) => void
   setupBase: () => Promise<void>
+  signMessage: (message: string) => Promise<string>;
   getZkId: () => Identity
   getSigner: (isDev: boolean) => WalletClient,
-  getSignInParams: () => Promise<ProofParams>
-  getProofParams: (groupId: number, signInSignal: string) => Promise<ProofParams>
+  getSignInParams: () => Promise<ProofParams>,
+  getProofParams: (groupId: number, signInSignal: string) => Promise<ProofParams>,
+  addTotpAccount: (details: OtpConfig) => void,
+  removeTotpAccount: (secretToRemove: string) => void,
 }
 
 const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<AccountStoreType>['getState']) => AccountStoreType = (set, get) => ({
@@ -47,6 +53,7 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<Account
   basePubKey: null,
   zkIdData: null,
   hasHydrated: false,
+  totpAccounts: [],
 
   setHasHydrated: (state) => {
     if (get().basePrivKey === null) {
@@ -78,6 +85,11 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<Account
       zkIdData: [`0x${identity.trapdoor.toString(16)}`, `0x${identity.nullifier.toString(16)}`]
     });
 
+  },
+
+  signMessage: async (message: string): Promise<string> => {
+    const wallet = privateKeyToAccount(get().basePrivKey as `0x${string}`)
+    return await wallet.signMessage({ message });
   },
 
   getZkId: () => {
@@ -156,7 +168,23 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<Account
       merkleProof,
     }
 
-  }
+  },
+
+  addTotpAccount(details: OtpConfig) {
+    const old = get().totpAccounts;
+    if (old.filter(e => e.secret === details.secret).length == 0) {
+      set({
+        totpAccounts: old == null ? [details] : old.concat([details])
+      });
+    }
+  },
+
+  removeTotpAccount(secretToRemove: string) {
+    const old = get().totpAccounts;
+    set({
+      totpAccounts: old.filter(e => e.secret != secretToRemove)
+    });
+  },
 
 })
 

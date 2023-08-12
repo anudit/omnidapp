@@ -39,6 +39,10 @@ export default function Scanner() {
                 const formattedParams = JSON.parse(JSON.stringify(url.queryParams))
                 router.push({ pathname: `/approve`, params: formattedParams });
             }
+            else if ((url.scheme === 'otpauth' && url.hostname === 'totp') || (url.scheme === 'exp' && url.path === 'totp')) {
+                const formattedParams = JSON.parse(JSON.stringify(url.queryParams))
+                router.push({ pathname: `/dev/totp`, params: formattedParams });
+            }
         } catch (error) {
             console.error(error)
         }
@@ -71,7 +75,7 @@ export default function Scanner() {
                     <Text style={styles.text}>
                         Scan to Prove
                     </Text>
-                    <QrFrameIcon width={256} height={256} />
+                    <QrFrameIcon width={256} height={256} fill={designTokens.colors.background.level1} />
                     <Pressable style={{ ...styles.roundButton, marginTop: 30 }} onPress={() => {
                         if (flashMode === FlashMode.torch) setFlashMode(FlashMode.off)
                         else setFlashMode(FlashMode.torch)
@@ -79,7 +83,7 @@ export default function Scanner() {
                         {({ pressed }) => <Ionicons
                             name={pressed || flashMode === FlashMode.torch ? 'flashlight' : "flashlight-outline"}
                             size={24}
-                            color="white"
+                            color={designTokens.colors.background.level1}
                         />}
                     </Pressable>
                 </View>
@@ -113,7 +117,7 @@ const styles = StyleSheet.create({
         color: designTokens.colors.text.primary,
     },
     roundButton: {
-        backgroundColor: designTokens.colors.background.level1,
+        backgroundColor: designTokens.colors.accent.primary,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 100,
