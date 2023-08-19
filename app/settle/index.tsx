@@ -10,8 +10,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import SwipeButton from 'rn-swipe-button';
 
 import { verifyMessage } from 'viem';
-import designTokens from '../assets/designTokens.json';
-import { useSettingsStore } from '../stores/settings';
+import designTokens from '../../assets/designTokens.json';
+import { useSettingsStore } from '../../stores/settings';
 
 type omnidAuthParams = {
     scope: string,

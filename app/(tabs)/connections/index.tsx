@@ -2,7 +2,7 @@ import { SafeAreaView, StyleSheet, Text } from 'react-native';
 
 import designTokens from '../../../assets/designTokens.json';
 
-export default function Prove() {
+export default function Connections() {
 
     return (
         <SafeAreaView style={[StyleSheet.absoluteFillObject, styles.container]}>

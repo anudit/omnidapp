@@ -1,4 +1,4 @@
-import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Animated, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useAccountStore } from '@/stores/accountStore';
 import { copy, trimmed } from '@/utils/stringUtils';
@@ -7,6 +7,7 @@ import { encode } from 'hi-base32';
 import * as OTPAuth from "otpauth";
 import { useEffect, useState } from 'react';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import { Swipeable } from 'react-native-gesture-handler';
 import designTokens from '../../../assets/designTokens.json';
 
 export type OtpConfig = {
@@ -93,43 +94,69 @@ const OtpCard = ({ config, ...props }: { config: OtpConfig }) => {
         setLoading(Date.now().toString());
     }, [totp])
 
+    const renderRightActions = (
+        progress: Animated.AnimatedInterpolation<string>,
+        dragX: Animated.AnimatedInterpolation<string>,
+    ) => {
+        const opacity = dragX.interpolate({
+            inputRange: [-150, 0],
+            outputRange: [1, 0],
+            extrapolate: 'clamp',
+        });
+
+        return (
+            <Animated.View style={[styles.deleteButton, { opacity }]}>
+                <TouchableOpacity onPress={() => {
+                    if (config.issuer !== 'Omnid') { }
+                    alert('Deleting ' + config.secret)
+                }}>
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                </TouchableOpacity>
+            </Animated.View>
+        );
+    };
+
+
     return (
-        <View style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', marginVertical: 12, marginHorizontal: 8 }} >
+        <Swipeable renderRightActions={renderRightActions} containerStyle={{
+            width: '100%'
+        }}>
+            <View style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginVertical: 12, paddingHorizontal: 12 }} >
 
-            <View style={{ width: '94%', display: 'flex', flexDirection: 'row' }}>
-                <Text style={{ color: designTokens.colors.text.secondary, fontSize: 16 }} onPress={() => {
-                    copy(config.label || "")
-                }}>{config.issuer} — {config.label}</Text>
+                <View style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
+                    <Text style={{ color: designTokens.colors.text.secondary, fontSize: 16 }} onPress={() => {
+                        copy(config.label || "")
+                    }}>{config.issuer} — {config.label}</Text>
+                </View>
+
+                <View style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }} >
+                    {totp != null ? (
+                        <>
+                            <Text style={{ color: designTokens.colors.accent.primary, fontSize: 30, fontWeight: 600 }} onPress={() => {
+                                copy(totp || "")
+                            }}>
+                                {totp.slice(0, 2) + " " + totp.slice(2, 4) + " " + totp.slice(4)}
+                            </Text>
+                            <CountdownCircleTimer
+                                isPlaying
+                                key={loading}
+                                duration={30}
+                                size={30}
+                                strokeWidth={15}
+                                strokeLinecap='butt'
+                                trailColor='#00000000'
+                                colors={[designTokens.colors.accent.secondary as `#${string}`, '#F7B801', '#A30000', '#A30000']}
+                                colorsTime={[7, 5, 2, 0]}
+                            />
+                        </>
+                    ) : (
+                        <ActivityIndicator size="small" color={designTokens.colors.text.primary} />
+                    )}
+                </View>
+
             </View>
 
-            <View style={{ width: '94%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }} >
-                {totp != null ? (
-                    <>
-                        <Text style={{ color: designTokens.colors.text.primary, fontSize: 30 }} onPress={() => {
-                            copy(totp || "")
-                        }}>
-                            {totp.slice(0, 2) + " " + totp.slice(2, 4) + " " + totp.slice(4)}
-                        </Text>
-                        <CountdownCircleTimer
-                            isPlaying
-                            key={loading}
-                            duration={30}
-                            size={30}
-                            strokeWidth={15}
-                            strokeLinecap='butt'
-                            trailColor='#00000000'
-                            colors={[designTokens.colors.accent.secondary as `#${string}`, '#F7B801', '#A30000', '#A30000']}
-                            colorsTime={[7, 5, 2, 0]}
-                        />
-                    </>
-                ) : (
-                    <ActivityIndicator size="small" color={designTokens.colors.text.primary} />
-                )}
-            </View>
-
-
-
-        </View>
+        </Swipeable>
     );
 }
 
@@ -145,5 +172,16 @@ const styles = StyleSheet.create({
     },
     text: {
         color: designTokens.colors.text.primary,
-    }
+    },
+    deleteButton: {
+        backgroundColor: '#b60000',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        height: '100%',
+    },
+    deleteButtonText: {
+        color: '#fcfcfc',
+        fontWeight: 'bold',
+        paddingHorizontal: 8,
+    },
 });

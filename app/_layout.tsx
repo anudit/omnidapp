@@ -41,7 +41,7 @@ const StackLayout = () => {
           <SafeAreaProvider>
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="approve" options={{
+              <Stack.Screen name="settle" options={{
                 headerShown: true,
                 presentation: Platform.OS == 'ios' ? 'modal' : undefined,
                 headerTintColor: designTokens.colors.text.primary,

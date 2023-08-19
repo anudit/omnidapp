@@ -9,10 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx3072m -XX:MaxMetaspaceSize=1024m
-    
-    strategy:
-      matrix:
-        platform: [android]
 
     steps:
       - name: Check for EXPO_TOKEN
@@ -44,7 +40,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Build
-        run: eas build --non-interactive --platform ${{ matrix.platform }} --profile production --local --output=./app-android.apk
+        run: eas build --non-interactive --platform android --profile production --local --output=./app-android.apk
       
       - name: Upload binary
         uses: actions/upload-artifact@v3

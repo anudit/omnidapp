@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import designTokens from '../../../assets/designTokens.json';
 import { OmnidIcon, XIcon } from '../../../components/icons';
 
+import { useAssets } from 'expo-asset';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import type { types as TwitterTypes } from "twitter-api-sdk";
 import CustomButton from '../../../components/Button';
@@ -71,6 +72,7 @@ export default function List() {
     const [forgingProof, setForgingProof] = useState<boolean>(false);
     const { getSignInParams, getZkId } = useAccountStore();
     const router = useRouter();
+    const [assets, error] = useAssets([require('../../../assets/semaphore.wasm')]);
 
     const [request, response, promptAsync] = useAuthRequest({
         ...twitterConfig,
@@ -174,6 +176,7 @@ export default function List() {
 
         <button onclick="yolo()">yolo</button>
         <p>Registered Handle: <span id="reghand"></span></p><br/>
+        <br/>
 
         <script src="https://cdn.jsdelivr.net/npm/snarkjs@0.7.0/build/snarkjs.min.js" integrity="sha384-Ule6nmUQ9CEAQfHl+cyHBOxIsBk9eN2llZp7ywwmvdBL8TZNdBio0EUpV4P0iNhh" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" integrity="sha384-Htz1SE4Sl5aitpvFgr2j0sfsGUIuSXI6t8hEyrlQ93zflEF3a29bH2AvkUROUw7J" crossorigin="anonymous"></script>
@@ -236,8 +239,8 @@ export default function List() {
                         externalNullifier: hash(externalNullifier),
                         signalHash: hash(signal)
                     },
-                    'https://www.trusted-setup-pse.org/semaphore/20/semaphore.wasm',
-                    'https://www.trusted-setup-pse.org/semaphore/20/semaphore.zkey'
+                    'https://res.cloudinary.com/anudit/raw/upload/v1692450767/semaphore_e5uhuw.wasm',
+                    'https://res.cloudinary.com/anudit/raw/upload/v1692450780/semaphore_pkyemk.zkey'
                 )
             
                 return {
@@ -276,14 +279,13 @@ export default function List() {
             <Text style={styles.buttonText}>req: {request?.url?.toString()}</Text>
             <Text style={styles.buttonText}>user: {JSON.stringify(user)}</Text>
 
-
-
             <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
+
                 <CustomButton
-                    title="Open Approve"
+                    title="Settle"
                     iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
                     onPress={() => {
-                        router.push("/approve?scope=age%2Cnew&redirect_uri=https%3A%2F%2Fomnid.io%2F&state=publicAnnouceId&issuer=0xA73F022a256372837724b28EFbc7bc1876e833C8&issuerSig=0xe509d4480ae90e9df6044e9536b5384fe778e69cdd99d6ffeba421c5d3dbca96447ae13aaf233d546009deeb7b26945a3af2dbfeae21f1c52f3fabc86295974f1c")
+                        router.push('/settle?scope=age%2Cnew&redirect_uri=https%3A%2F%2Fomnid.io%2F&state=publicAnnouceId&issuer=0xA73F022a256372837724b28EFbc7bc1876e833C8&issuerSig=0xe509d4480ae90e9df6044e9536b5384fe778e69cdd99d6ffeba421c5d3dbca96447ae13aaf233d546009deeb7b26945a3af2dbfeae21f1c52f3fabc86295974f1c')
                     }}
                 />
 
@@ -317,7 +319,7 @@ export default function List() {
             </View>
 
 
-            <View style={{ flex: 1, borderWidth: 1, borderColor: 'red', width: '100%', height: 1, display: 'none' }}>
+            <View style={{ flex: 1, borderWidth: 1, borderColor: 'red', width: '100%', height: 1, display: 'flex' }}>
                 <WebView
                     ref={webviewRef}
                     mixedContentMode="compatibility"

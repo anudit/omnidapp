@@ -3,8 +3,8 @@ import { Button, Text, View } from 'react-native';
 
 import { Link } from 'expo-router';
 import { useAccountStore } from '../../stores/accountStore';
-import { trimmed } from '../../utils/stringUtils';
-import { copy, styles } from './index';
+import { copy, trimmed } from '../../utils/stringUtils';
+import { styles } from './index';
 
 const List = () => {
 
