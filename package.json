@@ -5,11 +5,11 @@
   "scripts": {
     "start": "expo start --clear",
     "android": "expo start --android",
-    "ios:dev": "eas build --profile development --platform ios",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eas-build-pre-install": "npm config set legacy-peer-deps true",
-    "build": "eas build --profile production --platform android --local",
+    "build:android": "eas build --non-interactive --profile development --platform android --local",
+    "build:ios": "eas build --non-interactive --profile development --platform ios --local",
     "lint": "npx eslint .",
     "test": "jest --watchAll"
   },

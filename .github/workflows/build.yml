@@ -1,4 +1,4 @@
-name: build-android
+name: build
 on: 
   push:
   workflow_dispatch:
@@ -6,9 +6,16 @@ on:
 jobs:
   build:
     name: Build Test
+
+    strategy:
+      matrix:
+        include:
+          - os: ios
+            output: ./app-ios.tar.gz
+          - os: android
+            output: ./app-android.apk
+
     runs-on: ubuntu-latest
-    env:
-      GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx3072m -XX:MaxMetaspaceSize=1024m
 
     steps:
       - name: Check for EXPO_TOKEN
@@ -40,10 +47,10 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Build
-        run: eas build --non-interactive --platform android --profile production --local --output=./app-android.apk
+        run: eas build --non-interactive --platform ${{ matrix.os }} --profile development --local --output=${{ matrix.output }}
       
       - name: Upload binary
         uses: actions/upload-artifact@v3
         with:
-          name: app-android
-          path: app-android.apk
+          name: app-${{ matrix.os }}
+          path: ${{ matrix.output }}
