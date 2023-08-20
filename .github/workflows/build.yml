@@ -12,10 +12,10 @@ jobs:
         include:
           - os: ios
             output: ./app-ios.tar.gz
-            runs-on: ubuntu-latest
+            runs-on: macos-latest
           - os: android
             output: ./app-android.apk
-            runs-on: macos-latest
+            runs-on: ubuntu-latest
 
     runs-on: ${{ matrix.runs-on }}
 
