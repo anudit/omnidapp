@@ -12,10 +12,12 @@ jobs:
         include:
           - os: ios
             output: ./app-ios.tar.gz
+            runs-on: ubuntu-latest
           - os: android
             output: ./app-android.apk
+            runs-on: macos-latest
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runs-on }}
 
     steps:
       - name: Check for EXPO_TOKEN
