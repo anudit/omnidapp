@@ -7,7 +7,4 @@ const config = getDefaultConfig(__dirname, {
   isCSSEnabled: true,
 });
 
-config.resolver.assetExts.push('wasm');
-config.resolver.assetExts.push('zkey');
-
 module.exports = config;

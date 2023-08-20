@@ -7,7 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import designTokens from '../../../assets/designTokens.json';
 import { OmnidIcon, XIcon } from '../../../components/icons';
 
-import { useAssets } from 'expo-asset';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import type { types as TwitterTypes } from "twitter-api-sdk";
 import CustomButton from '../../../components/Button';
@@ -72,7 +71,6 @@ export default function List() {
     const [forgingProof, setForgingProof] = useState<boolean>(false);
     const { getSignInParams, getZkId } = useAccountStore();
     const router = useRouter();
-    const [assets, error] = useAssets([require('../../../assets/semaphore.wasm')]);
 
     const [request, response, promptAsync] = useAuthRequest({
         ...twitterConfig,
