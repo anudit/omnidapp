@@ -2,6 +2,7 @@ import { AntDesign, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import * as Application from 'expo-application';
 import * as Device from 'expo-device';
 import { useRouter } from 'expo-router';
+import * as Updates from 'expo-updates';
 import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 
 import { copy } from '@/utils/stringUtils';
@@ -16,6 +17,20 @@ const Settings = () => {
     const { basePubKey } = useAccountStore();
     const { shakeToCancel, toggleShakeToCancel, toggleDeveloperMode, developerMode } = useSettingsStore();
     const router = useRouter();
+
+    async function onFetchUpdateAsync() {
+        try {
+            const update = await Updates.checkForUpdateAsync();
+
+            if (update.isAvailable) {
+                await Updates.fetchUpdateAsync();
+                await Updates.reloadAsync();
+            }
+        } catch (error) {
+            // You can also add an alert() to see the error message in case of an error when fetching updates.
+            alert(`Error fetching latest Expo update: ${error}`);
+        }
+    }
 
 
     return (
@@ -128,6 +143,16 @@ const Settings = () => {
                         await copy(`${Device.manufacturer}: ${Device.modelName}`);
                     }}>{Device.manufacturer}: {Device.modelName}</Text>
                 </View>
+
+                <View style={styles.seperator} />
+
+                <View style={[styles.settingsRow, styles.center]}>
+                    <Pressable onPress={onFetchUpdateAsync}>
+                        <Text style={styles.settingTitle}>
+                            Check for updates
+                        </Text>
+                    </Pressable>
+                </View>
             </View>
         </View>
     )
@@ -174,6 +199,10 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomRadius: 10,
         paddingHorizontal: 25,
+    },
+    center: {
+        textAlign: 'center',
+        justifyContent: 'center'
     },
     settingTitle: {
         fontSize: 18,

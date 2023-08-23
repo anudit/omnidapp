@@ -1,11 +1,10 @@
-import { ActivityIndicator, Animated, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
 import { useAccountStore } from '@/stores/accountStore';
 import { copy, trimmed } from '@/utils/stringUtils';
 import { useLocalSearchParams } from 'expo-router';
 import { encode } from 'hi-base32';
 import * as OTPAuth from "otpauth";
 import { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Animated, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { Swipeable } from 'react-native-gesture-handler';
 import designTokens from '../../../assets/designTokens.json';
@@ -74,6 +73,7 @@ const OtpCard = ({ config, ...props }: { config: OtpConfig }) => {
 
     let [totp, setTotp] = useState<string | null>(null);
     let [loading, setLoading] = useState<string>("omnid");
+    const { removeTotpAccount } = useAccountStore();
 
     useEffect(() => {
 
@@ -107,8 +107,19 @@ const OtpCard = ({ config, ...props }: { config: OtpConfig }) => {
         return (
             <Animated.View style={[styles.deleteButton, { opacity }]}>
                 <TouchableOpacity onPress={() => {
-                    if (config.issuer !== 'Omnid') { }
-                    alert('Deleting ' + config.secret)
+                    if (config.issuer !== 'Omnid') {
+                        Alert.alert(`Remove ${config.issuer} ${config?.label ? " - " + config?.label : ""}?`, `Are you sure? This process is irrecoverable.`, [
+                            {
+                                text: 'Cancel',
+                                style: 'cancel',
+                            },
+                            {
+                                text: 'Remove',
+                                onPress: () => removeTotpAccount(config.secret),
+                                style: 'destructive'
+                            },
+                        ]);
+                    }
                 }}>
                     <Text style={styles.deleteButtonText}>Delete</Text>
                 </TouchableOpacity>

@@ -76,11 +76,6 @@ const mockData = [{
     description: 'Lorem Ipsum'
 }].map((data, id) => { return { ...data, id } })
 
-const cardColors = [
-    '#bd3b04',
-    '#242f3d',
-    designTokens.colors.brown,
-]
 
 const AllAttributes = () => {
 
@@ -125,7 +120,7 @@ const AllAttributes = () => {
             renderItem={({ item }) => (
                 <Pressable style={{
                     ...styles.card,
-                    backgroundColor: cardColors[Math.floor(Math.random() * cardColors.length)]
+                    backgroundColor: designTokens.colors.background.level2
                 }} >
                     <Text style={styles.cardHeading}>{item.title}</Text>
                     <Text style={styles.cardSubHeading}>{item.issuer}</Text>
@@ -138,16 +133,6 @@ const AllAttributes = () => {
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: designTokens.colors.background.level1,
-        color: designTokens.colors.text.primary,
-        width: '100%',
-        paddingTop: 10,
-        paddingHorizontal: 20
-    },
     hero: {
         paddingVertical: 6,
         flexDirection: 'row',

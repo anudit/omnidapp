@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { publicActions } from 'viem';
 import designTokens from '../../assets/designTokens.json';
@@ -11,11 +11,11 @@ import { useSettingsStore } from '../../stores/settings';
 const Home = () => {
   const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView style={{ ...styles.container, paddingTop: Math.max(insets.top, 40) }} >
-      <BlockNumber />
+    <View style={{ ...styles.container, paddingTop: Math.max(insets.top, 40) }} >
+      {/* <BlockNumber /> */}
       {/* <MyAttributes /> */}
       <AllAttributes />
-    </SafeAreaView>
+    </View>
   )
 }
 
