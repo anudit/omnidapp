@@ -13,7 +13,6 @@ const Home = () => {
   return (
     <View style={{ ...styles.container, paddingTop: Math.max(insets.top, 40) }} >
       {/* <BlockNumber /> */}
-      {/* <MyAttributes /> */}
       <AllAttributes />
     </View>
   )
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
     color: designTokens.colors.text.primary,
     width: '100%',
     paddingTop: 10,
-    paddingHorizontal: 20
+    // paddingHorizontal: 20
   },
   item: {
     backgroundColor: '#f9c2ff',

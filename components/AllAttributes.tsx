@@ -154,7 +154,8 @@ const styles = StyleSheet.create({
     },
     grid: {
         width: '100%',
-        minHeight: '100%'
+        minHeight: '100%',
+        paddingHorizontal: 12
     },
     card: {
         width: '49%',
