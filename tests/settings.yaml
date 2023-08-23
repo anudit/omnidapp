@@ -1,0 +1,9 @@
+appId: <your-app-id>
+---
+- tapOn: ""
+- assertVisible: "Settings"
+- tapOn:
+    point: "85%,20%"
+- tapOn:
+    point: "85%,26%"
+- tapOn: "Navigate up"
