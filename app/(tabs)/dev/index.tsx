@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import designTokens from '../../../assets/designTokens.json';
 import { OmnidIcon, XIcon } from '../../../components/icons';
 
+import { gql, useQuery } from '@apollo/client';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import type { types as TwitterTypes } from "twitter-api-sdk";
 import CustomButton from '../../../components/Button';
@@ -65,6 +66,29 @@ type Proof = [
 ];
 
 
+const GET_GROUPS = gql`
+{
+    groups(first: 5) {
+      id
+      merkleTree {
+        root
+        depth
+      }
+      members {
+        index
+        identityCommitment
+      }
+      verifiedProofs {
+        signal
+        timestamp
+      }
+      timestamp
+      admin
+    }
+}
+`;
+
+
 export default function List() {
 
     const [user, setUser] = useState<userInfoType['data'] | null>(null);
@@ -77,6 +101,8 @@ export default function List() {
         state: getZkId().commitment.toString()
     }, discovery);
 
+    const { loading, error, data } = useQuery(GET_GROUPS);
+
     const getCurrentUser = async (accessToken: string): Promise<userInfoType> => {
         const response = await fetch(userInfoUrl, {
             method: "GET",
@@ -86,6 +112,7 @@ export default function List() {
         })
         return response.json()
     }
+
 
     useEffect(() => {
         if (response?.type === 'success') {
@@ -312,6 +339,17 @@ export default function List() {
                     iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
                     onPress={() => {
                         router.push('/dev/totp')
+                    }}
+                />
+            </View>
+
+            <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
+                <CustomButton
+                    isLoading={loading}
+                    title="Run Gql"
+                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        alert(JSON.stringify(data['groups']))
                     }}
                 />
             </View>

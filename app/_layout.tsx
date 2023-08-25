@@ -7,9 +7,16 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useAccountStore } from '@/stores/accountStore';
 import { useSettingsStore } from '@/stores/settings';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { Platform } from 'react-native';
 import designTokens from '../assets/designTokens.json';
 import InsecureDevice from '../components/insecureDevice';
+
+
+const client = new ApolloClient({
+  uri: 'https://api.studio.thegraph.com/query/1649/omnid-gm-basetestnet/version/latest',
+  cache: new InMemoryCache()
+});
 
 const StackLayout = () => {
 
@@ -37,24 +44,26 @@ const StackLayout = () => {
   if (fontsLoaded && hasHydrated && hasHydratedAccounts && integrityCheck != null) {
     if (integrityCheck === true) {
       return (
-        <RootSiblingParent>
-          <SafeAreaProvider>
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="settle" options={{
-                headerShown: true,
-                presentation: Platform.OS == 'ios' ? 'modal' : undefined,
-                headerTintColor: designTokens.colors.text.primary,
-                headerTitle: 'Approve Request',
-                headerBlurEffect: 'light',
-                headerStyle: {
-                  backgroundColor: designTokens.colors.background.level3
-                },
-              }} />
-              <Stack.Screen name="settings" options={{ headerShown: false }} />
-            </Stack>
-          </SafeAreaProvider>
-        </RootSiblingParent>
+        <ApolloProvider client={client}>
+          <RootSiblingParent>
+            <SafeAreaProvider>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="settle" options={{
+                  headerShown: true,
+                  presentation: Platform.OS == 'ios' ? 'modal' : undefined,
+                  headerTintColor: designTokens.colors.text.primary,
+                  headerTitle: 'Approve Request',
+                  headerBlurEffect: 'light',
+                  headerStyle: {
+                    backgroundColor: designTokens.colors.background.level3
+                  },
+                }} />
+                <Stack.Screen name="settings" options={{ headerShown: false }} />
+              </Stack>
+            </SafeAreaProvider>
+          </RootSiblingParent>
+        </ApolloProvider>
       )
     }
     else {

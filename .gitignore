@@ -24,3 +24,6 @@ notes.txt
 expo-env.d.ts
 # @end expo-cli
 *.tar.gz
+android
+ios
+/*.app

@@ -5,7 +5,6 @@ on:
 
 jobs:
   build:
-
     strategy:
       matrix:
         include:
@@ -16,7 +15,7 @@ jobs:
             output: ./app-android.apk
             runs-on: ubuntu-latest
 
-    name: Build on ${{ matrix.on }}
+    name: Build for ${{ matrix.os }}
 
     runs-on: ${{ matrix.runs-on }}
 
