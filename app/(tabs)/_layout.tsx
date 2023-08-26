@@ -1,9 +1,11 @@
+import { HomeIcon, HomeOutlineIcon } from "@/components/icons";
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomTabBar } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
 import { Link, Tabs } from 'expo-router';
 import { Platform, StyleSheet } from 'react-native';
 import designTokens from "../../assets/designTokens.json";
+
 export default function TabLayout() {
 
   return (
@@ -17,7 +19,7 @@ export default function TabLayout() {
         tabBarShowLabel: false,
         tabBarIcon: ({ size, color, focused }) => {
           if (route.name === "index")
-            return (<Ionicons name={focused ? "home" : "home-outline"} size={size} color={color} />);
+            return focused ? (<HomeIcon height={size} fill={color} />) : (<HomeOutlineIcon height={size} fill={color} />);
           else if (route.name === 'dev/index')
             return (<Ionicons name={focused ? "color-wand" : "color-wand-outline"} size={size} color={color} />);
           else if (route.name === "scan/index")

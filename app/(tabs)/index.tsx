@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { publicActions } from 'viem';
 import designTokens from '../../assets/designTokens.json';
@@ -9,9 +8,8 @@ import { useAccountStore } from '../../stores/accountStore';
 import { useSettingsStore } from '../../stores/settings';
 
 const Home = () => {
-  const insets = useSafeAreaInsets();
   return (
-    <View style={{ ...styles.container, paddingTop: Math.max(insets.top, 40) }} >
+    <View style={{ ...styles.container }} >
       {/* <BlockNumber /> */}
       <AllAttributes />
     </View>
@@ -53,9 +51,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: designTokens.colors.background.level1,
     color: designTokens.colors.text.primary,
-    width: '100%',
-    paddingTop: 10,
-    // paddingHorizontal: 20
+    width: '100%'
   },
   item: {
     backgroundColor: '#f9c2ff',

@@ -31,3 +31,35 @@ export const XIcon = (props: SvgProps) => {
     </Svg>
   );
 }
+export const GovIcon = (props: SvgProps) => {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 68 68" {...props}>
+      <Path d="M10 25h11v3l-1 1h-1v20h1l1 1v3H10v-3l1-1h1V29h-1l-1-1zm18 0h12v3l-1 1h-2v20h2l1 1v3H28v-3l1-1h2V29h-2l-1-1zm28 24h1l1 1v3H47v-3l1-1h1V29h-1l-1-1v-3h11v3l-1 1h-1zm6 8v2H6v-2l1-2h54l1 2zm4 8v-2l-2-2H4l-2 2v2l2 1h60l2-1zM33 2 6 17l-1 1v4l1 1h56l1-1v-4l-1-1L35 2a3 3 0 0 0-2 0zm1 15a4 4 0 0 1-4-4 4 4 0 0 1 4-4 4 4 0 0 1 0 8z" />
+    </Svg>
+  );
+}
+export const MoreIcon = (props: SvgProps) => {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 512 512" {...props}>
+      <Path d="M156 256c0 11 9 20 20 20h60v60a20 20 0 1 0 40 0v-60h60a20 20 0 1 0 0-40h-60v-60a20 20 0 1 0-40 0v60h-60c-11 0-20 9-20 20zm4-194 26-11a20 20 0 0 0-15-37l-26 11a20 20 0 0 0 15 37z" />
+      <Path d="M256 0a20 20 0 1 0 0 40A216 216 0 1 1 40 256a20 20 0 1 0-40 0A256 256 0 1 0 256 0zM93 113l20-20a20 20 0 1 0-28-28L65 85a20 20 0 1 0 28 28zm-68 84c10 4 22-1 26-11l11-26a20 20 0 0 0-37-15l-11 26c-4 10 1 22 11 26z" />
+    </Svg>
+  );
+}
+
+export const HomeOutlineIcon = (props: SvgProps) => {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" {...props}>
+      <Path d="M9.5 17.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z" />
+      <Path fill-rule="evenodd" d="M14.2 2.6a3.5 3.5 0 0 0-4.4 0L3.3 7.7A3.5 3.5 0 0 0 2 10.5v8A3.5 3.5 0 0 0 5.5 22h13a3.5 3.5 0 0 0 3.5-3.5v-8a3.5 3.5 0 0 0-1.3-2.8zm-3.7.8a2.5 2.5 0 0 1 3 0l6.5 5a2.5 2.5 0 0 1 1 2v8.1a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-8a2.5 2.5 0 0 1 1-2z" clipRule="evenodd" />
+    </Svg>
+  );
+}
+
+export const HomeIcon = (props: SvgProps) => {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" {...props}>
+      <Path d="M10 3a4 4 0 0 1 4 0l6 4a4 4 0 0 1 2 3v9a4 4 0 0 1-3 3H6a4 4 0 0 1-4-3v-9a4 4 0 0 1 2-3zm0 15a1 1 0 0 0 0 1h5a1 1 0 0 0 0-1z" />
+    </Svg>
+  );
+}

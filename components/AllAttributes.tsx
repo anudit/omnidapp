@@ -3,8 +3,9 @@ import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-na
 
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import designTokens from '../assets/designTokens.json';
-import { OmnidIcon } from './icons';
+import { GovIcon, MoreIcon, OmnidIcon } from './icons';
 
 const mockData = [{
     title: '> 18',
@@ -80,6 +81,7 @@ const mockData = [{
 const AllAttributes = () => {
 
     const [filterValue, setFilterValue] = useState<undefined | string>(undefined);
+    const insets = useSafeAreaInsets();
 
     return (
         <FlatList
@@ -91,10 +93,16 @@ const AllAttributes = () => {
             keyboardShouldPersistTaps={'always'}
             ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
             ListHeaderComponent={
-                <>
+                <View style={{
+                    backgroundColor: designTokens.colors.accent.primary,
+                    marginBottom: 8,
+                    paddingTop: Math.max(insets.top, 20),
+                    paddingHorizontal: 20,
+                    borderBottomRightRadius: 20,
+                    borderBottomLeftRadius: 20,
+                }}>
                     <View style={styles.hero}>
                         <View style={{ display: 'flex', flexDirection: 'row' }}>
-                            <OmnidIcon fill={designTokens.colors.text.primary} style={{ marginRight: 8 }} />
                             <Text style={styles.heading}>All Attributes</Text>
                         </View>
                         <Link href="/settings" asChild>
@@ -102,7 +110,7 @@ const AllAttributes = () => {
                                 {({ pressed }) => <Ionicons
                                     name={pressed ? 'settings' : "settings-outline"}
                                     size={24}
-                                    color={designTokens.colors.text.primary}
+                                    color={designTokens.colors.primary[300]}
                                 />}
                             </Pressable>
                         </Link>
@@ -115,7 +123,47 @@ const AllAttributes = () => {
                         value={filterValue}
                         onChangeText={text => setFilterValue(text)}
                     />
-                </>
+                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', height: 80 }}>
+                        <Pressable style={{ alignItems: 'center', justifyContent: 'center' }} >
+                            <View style={{
+                                borderRadius: 100,
+                                backgroundColor: designTokens.colors.background.level2,
+                                padding: 10
+                            }}>
+                                <OmnidIcon style={styles.topRowIcon} height={24} fill={designTokens.colors.accent.primary + 'aa'} />
+                            </View>
+                            <Text style={styles.topRowSubheading}>Omnid</Text>
+                        </Pressable>
+
+                        <Pressable style={{ alignItems: 'center', justifyContent: 'center' }} >
+                            <View style={{
+                                borderRadius: 100,
+                                backgroundColor: designTokens.colors.background.level2,
+                                padding: 10
+                            }}>
+                                <GovIcon height={25} fill={designTokens.colors.accent.primary + 'aa'} />
+                            </View>
+                            <Text style={styles.topRowSubheading}>Gov</Text>
+                        </Pressable>
+
+                        <Pressable style={{ alignItems: 'center', justifyContent: 'center' }} >
+                            <Ionicons style={styles.topRowIcon} name="people" size={24} color={designTokens.colors.accent.primary + 'aa'} />
+                            <Text style={styles.topRowSubheading}>Social</Text>
+                        </Pressable>
+
+                        <Pressable style={{ alignItems: 'center', justifyContent: 'center' }} >
+                            <View style={{
+                                borderRadius: 100,
+                                backgroundColor: designTokens.colors.background.level2,
+                                padding: 10
+                            }}>
+                                <MoreIcon height={25} fill={designTokens.colors.accent.primary} fillOpacity={0.6} />
+                            </View>
+                            <Text style={styles.topRowSubheading}>More</Text>
+                        </Pressable>
+
+                    </View>
+                </View>
             }
             renderItem={({ item }) => (
                 <Pressable style={{
@@ -142,20 +190,20 @@ const styles = StyleSheet.create({
         height: 40,
         marginVertical: 8,
         borderWidth: 1,
+        backgroundColor: designTokens.colors.background.level2,
         borderColor: designTokens.colors.text.secondary,
-        color: designTokens.colors.text.primary,
+        color: designTokens.colors.accent.primary,
         borderRadius: 20,
         padding: 12,
     },
     heading: {
         fontFamily: designTokens.typography.bold,
-        color: designTokens.colors.text.primary,
+        color: designTokens.colors.primary[300],
         fontSize: 20
     },
     grid: {
         width: '100%',
         minHeight: '100%',
-        paddingHorizontal: 12
     },
     card: {
         width: '49%',
@@ -172,7 +220,17 @@ const styles = StyleSheet.create({
     cardSubHeading: {
         fontSize: 10,
         color: designTokens.colors.text.inverse,
-    }
+    },
+    topRowIcon: {
+        borderRadius: 100,
+        backgroundColor: designTokens.colors.background.level2,
+        padding: 10
+    },
+    topRowSubheading: {
+        fontSize: 10,
+        paddingTop: 4,
+        color: designTokens.colors.background.level2,
+    },
 });
 
 export default AllAttributes;

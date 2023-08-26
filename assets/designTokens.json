@@ -14,6 +14,7 @@
     "brown": "#FFAC9D",
     "green": "#89CC50",
     "teal": "#5DD7C0",
+    "white": "#fff",
     "background": {
       "level1": "#E7D7C5",
       "level2": "#D0B7A0",
