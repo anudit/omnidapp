@@ -1,14 +1,16 @@
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_700Bold, useFonts } from '@expo-google-fonts/dm-sans';
 import * as Device from 'expo-device';
 import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import CustomSplash from '@/components/CustomSplash';
 import { useAccountStore } from '@/stores/accountStore';
 import { useSettingsStore } from '@/stores/settings';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { Platform } from 'react-native';
 import designTokens from '../assets/designTokens.json';
 import InsecureDevice from '../components/insecureDevice';
 
@@ -17,6 +19,8 @@ const client = new ApolloClient({
   uri: 'https://api.studio.thegraph.com/query/1649/omnid-gm-basetestnet/version/latest',
   cache: new InMemoryCache()
 });
+
+SplashScreen.hideAsync();
 
 const StackLayout = () => {
 
@@ -73,7 +77,7 @@ const StackLayout = () => {
     }
   }
   else {
-    return null;
+    return <CustomSplash />;
   }
 
 

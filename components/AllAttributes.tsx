@@ -77,7 +77,6 @@ const mockData = [{
     description: 'Lorem Ipsum'
 }].map((data, id) => { return { ...data, id } })
 
-
 const AllAttributes = () => {
 
     const [filterValue, setFilterValue] = useState<undefined | string>(undefined);
@@ -103,7 +102,7 @@ const AllAttributes = () => {
                 }}>
                     <View style={styles.hero}>
                         <View style={{ display: 'flex', flexDirection: 'row' }}>
-                            <Text style={styles.heading}>All Attributes</Text>
+                            <Text style={styles.heading}>Home</Text>
                         </View>
                         <Link href="/settings" asChild>
                             <Pressable>
@@ -147,7 +146,13 @@ const AllAttributes = () => {
                         </Pressable>
 
                         <Pressable style={{ alignItems: 'center', justifyContent: 'center' }} >
-                            <Ionicons style={styles.topRowIcon} name="people" size={24} color={designTokens.colors.accent.primary + 'aa'} />
+                            <View style={{
+                                borderRadius: 100,
+                                backgroundColor: designTokens.colors.background.level2,
+                                padding: 10
+                            }}>
+                                <Ionicons name="people" size={24} color={designTokens.colors.accent.primary + 'aa'} />
+                            </View>
                             <Text style={styles.topRowSubheading}>Social</Text>
                         </Pressable>
 

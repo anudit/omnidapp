@@ -30,8 +30,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - uses: mikehardy/buildcache-action@v2
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -40,6 +38,26 @@ jobs:
 
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
+
+      - name: Cache cocoapods
+        if: ${{ matrix.os == 'ios' }}
+        uses: actions/cache@v3
+        with:
+          path: /ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Cache Gradle
+        if: ${{ matrix.os == 'android' }}
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
@@ -51,7 +69,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Build
-        run: eas build --non-interactive --platform ${{ matrix.os }} --profile development --local --output=${{ matrix.output }}
+        run: npm run build:${{ matrix.os }}
       
       - name: Upload binary
         uses: actions/upload-artifact@v3

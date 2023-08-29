@@ -8,7 +8,7 @@
     "scheme": "omnid",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/icons/omnid-frame.png",
+      // "image": "./assets/icons/omnid-frame.png",
       "backgroundColor": "#000000",
       "resizeMode": "contain"
     },
@@ -31,6 +31,7 @@
             "newArchEnabled": true
           },
           "ios": {
+            "flipper": true,
             "newArchEnabled": true
           }
         }

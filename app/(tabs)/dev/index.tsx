@@ -352,6 +352,24 @@ export default function List() {
                         alert(JSON.stringify(data['groups']))
                     }}
                 />
+
+                <CustomButton
+                    title="Call"
+                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        router.push('/dev/call')
+                    }}
+                />
+            </View>
+
+            <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
+                <CustomButton
+                    title="Splash"
+                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        router.push('/dev/splash')
+                    }}
+                />
             </View>
 
 
