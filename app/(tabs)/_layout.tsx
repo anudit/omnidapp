@@ -75,13 +75,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="dev/call"
-        options={{
-          title: 'Call',
-          href: null,
-        }}
-      />
-      <Tabs.Screen
         name="dev/splash"
         options={{
           title: 'Splash',

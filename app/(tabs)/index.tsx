@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { StatusBar } from 'expo-status-bar';
 import { publicActions } from 'viem';
 import designTokens from '../../assets/designTokens.json';
 import AllAttributes from '../../components/AllAttributes';
@@ -10,6 +11,7 @@ import { useSettingsStore } from '../../stores/settings';
 const Home = () => {
   return (
     <View style={{ ...styles.container }} >
+      <StatusBar style="light" />
       {/* <BlockNumber /> */}
       <AllAttributes />
     </View>

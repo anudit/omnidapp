@@ -301,7 +301,7 @@ export default function List() {
         <SafeAreaView style={styles.container}>
             <Text style={styles.buttonText}>Dev</Text>
 
-            <Text style={styles.buttonText}>req: {request?.url?.toString()}</Text>
+            {/* <Text style={styles.buttonText}>req: {request?.url?.toString()}</Text> */}
             <Text style={styles.buttonText}>user: {JSON.stringify(user)}</Text>
 
             <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
@@ -322,17 +322,6 @@ export default function List() {
                     }}
                     isLoading={forgingProof}
                 />
-            </View>
-
-            <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
-                <CustomButton
-                    disabled={!request}
-                    title="Connect Twitter"
-                    iconLeft={<XIcon fill={designTokens.colors.text.primary} height={18} />}
-                    onPress={() => {
-                        promptAsync();
-                    }}
-                />
 
                 <CustomButton
                     title="TOTP"
@@ -344,6 +333,16 @@ export default function List() {
             </View>
 
             <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
+
+                <CustomButton
+                    disabled={!request}
+                    title="Connect Twitter"
+                    iconLeft={<XIcon fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        promptAsync();
+                    }}
+                />
+
                 <CustomButton
                     isLoading={loading}
                     title="Run Gql"
@@ -353,14 +352,8 @@ export default function List() {
                     }}
                 />
 
-                <CustomButton
-                    title="Call"
-                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
-                    onPress={() => {
-                        router.push('/dev/call')
-                    }}
-                />
             </View>
+
 
             <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
                 <CustomButton

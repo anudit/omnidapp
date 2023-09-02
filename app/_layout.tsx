@@ -14,6 +14,10 @@ import { useSettingsStore } from '@/stores/settings';
 import designTokens from '../assets/designTokens.json';
 import InsecureDevice from '../components/insecureDevice';
 
+export const unstable_settings = {
+  // Ensure that reloading on `/modal` keeps a back button present.
+  initialRouteName: '(tabs)',
+};
 
 const client = new ApolloClient({
   uri: 'https://api.studio.thegraph.com/query/1649/omnid-gm-basetestnet/version/latest',

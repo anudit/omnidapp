@@ -25,7 +25,7 @@
     "@semaphore-protocol/data": "^3.11.0",
     "@semaphore-protocol/group": "^3.11.0",
     "@semaphore-protocol/identity": "^3.11.0",
-    "@wagmi/chains": "^1.7.0",
+    "@wagmi/chains": "^1.8.0",
     "@zk-kit/incremental-merkle-tree": "^1.1.0",
     "base-64": "^1.0.0",
     "expo": "^49.0.8",
@@ -57,9 +57,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.72.4",
-    "react-native-call-detection": "^1.9.0",
     "react-native-countdown-circle-timer": "^3.2.1",
     "react-native-gesture-handler": "~2.12.0",
+    "react-native-reanimated": "~3.3.0",
     "react-native-root-siblings": "^4.1.1",
     "react-native-root-toast": "^3.4.1",
     "react-native-safe-area-context": "4.6.3",
@@ -70,9 +70,8 @@
     "rn-swipe-button": "^1.3.8",
     "text-encoding-polyfill": "^0.6.7",
     "twitter-api-sdk": "^1.2.1",
-    "viem": "^1.8.1",
-    "zustand": "^4.4.1",
-    "react-native-reanimated": "~3.3.0"
+    "viem": "^1.9.3",
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.22.11",
