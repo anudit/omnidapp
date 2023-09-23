@@ -17,7 +17,7 @@ export default function Home() {
                 headerBackButtonMenuEnabled: true
             }}
         >
-            <Stack.Screen name="index" />
+            <Stack.Screen name="main" />
             <Stack.Screen name="zk" options={{ headerShown: true, headerTitle: 'ZK Id' }} />
         </Stack>
     );

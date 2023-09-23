@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import designTokens from '../assets/designTokens.json';
 import { GovIcon, MoreIcon, OmnidIcon } from './icons';
@@ -81,6 +81,7 @@ const AllAttributes = () => {
 
     const [filterValue, setFilterValue] = useState<undefined | string>(undefined);
     const insets = useSafeAreaInsets();
+    const router = useRouter();
 
     return (
         <FlatList
@@ -104,6 +105,9 @@ const AllAttributes = () => {
                         <View style={{ display: 'flex', flexDirection: 'row' }}>
                             <Text style={styles.heading}>Home</Text>
                         </View>
+                        {/* <Button title="set" onPress={() => {
+                            router.push('/settingsnew/')
+                        }} /> */}
                         <Link href="/settings" asChild>
                             <Pressable>
                                 {({ pressed }) => <Ionicons

@@ -112,7 +112,7 @@ const Settings = () => {
                     </Text>
 
                     <Text style={styles.settingValue} onPress={async () => {
-                        await copy(Application.nativeBuildVersion);
+                        await copy(Application.nativeBuildVersion || "");
                     }}>v{Application.nativeBuildVersion}</Text>
                 </View>
 

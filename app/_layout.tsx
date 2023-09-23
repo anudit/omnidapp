@@ -42,7 +42,7 @@ const StackLayout = () => {
       if (integrityCheck === null) {
         const isRooted = await Device.isRootedExperimentalAsync();
         let isDevice = Device.isDevice;
-        if (__DEV__) isDevice = true
+        if (__DEV__ === true) isDevice = true
         setIntergrityCheck(!isRooted && isDevice)
       }
     }

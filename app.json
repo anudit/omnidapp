@@ -46,6 +46,10 @@
     ],
     "android": {
       "package": "com.cupoc.omnid",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/omnid.png",
+        "backgroundColor": "#ffffff"
+      },
       "intentFilters": [
         {
           "action": "VIEW",
