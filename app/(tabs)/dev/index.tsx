@@ -8,10 +8,19 @@ import designTokens from '../../../assets/designTokens.json';
 import { OmnidIcon, XIcon } from '../../../components/icons';
 
 import { gql, useQuery } from '@apollo/client';
+import * as Notifications from 'expo-notifications';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import type { types as TwitterTypes } from "twitter-api-sdk";
 import CustomButton from '../../../components/Button';
 import { useAccountStore } from '../../../stores/accountStore';
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -189,6 +198,28 @@ export default function List() {
         setForgingProof(false)
     }
 
+    async function reg() {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+
+        Notifications.scheduleNotificationAsync({
+            content: {
+                title: "You've got mail! 📬",
+                body: 'Here is the notification body',
+                data: { data: 'goes here' },
+            },
+            trigger: null,
+        });
+    }
+
 
     const html = `
       <html>
@@ -361,6 +392,15 @@ export default function List() {
                     iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
                     onPress={() => {
                         router.push('/dev/splash')
+                    }}
+                />
+
+                <CustomButton
+                    title="Notifs"
+                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        reg();
+
                     }}
                 />
             </View>

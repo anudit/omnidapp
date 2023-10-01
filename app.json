@@ -79,8 +79,8 @@
         }
       ],
       "permissions": [
-        "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO"
+        "android.permission.CAMERA", // Qr Scanner
+        "android.permission.RECORD_AUDIO" // Qr Scanner
       ]
     },
     "ios": {
@@ -99,7 +99,11 @@
             ]
           }
         ],
-        "CADisableMinimumFrameDurationOnPhone": true
+        "CADisableMinimumFrameDurationOnPhone": true,
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
       }
     },
     "experiments": {

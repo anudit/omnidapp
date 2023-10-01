@@ -11,6 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import CustomSplash from '@/components/CustomSplash';
 import { useAccountStore } from '@/stores/accountStore';
 import { useSettingsStore } from '@/stores/settings';
+import { registerBackgroundNotifications } from '@/utils/notifications';
 import designTokens from '../assets/designTokens.json';
 import InsecureDevice from '../components/insecureDevice';
 
@@ -43,6 +44,7 @@ const StackLayout = () => {
         const isRooted = await Device.isRootedExperimentalAsync();
         let isDevice = Device.isDevice;
         if (__DEV__ === true) isDevice = true
+        registerBackgroundNotifications()
         setIntergrityCheck(!isRooted && isDevice)
       }
     }
