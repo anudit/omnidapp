@@ -82,6 +82,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="dev/loc"
+        options={{
+          title: 'Location',
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="dev/cam"
+        options={{
+          title: 'Camera',
+          href: null,
+        }}
+      />
+      <Tabs.Screen
         name="connections/index"
         options={{
           tabBarLabel: "Connections",

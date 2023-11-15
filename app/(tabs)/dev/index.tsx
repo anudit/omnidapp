@@ -225,8 +225,8 @@ export default function List() {
         <p>Registered Handle: <span id="reghand"></span></p><br/>
         <br/>
 
-        <script src="https://cdn.jsdelivr.net/npm/snarkjs@0.7.1/build/snarkjs.min.js" integrity="sha384-Ule6nmUQ9CEAQfHl+cyHBOxIsBk9eN2llZp7ywwmvdBL8TZNdBio0EUpV4P0iNhh" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" integrity="sha384-Htz1SE4Sl5aitpvFgr2j0sfsGUIuSXI6t8hEyrlQ93zflEF3a29bH2AvkUROUw7J" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/snarkjs@0.7.2/build/snarkjs.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" crossorigin="anonymous"></script>
         <script>
 
             function reviver(key, value) {
@@ -352,6 +352,7 @@ export default function List() {
                         router.push('/dev/totp')
                     }}
                 />
+
             </View>
 
             <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
@@ -371,6 +372,14 @@ export default function List() {
                     iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
                     onPress={() => {
                         alert(JSON.stringify(data['groups']))
+                    }}
+                />
+
+                <CustomButton
+                    title="Cam"
+                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        router.push('/dev/cam')
                     }}
                 />
 
@@ -394,10 +403,17 @@ export default function List() {
 
                     }}
                 />
+                <CustomButton
+                    title="Location"
+                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        router.push('/dev/loc')
+                    }}
+                />
             </View>
 
 
-            <View style={{ flex: 1, borderWidth: 1, borderColor: 'red', width: '100%', height: 1, display: 'flex' }}>
+            <View style={{ flex: 1, borderWidth: 1, borderColor: 'red', width: '100%', height: 32, display: 'flex' }}>
                 <WebView
                     ref={webviewRef}
                     mixedContentMode="compatibility"

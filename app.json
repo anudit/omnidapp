@@ -48,9 +48,9 @@
       ],
       "@react-native-firebase/app",
       [
-        "@viro-community/react-viro",
+        "expo-location",
         {
-          "androidXrMode": "GVR" // or "AR" or "OVR_MOBILE"
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
       ],
       "expo-router"
