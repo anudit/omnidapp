@@ -1,69 +1,53 @@
-import * as BackgroundFetch from 'expo-background-fetch';
+import { isDevice } from 'expo-device';
+import { openSettings } from 'expo-linking';
 import * as Notifications from 'expo-notifications';
-import * as TaskManager from 'expo-task-manager';
+import {
+  getPermissionsAsync,
+  requestPermissionsAsync
+} from 'expo-notifications';
+import { Alert } from 'react-native';
 
-const BACKGROUND_NOTIF_TASK = 'background-notifications-task';
+const generatePushNotificationsToken = async (): Promise<
+  string | undefined
+> => {
+  if (!isDevice) {
+    throw new Error(
+      'Sorry, Push Notifications are only supported on physical devices.'
+    );
+  }
 
-// 1. Define the task by providing a name and the function that should be executed
-// Note: This needs to be called in the global scope (e.g outside of your React components)
-TaskManager.defineTask(BACKGROUND_NOTIF_TASK, async () => {
-  const now = Date.now();
+  const { status: existingStatus } = await getPermissionsAsync();
 
-  console.log(`Got background fetch call at date: ${new Date(now).toISOString()}`);
+  let finalStatus = existingStatus;
 
-  Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You've got mail! 📬",
-      body: `Here is the notification body  ${new Date(now).toISOString()}`,
-      data: { data: 'goes here' },
-    },
-    trigger: null,
-  });
+  if (existingStatus !== 'granted') {
+    const { status } = await requestPermissionsAsync();
+    finalStatus = status;
+  }
 
-  // Be sure to return the successful result type!
-  return BackgroundFetch.BackgroundFetchResult.NewData;
-});
+  if (finalStatus !== 'granted') {
+    Alert.alert(
+      'Error',
+      'Sorry, we need your permission to enable Push Notifications. Please enable it in your privacy settings.',
+      [
+        {
+          text: 'OK',
+        },
+        {
+          text: 'Open Settings',
+          onPress: async () => openSettings(),
+        },
+      ]
+    );
+    return undefined;
+  }
 
-// 2. Register the task at some point in your app by providing the same name,
-// and some configuration options for how the background fetch should behave
-// Note: This does NOT need to be in the global scope and CAN be used in your React components!
-async function registerBackgroundNotifications() {
-  console.log('registerBackgroundNotifications');
-  return BackgroundFetch.registerTaskAsync(BACKGROUND_NOTIF_TASK, {
-    minimumInterval: 10, // 10 secs
-    stopOnTerminate: false, // android only,
-    startOnBoot: true, // android only
-  });
-}
+  const { data } = await Notifications.getDevicePushTokenAsync();
 
-// 3. (Optional) Unregister tasks by specifying the task name
-// This will cancel any future background fetch calls that match the given name
-// Note: This does NOT need to be in the global scope and CAN be used in your React components!
-async function unregisterBackgroundNotifications() {
-  console.log('unregisterBackgroundNotifications');
-  await BackgroundFetch.unregisterTaskAsync(BACKGROUND_NOTIF_TASK);
-}
-
-const getNotificationStatus = async () => {
-  const sysStatus = await BackgroundFetch.getStatusAsync();
-  const regStatus = await TaskManager.isTaskRegisteredAsync(BACKGROUND_NOTIF_TASK);
-  return sysStatus === BackgroundFetch.BackgroundFetchStatus.Available && regStatus;
+  return data;
 };
 
-const toggleNotifications = async () => {
-  let current = await getNotificationStatus();
-  if (current === true) {
-    await unregisterBackgroundNotifications()
-    return false;
-  }
-  else {
-    await registerBackgroundNotifications();
-    return true;
-  }
-
-}
-
 export {
-  getNotificationStatus, registerBackgroundNotifications, toggleNotifications
+  generatePushNotificationsToken
 };
 

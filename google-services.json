@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "205002720364",
+    "project_id": "omnid1",
+    "storage_bucket": "omnid1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205002720364:android:107d44bdd96ba0682c0449",
+        "android_client_info": {
+          "package_name": "com.cupoc.omnid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARrwrIQYplDLMN0hDiSKxyxdjtpvxrP-I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

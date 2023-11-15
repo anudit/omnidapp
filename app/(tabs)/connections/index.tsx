@@ -1,5 +1,6 @@
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
 
+import LorenzAttractor from '@/components/LorrenzAttractor';
 import designTokens from '../../../assets/designTokens.json';
 
 export default function Connections() {
@@ -9,6 +10,7 @@ export default function Connections() {
             <Text style={styles.text}>
                 Connections
             </Text>
+            <LorenzAttractor txnHash='0xjsifhusfisudhfsdf' />
         </SafeAreaView>
     );
 
@@ -22,7 +24,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         margin: 0,
-        backgroundColor: designTokens.colors.background.level1,
+        backgroundColor: 'black',
     },
     overlay: {
         position: 'absolute',

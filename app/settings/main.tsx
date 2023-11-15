@@ -11,8 +11,6 @@ import { BellIcon, HiddenIcon } from '../../components/icons';
 import { useAccountStore } from '../../stores/accountStore';
 import { useSettingsStore } from '../../stores/settings';
 
-import { getNotificationStatus, toggleNotifications } from '@/utils/notifications';
-
 const Settings = () => {
 
     const { basePubKey } = useAccountStore();
@@ -21,7 +19,7 @@ const Settings = () => {
     const [notificationsState, setNotificationsState] = useState<boolean | null>(null);
 
     useEffect(() => {
-        getNotificationStatus().then(setNotificationsState);
+        // getNotificationStatus().then(setNotificationsState);
     }, [])
 
     return (
@@ -86,7 +84,7 @@ const Settings = () => {
 
                                 <Switch
                                     onValueChange={() => {
-                                        toggleNotifications().then(setNotificationsState);
+                                        // toggleNotifications().then(setNotificationsState);
                                     }}
                                     value={notificationsState}
                                 />

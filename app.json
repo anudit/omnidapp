@@ -8,7 +8,7 @@
     "scheme": "omnid",
     "userInterfaceStyle": "light",
     "splash": {
-      // "image": "./assets/icons/omnid-frame.png",
+      "image": "./assets/icons/omnid-frame.png",
       "backgroundColor": "#000000",
       "resizeMode": "contain"
     },
@@ -28,7 +28,11 @@
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
             "extraProguardRules": "-keep class com.facebook.hermes.unicode.** { *; }\n-keep class com.facebook.jni.** { *; }\n-keep public class com.horcrux.svg.** {*;}",
-            "newArchEnabled": true
+            "newArchEnabled": true,
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 31,
+            "minSdkVersion": 23,
+            "buildToolsVersion": "31.0.0"
           },
           "ios": {
             "flipper": true,
@@ -40,6 +44,13 @@
         "expo-camera",
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ],
+      "@react-native-firebase/app",
+      [
+        "@viro-community/react-viro",
+        {
+          "androidXrMode": "GVR" // or "AR" or "OVR_MOBILE"
         }
       ],
       "expo-router"
@@ -81,7 +92,8 @@
       "permissions": [
         "android.permission.CAMERA", // Qr Scanner
         "android.permission.RECORD_AUDIO" // Qr Scanner
-      ]
+      ],
+      "googleServicesFile": "./google-services.json"
     },
     "ios": {
       "bundleIdentifier": "com.cupoc.omnid",
@@ -102,9 +114,11 @@
         "CADisableMinimumFrameDurationOnPhone": true,
         "UIBackgroundModes": [
           "location",
-          "fetch"
+          "fetch",
+          "remote-notification"
         ]
-      }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "experiments": {
       "tsconfigPaths": true,

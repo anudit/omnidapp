@@ -199,25 +199,16 @@ export default function List() {
     }
 
     async function reg() {
-        const { status: existingStatus } = await Notifications.getPermissionsAsync();
-        let finalStatus = existingStatus;
-        if (existingStatus !== 'granted') {
-            const { status } = await Notifications.requestPermissionsAsync();
-            finalStatus = status;
-        }
-        if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
-            return;
-        }
-
-        Notifications.scheduleNotificationAsync({
-            content: {
-                title: "You've got mail! 📬",
-                body: 'Here is the notification body',
-                data: { data: 'goes here' },
-            },
-            trigger: null,
-        });
+        // let token = await generatePushNotificationsToken();
+        // alert(token);
+        // Notifications.scheduleNotificationAsync({
+        //     content: {
+        //         title: "You've got mail! 📬",
+        //         body: 'Here is the notification body',
+        //         data: { data: 'goes here' },
+        //     },
+        //     trigger: null,
+        // });
     }
 
 
@@ -234,7 +225,7 @@ export default function List() {
         <p>Registered Handle: <span id="reghand"></span></p><br/>
         <br/>
 
-        <script src="https://cdn.jsdelivr.net/npm/snarkjs@0.7.0/build/snarkjs.min.js" integrity="sha384-Ule6nmUQ9CEAQfHl+cyHBOxIsBk9eN2llZp7ywwmvdBL8TZNdBio0EUpV4P0iNhh" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/snarkjs@0.7.1/build/snarkjs.min.js" integrity="sha384-Ule6nmUQ9CEAQfHl+cyHBOxIsBk9eN2llZp7ywwmvdBL8TZNdBio0EUpV4P0iNhh" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" integrity="sha384-Htz1SE4Sl5aitpvFgr2j0sfsGUIuSXI6t8hEyrlQ93zflEF3a29bH2AvkUROUw7J" crossorigin="anonymous"></script>
         <script>
 
