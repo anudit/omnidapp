@@ -7,4 +7,9 @@ const config = getDefaultConfig(__dirname, {
   isCSSEnabled: true,
 });
 
+config['resolver'] = {
+  sourceExts: ['js', 'jsx', 'json', 'ts', 'tsx', 'cjs', 'mjs'],
+  assetExts: ['glb', 'gltf', 'png', 'jpg', 'ttf'],
+};
+
 module.exports = config;

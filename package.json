@@ -25,6 +25,8 @@
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-firebase/app": "^18.5.0",
     "@react-navigation/native": "^6.0.2",
+    "@react-three/drei": "^9.88.16",
+    "@react-three/fiber": "^8.15.11",
     "@semaphore-protocol/data": "^3.11.1",
     "@semaphore-protocol/group": "^3.11.1",
     "@semaphore-protocol/identity": "^3.11.1",
@@ -45,7 +47,9 @@
     "expo-crypto": "^12.4.1",
     "expo-dev-client": "~2.4.11",
     "expo-device": "^5.4.0",
+    "expo-file-system": "^15.6.0",
     "expo-font": "~11.4.0",
+    "expo-gl": "~13.0.1",
     "expo-image": "~1.3.4",
     "expo-linking": "~5.0.2",
     "expo-location": "~16.1.0",
@@ -57,6 +61,7 @@
     "expo-status-bar": "~1.6.0",
     "expo-system-ui": "~2.4.0",
     "expo-task-manager": "~11.3.0",
+    "expo-three": "^6.1.0",
     "expo-web-browser": "~12.3.2",
     "graphql": "^16.8.1",
     "hi-base32": "^0.5.1",
@@ -79,6 +84,7 @@
     "react-native-webview": "13.2.2",
     "rn-swipe-button": "^1.3.8",
     "text-encoding-polyfill": "^0.6.7",
+    "three": "^0.158.0",
     "twitter-api-sdk": "^1.2.1",
     "viem": "^1.16.0",
     "zustand": "^4.4.3"
@@ -91,10 +97,12 @@
     "typescript": "^5.2.2"
   },
   "overrides": {
-    "react-refresh": "~0.14.0"
+    "react-refresh": "~0.14.0",
+    "expo-gl": "~13.0.1"
   },
   "resolutions": {
-    "react-refresh": "~0.14.0"
+    "react-refresh": "~0.14.0",
+    "expo-gl": "~13.0.1"
   },
   "private": true,
   "expo": {
