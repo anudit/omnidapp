@@ -36,7 +36,8 @@
           },
           "ios": {
             "flipper": true,
-            "newArchEnabled": true
+            "newArchEnabled": true,
+            "useFrameworks": "static"
           }
         }
       ],
