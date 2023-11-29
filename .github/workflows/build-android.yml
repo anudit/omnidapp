@@ -1,0 +1,79 @@
+name: build-android
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ios
+            output: ./app-ios.tar.gz
+            runs-on: macos-latest
+
+    name: Build for ${{ matrix.os }}
+
+    runs-on: ${{ matrix.runs-on }}
+
+    steps:
+      - name: Check for EXPO_TOKEN
+        run: |
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: pnpm
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Cache cocoapods
+        if: ${{ matrix.os == 'ios' }}
+        uses: actions/cache@v3
+        with:
+          path: /ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Cache Gradle
+        if: ${{ matrix.os == 'android' }}
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          eas-version: latest
+          eas-cache: true
+          expo-cache: true
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build
+        run: pnpm run build:${{ matrix.os }}
+      
+      - name: Upload binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-${{ matrix.os }}
+          path: ${{ matrix.output }}

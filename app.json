@@ -36,7 +36,7 @@
           },
           "ios": {
             // "flipper": true,
-            "newArchEnabled": true,
+            // "newArchEnabled": true,
             "useFrameworks": "static"
           }
         }
@@ -47,7 +47,6 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
         }
       ],
-      "@react-native-firebase/app",
       [
         "expo-location",
         {

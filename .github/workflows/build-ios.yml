@@ -1,4 +1,4 @@
-name: build
+name: build-ios
 on: 
   push:
   workflow_dispatch:
@@ -8,9 +8,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ios
-            output: ./app-ios.tar.gz
-            runs-on: macos-latest
           - os: android
             output: ./app-android.apk
             runs-on: ubuntu-latest
