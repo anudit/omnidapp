@@ -53,6 +53,7 @@
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
       ],
+      "react-native-nfc-manager",
       "expo-router"
     ],
     "android": {
@@ -91,7 +92,8 @@
       ],
       "permissions": [
         "android.permission.CAMERA", // Qr Scanner
-        "android.permission.RECORD_AUDIO" // Qr Scanner
+        "android.permission.RECORD_AUDIO", // Qr Scanner,
+        "android.permission.NFC"
       ],
       "googleServicesFile": "./google-services.json"
     },

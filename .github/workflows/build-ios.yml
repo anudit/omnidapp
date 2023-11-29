@@ -8,9 +8,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: android
-            output: ./app-android.apk
-            runs-on: ubuntu-latest
+          - os: ios
+            output: ./app-ios.tar.gz
+            runs-on: macos-latest
 
     name: Build for ${{ matrix.os }}
 

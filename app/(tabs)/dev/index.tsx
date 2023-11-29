@@ -412,6 +412,17 @@ export default function List() {
                 />
             </View>
 
+            <View style={{ marginVertical: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }} >
+
+                <CustomButton
+                    title="NFC"
+                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        router.push('/dev/nfc')
+                    }}
+                />
+            </View>
+
 
             <View style={{ flex: 1, borderWidth: 1, borderColor: 'red', width: '100%', height: 32, display: 'flex' }}>
                 <WebView
