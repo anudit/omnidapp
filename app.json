@@ -28,15 +28,15 @@
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
             "extraProguardRules": "-keep class com.facebook.hermes.unicode.** { *; }\n-keep class com.facebook.jni.** { *; }\n-keep public class com.horcrux.svg.** {*;}",
-            "newArchEnabled": true,
-            "compileSdkVersion": 33,
-            "targetSdkVersion": 31,
-            "minSdkVersion": 23,
-            "buildToolsVersion": "31.0.0"
+            "newArchEnabled": false,
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "minSdkVersion": 25,
+            "buildToolsVersion": "33.0.1"
           },
           "ios": {
             // "flipper": true,
-            // "newArchEnabled": true,
+            "newArchEnabled": false,
             "useFrameworks": "static"
           }
         }

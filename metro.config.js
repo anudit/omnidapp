@@ -9,7 +9,7 @@ const config = getDefaultConfig(__dirname, {
 
 config['resolver'] = {
   sourceExts: ['js', 'jsx', 'json', 'ts', 'tsx', 'cjs', 'mjs'],
-  assetExts: ['glb', 'gltf', 'png', 'jpg', 'ttf'],
+  assetExts: ['glb', 'gltf', 'png', 'jpg', 'ttf', 'wasm', 'zkey'],
 };
 
 module.exports = config;

@@ -10,11 +10,14 @@ jobs:
         include:
           - os: android
             output: ./app-android.apk
-            runs-on: ubuntu-latest
+            profile: development
+          - os: android
+            output: ./app-android-prod.apk
+            profile: production
 
-    name: Build for ${{ matrix.os }}
+    name: Build for ${{ matrix.os }}-${{ matrix.profile }}
 
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check for EXPO_TOKEN
@@ -70,10 +73,15 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Build
-        run: pnpm run build:${{ matrix.os }}
+        if: ${{ matrix.profile == 'development' }}
+        run: pnpm run build:android
+
+      - name: Build
+        if: ${{ matrix.profile == 'production' }}
+        run: pnpm run build:android-prod
       
       - name: Upload binary
         uses: actions/upload-artifact@v3
         with:
-          name: app-${{ matrix.os }}
+          name: app-${{ matrix.os }}-${{ matrix.profile }}
           path: ${{ matrix.output }}
