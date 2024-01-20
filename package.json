@@ -24,7 +24,7 @@
     "@expo/vector-icons": "^14.0.0",
     "@react-native-async-storage/async-storage": "1.21.0",
     "@react-navigation/native": "^6.0.2",
-    "@react-three/drei": "^9.96.0",
+    "@react-three/drei": "^9.96.1",
     "@react-three/fiber": "^8.15.14",
     "@semaphore-protocol/data": "^3.15.2",
     "@semaphore-protocol/group": "^3.15.2",
@@ -50,8 +50,8 @@
     "expo-image": "~1.10.4",
     "expo-linking": "~6.2.2",
     "expo-location": "~16.5.2",
-    "expo-notifications": "~0.27.3",
-    "expo-router": "^3.4.3",
+    "expo-notifications": "~0.27.4",
+    "expo-router": "^3.4.4",
     "expo-secure-store": "^12.8.1",
     "expo-sensors": "^12.9.0",
     "expo-splash-screen": "~0.26.3",
@@ -83,7 +83,7 @@
     "three": "^0.160.0",
     "twitter-api-sdk": "^1.2.1",
     "viem": "^2.4.0",
-    "zustand": "^4.4.7"
+    "zustand": "^4.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",

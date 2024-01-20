@@ -72,6 +72,12 @@ jobs:
           expo-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
 
+      - name: Install JDK v17
+        uses: actions/setup-java@v4
+        with:
+            java-version: "17"
+            distribution: "temurin"
+
       - name: Build
         if: ${{ matrix.profile == 'development' }}
         run: pnpm run build:android
