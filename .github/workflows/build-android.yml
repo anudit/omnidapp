@@ -29,8 +29,7 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v4
-          submodules: true
-
+        
       - uses: pnpm/action-setup@v2
         with:
           version: latest
