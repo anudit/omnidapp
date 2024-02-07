@@ -143,13 +143,12 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<Account
     let merkleProof: MerkleProof;
 
     if (groupId === 0) {
-      group = new Group(groupId, 20);
-      group.addMember(zkid.commitment);
+      group = new Group([zkid.commitment]);
       merkleProof = group.generateMerkleProof(0)
     }
     else {
       const { members } = await subgraph.getGroup(groupId.toString(), { members: true });
-      group = new Group(groupId, 20, members);
+      group = new Group(members);
 
       const index = group.indexOf(zkid.commitment)
       if (index === -1) {

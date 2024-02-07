@@ -8,6 +8,7 @@ import { Platform } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { OmnidProvider } from '@/contexts/OmnidProvider';
 import { useAccountStore } from '@/stores/accountStore';
 import { useSettingsStore } from '@/stores/settings';
 import designTokens from '../assets/designTokens.json';
@@ -55,20 +56,22 @@ const StackLayout = () => {
         <ApolloProvider client={client}>
           <RootSiblingParent>
             <SafeAreaProvider>
-              <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="settle" options={{
-                  headerShown: true,
-                  presentation: Platform.OS == 'ios' ? 'modal' : undefined,
-                  headerTintColor: designTokens.colors.text.primary,
-                  headerTitle: 'Approve Request',
-                  headerBlurEffect: 'light',
-                  headerStyle: {
-                    backgroundColor: designTokens.colors.background.level3
-                  },
-                }} />
-                <Stack.Screen name="settings" options={{ headerShown: false }} />
-              </Stack>
+              <OmnidProvider>
+                <Stack>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                  <Stack.Screen name="settle" options={{
+                    headerShown: true,
+                    presentation: Platform.OS == 'ios' ? 'modal' : undefined,
+                    headerTintColor: designTokens.colors.text.primary,
+                    headerTitle: 'Approve Request',
+                    headerBlurEffect: 'light',
+                    headerStyle: {
+                      backgroundColor: designTokens.colors.background.level3
+                    },
+                  }} />
+                  <Stack.Screen name="settings" options={{ headerShown: false }} />
+                </Stack>
+              </OmnidProvider>
             </SafeAreaProvider>
           </RootSiblingParent>
         </ApolloProvider>

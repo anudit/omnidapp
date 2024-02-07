@@ -276,19 +276,28 @@ export default function List() {
                 externalNullifier,
                 signal
             ) {
-
+                const finalInputs = {
+                    identityTrapdoor: trapdoor,
+                    identityNullifier: nullifier,
+                    treePathIndices: merkleProofPathIndices,
+                    treeSiblings: merkleProofSiblings,
+                    externalNullifier: hash(externalNullifier),
+                    signalHash: hash(signal)
+                };
+                console.log('prepost', {
+                    pexternalNullifier: externalNullifier,
+                    psignalHash: signal,
+                    externalNullifier: hash(externalNullifier),
+                    signalHash: hash(signal)
+                });
+                console.log('finalInputs', finalInputs);
+                let st = Date.now();
                 const { proof, publicSignals } = await snarkjs.groth16.fullProve(
-                    {
-                        identityTrapdoor: trapdoor,
-                        identityNullifier: nullifier,
-                        treePathIndices: merkleProofPathIndices,
-                        treeSiblings: merkleProofSiblings,
-                        externalNullifier: hash(externalNullifier),
-                        signalHash: hash(signal)
-                    },
+                    finalInputs,
                     'https://res.cloudinary.com/anudit/raw/upload/v1692450767/semaphore_e5uhuw.wasm',
                     'https://res.cloudinary.com/anudit/raw/upload/v1692450780/semaphore_pkyemk.zkey'
                 )
+                console.log('proof time', Date.now() - st, 'ms');
             
                 return {
                     merkleTreeRoot: publicSignals[0],
@@ -419,6 +428,13 @@ export default function List() {
                     iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
                     onPress={() => {
                         router.push('/dev/nfc')
+                    }}
+                />
+                <CustomButton
+                    title="rapidsnark"
+                    iconLeft={<OmnidIcon style={styles.buttonIcon} fill={designTokens.colors.text.primary} height={18} />}
+                    onPress={() => {
+                        router.push('/dev/rapidsnark')
                     }}
                 />
             </View>

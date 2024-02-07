@@ -13,3 +13,25 @@ export const copy = async (data: string) => {
     });
 
 }
+
+export const customStringify = (data: any) => {
+    function replacer(key: any, value: any) {
+        if (typeof value === 'bigint') {
+            return {
+                type: 'bigint',
+                value: value.toString()
+            };
+        } else {
+            return value;
+        }
+    }
+    return JSON.stringify(data, replacer);
+}
+
+export const customParse = (data: string) => {
+    function reviver(key: any, value: any) {
+        if (value && value.type == 'bigint') return BigInt(value.value);
+        return value;
+    }
+    return JSON.parse(data, reviver);
+}

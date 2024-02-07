@@ -25,14 +25,15 @@ jobs:
           fi
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+          submodules: true
 
       - uses: pnpm/action-setup@v2
         with:
           version: latest
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20.x
           cache: pnpm
@@ -42,23 +43,12 @@ jobs:
 
       - name: Cache cocoapods
         if: ${{ matrix.os == 'ios' }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /ios/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
-
-      - name: Cache Gradle
-        if: ${{ matrix.os == 'android' }}
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
@@ -78,7 +68,7 @@ jobs:
         run: pnpm run build:${{ matrix.os }}
       
       - name: Upload binary
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-${{ matrix.os }}
           path: ${{ matrix.output }}
