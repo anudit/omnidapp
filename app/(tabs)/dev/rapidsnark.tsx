@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         color: designTokens.colors.text.primary,
         minHeight: '100%',
         width: '100%',
-        paddingTop: 30,
+        paddingTop: 100,
         paddingHorizontal: 10
     },
     button: {
