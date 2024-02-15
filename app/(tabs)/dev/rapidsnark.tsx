@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import designTokens from '../../../assets/designTokens.json';
 import CustomButton from '../../../components/Button';
 
-import { OmnidContext, OmnidContextType } from '@/contexts/OmnidProvider';
 import { customParse } from '@/utils/stringUtils';
+import { OmnidContext, OmnidContextType } from '@omnid/react-native';
 import { useAssets } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import { useContext, useEffect, useState } from 'react';
@@ -17,7 +17,7 @@ import { useContext, useEffect, useState } from 'react';
 export default function Splash() {
 
     const { getSignInParams, getZkId } = useAccountStore();
-    const [assets, error] = useAssets([require('@/assets/semaphore20.zkey'), require('@/assets/semaphore20.wasm')]);
+    const [assets, error] = useAssets([require('@/assets/semaphore20.zkey'), require('@/assets/semaphore20wasm.wasm')]);
     const [timetaken, setTimetaken] = useState<null | number>(null);
     const { calculateWitness, makeProof } = useContext<OmnidContextType>(OmnidContext);
 

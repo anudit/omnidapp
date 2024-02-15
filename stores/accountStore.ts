@@ -2,11 +2,11 @@ import { OtpConfig } from "@/app/(tabs)/dev/totp";
 import { SemaphoreSubgraph } from "@semaphore-protocol/data";
 import { Group } from '@semaphore-protocol/group';
 import { Identity } from '@semaphore-protocol/identity';
-import { MerkleProof } from "@zk-kit/incremental-merkle-tree";
+import { LeanIMTMerkleProof } from "@zk-kit/imt";
 import { deleteItemAsync, getItemAsync, setItemAsync } from 'expo-secure-store';
 import { WalletClient, createWalletClient, fallback, http, keccak256, toHex } from 'viem';
 import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
-import { arbitrum, arbitrumGoerli } from 'viem/chains';
+import { optimismSepolia } from 'viem/chains';
 import { StoreApi, create } from 'zustand';
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
@@ -26,14 +26,14 @@ type ProofParams = {
   commitment: string,
   signalHash: string,
   extNullifier: string,
-  merkleProof: MerkleProof,
+  merkleProof: LeanIMTMerkleProof<string>,
 }
 
 export interface AccountStoreType {
   basePrivKey: null | string,
   basePubKey: null | string,
   hasHydrated: boolean,
-  zkIdData: null | string[],
+  zkIdData: null | string,
   totpAccounts: OtpConfig[],
 
   setHasHydrated: (state: boolean) => void
@@ -82,7 +82,7 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<Account
     set({
       basePrivKey: newPk,
       basePubKey: wallet.address,
-      zkIdData: [`0x${identity.trapdoor.toString(16)}`, `0x${identity.nullifier.toString(16)}`]
+      zkIdData: `0x${identity.privateKey.toString(16)}`
     });
 
   },
@@ -98,27 +98,27 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<Account
 
   getSigner: (isDev = false) => {
     const pk = get()?.basePrivKey as `0x${string}`;
-    const arbitrumClient = createWalletClient({
+    // const arbitrumClient = createWalletClient({
+    //   account: privateKeyToAccount(pk),
+    //   chain: arbitrum,
+    //   transport: fallback([
+    //     http('https://arb1.arbitrum.io/rpc'),
+    //     http('https://arbitrum-one.public.blastapi.io'),
+    //     http('https://rpc.ankr.com/arbitrum'),
+    //   ])
+    // })
+
+    const optimismSepoliaClient = createWalletClient({
       account: privateKeyToAccount(pk),
-      chain: arbitrum,
+      chain: optimismSepolia,
       transport: fallback([
-        http('https://arb1.arbitrum.io/rpc'),
-        http('https://arbitrum-one.public.blastapi.io'),
-        http('https://rpc.ankr.com/arbitrum'),
+        http('https://sepolia.optimism.io'),
+        http('https://rpc.ankr.com/optimism_sepolia'),
+        http('https://optimism-sepolia.blastapi.io/ed3d6bab-623e-4371-b5d2-a38d608e8050'),
       ])
     })
 
-    const arbitrumGoerliClient = createWalletClient({
-      account: privateKeyToAccount(pk),
-      chain: arbitrumGoerli,
-      transport: fallback([
-        http('https://goerli-rollup.arbitrum.io/rpc'),
-        http('https://arb-goerli.g.alchemy.com/v2/demo'),
-        http('https://arbitrum-goerli.public.blastapi.io'),
-      ])
-    })
-
-    return isDev ? arbitrumGoerliClient : arbitrumClient;
+    return isDev ? optimismSepoliaClient : optimismSepoliaClient;
   },
 
   getSignInParams: async () => {
@@ -136,11 +136,11 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<Account
     const zkid: Identity = get().getZkId();
 
     const subgraph = new SemaphoreSubgraph(
-      "https://api.studio.thegraph.com/query/1649/groupmanager/version/latest"
+      "https://api.studio.thegraph.com/query/1649/omnid-testnet/version/latest"
     )
 
     let group: Group;
-    let merkleProof: MerkleProof;
+    let merkleProof: LeanIMTMerkleProof<string>;
 
     if (groupId === 0) {
       group = new Group([zkid.commitment]);

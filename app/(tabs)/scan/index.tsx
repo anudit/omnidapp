@@ -1,17 +1,18 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Camera, FlashMode } from 'expo-camera';
+import { CameraView, useCameraPermissions } from 'expo-camera/next';
 import * as Linking from 'expo-linking';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
+import { FlashMode } from 'expo-camera';
 import designTokens from '../../../assets/designTokens.json';
 import { QrFrameIcon } from '../../../components/icons';
 
 export default function Scanner() {
 
-    const [permission, requestPermission] = Camera.useCameraPermissions();
-    const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off)
+    const [permission, requestPermission] = useCameraPermissions();
+    const [flashMode, setFlashMode] = useState<'on' | 'off'>(FlashMode.off)
     const { height } = useWindowDimensions();
     const width = Math.round((height * 9) / 16);
     const router = useRouter();
@@ -58,13 +59,13 @@ export default function Scanner() {
 
     return (
         <View style={[StyleSheet.absoluteFillObject, styles.container]}>
-            {mountCamera && (<Camera
-                ratio="16:9"
-                barCodeScannerSettings={{
+            {mountCamera && (<CameraView
+                // ratio="16:9"
+                barcodeScannerSettings={{
                     barCodeTypes: ['qr'],
                     interval: 100,
                 }}
-                onBarCodeScanned={handleQrScan}
+                onBarcodeScanned={handleQrScan}
                 style={{
                     height: "100%",
                     width,
@@ -77,17 +78,17 @@ export default function Scanner() {
                     </Text>
                     <QrFrameIcon width={256} height={256} fill={designTokens.colors.background.level1} />
                     <Pressable style={{ ...styles.roundButton, marginTop: 30 }} onPress={() => {
-                        if (flashMode === FlashMode.torch) setFlashMode(FlashMode.off)
-                        else setFlashMode(FlashMode.torch)
+                        if (flashMode === 'on') setFlashMode(FlashMode.off)
+                        else setFlashMode(FlashMode.on)
                     }}>
                         {({ pressed }) => <Ionicons
-                            name={pressed || flashMode === FlashMode.torch ? 'flashlight' : "flashlight-outline"}
+                            name={pressed || flashMode === FlashMode.on ? 'flashlight' : "flashlight-outline"}
                             size={24}
                             color={designTokens.colors.background.level1}
                         />}
                     </Pressable>
                 </View>
-            </Camera>)}
+            </CameraView>)}
         </View>
     );
 

@@ -8,9 +8,9 @@ import { Platform } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { OmnidProvider } from '@/contexts/OmnidProvider';
 import { useAccountStore } from '@/stores/accountStore';
 import { useSettingsStore } from '@/stores/settings';
+import { OmnidProvider } from '@omnid/react-native';
 import designTokens from '../assets/designTokens.json';
 import InsecureDevice from '../components/insecureDevice';
 

@@ -1,7 +1,8 @@
 import { customStringify } from "@/utils/stringUtils";
 import { createContext, useEffect, useRef } from "react";
-import { NativeModules, View } from "react-native";
+import { View } from "react-native";
 
+import { groth16_prover } from "@iden3/react-native-rapidsnark";
 import { fromByteArray } from "react-native-quick-base64";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import { CircuitSignals, Groth16Proof, PublicSignals } from "snarkjs";
@@ -62,8 +63,7 @@ export const OmnidProvider = (props: any) => {
     };
 
     const makeProof = async (zkey_base64: string, witness_base64: string) => {
-        const rapidsnark = NativeModules.Rapidsnark;
-        const { proof, pub_signals } = await rapidsnark.groth16_prover(zkey_base64, witness_base64);
+        const { proof, pub_signals } = await groth16_prover(zkey_base64, witness_base64);
         return {
             proof: JSON.parse(proof) as Groth16Proof,
             publicSignals: JSON.parse(pub_signals) as PublicSignals,
