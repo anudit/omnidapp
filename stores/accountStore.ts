@@ -1,5 +1,5 @@
 import { OtpConfig } from "@/app/(tabs)/dev/totp";
-import { SemaphoreSubgraph } from "@semaphore-protocol/data";
+import { Omnid } from '@omnid/sdk';
 import { Group } from '@semaphore-protocol/group';
 import { Identity } from '@semaphore-protocol/identity';
 import { LeanIMTMerkleProof } from "@zk-kit/imt";
@@ -135,9 +135,8 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<Account
 
     const zkid: Identity = get().getZkId();
 
-    const subgraph = new SemaphoreSubgraph(
-      "https://api.studio.thegraph.com/query/1649/omnid-testnet/version/latest"
-    )
+    const omnid = new Omnid();
+
 
     let group: Group;
     let merkleProof: LeanIMTMerkleProof<string>;
@@ -147,14 +146,20 @@ const store: (set: StoreApi<AccountStoreType>['setState'], get: StoreApi<Account
       merkleProof = group.generateMerkleProof(0)
     }
     else {
-      const { members } = await subgraph.getGroup(groupId.toString(), { members: true });
-      group = new Group(members);
+      const groupData = await omnid.query.getGroup(groupId.toString(), { members: true });
+      if (groupData.members) {
+        group = new Group(groupData.members.map(e => e.id));
 
-      const index = group.indexOf(zkid.commitment)
-      if (index === -1) {
-        throw new Error("The identity is not part of the group")
+        const index = group.indexOf(zkid.commitment)
+        if (index === -1) {
+          throw new Error("The identity is not part of the group")
+        }
+        merkleProof = group.generateMerkleProof(index)
+
       }
-      merkleProof = group.generateMerkleProof(index)
+      else {
+        throw new Error("No members from API")
+      }
     }
 
     const signalHash = keccak256(toHex(signInSignal));

@@ -18,7 +18,7 @@ export default function Splash() {
 
     const { getSignInParams, getZkId } = useAccountStore();
     const [assets, error] = useAssets([require('@/assets/semaphore20.zkey'), require('@/assets/semaphore20wasm.wasm')]);
-    const [timetaken, setTimetaken] = useState<null | number>(null);
+    const [timetaken, setTimetaken] = useState<null | string>(null);
     const { calculateWitness, makeProof } = useContext<OmnidContextType>(OmnidContext);
 
     useEffect(() => {
@@ -50,12 +50,15 @@ export default function Splash() {
             }`;
             const finalInputs = customParse(inputs);
 
+            let st1 = Date.now();
             const wtnsBase64 = await calculateWitness(Buffer.from(wasm_b64, 'base64'), finalInputs);
+            let end1 = Date.now();
+
             let st = Date.now();
             const { proof, publicSignals } = await makeProof(zkey_b64, wtnsBase64);
             let end = Date.now();
             console.log({ proof, publicSignals });
-            setTimetaken(end - st);
+            setTimetaken(`wtns: ${end1 - st1}ms, prove:${end - st}ms`);
         }
         else {
             alert('Assets not loaded');
@@ -67,7 +70,7 @@ export default function Splash() {
             title="New Prove"
             onPress={newprove}
         />
-        <Text>{timetaken ? timetaken + 'ms' : 'Click prove'}</Text>
+        <Text>{timetaken ? timetaken : 'Click prove'}</Text>
 
     </View>)
 }
